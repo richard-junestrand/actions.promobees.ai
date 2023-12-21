@@ -2,10 +2,10 @@ name: acr
 
 on:
   push:
-    tags: ["v*.*.*"]
+    branches: [ "master" ]
 
 env:
-  IMAGE_NAME: promobees-actions
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build-image:
