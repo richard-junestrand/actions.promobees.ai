@@ -55,8 +55,6 @@
   "nodemonConfig": {
     "env": {
       "PORT": 3003,
-      "APP_URL": "https://app.promobees.ai",
-      "ACTION_URL": "https://actions.promobees.ai",
       "API_URL": "https://api.promobees.ai/v1/graphql",
       "API_ADMIN_SECRET": "k7dc3Q_@Ae",
       "ACTION_SECRET": "7VAenYWe_k",
