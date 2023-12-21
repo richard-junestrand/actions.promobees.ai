@@ -25,16 +25,8 @@ jobs:
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
 
-    # Extract metadata (tags, labels) for Docker
-    # https://github.com/docker/metadata-action
-    - name: Extract Docker metadata
-      id: meta
-      uses: docker/metadata-action@v4.0.0
-      with:
-        images: ${{ secrets.ACR_ENDPOINT }}/${{ env.IMAGE_NAME }}
-
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: ${{ secrets.ACR_ENDPOINT }}/${{ env.IMAGE_NAME }}:latest,${{ secrets.ACR_ENDPOINT }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.tag }}
+        tags: ${{ secrets.ACR_ENDPOINT }}/${{ env.IMAGE_NAME }}:latest
