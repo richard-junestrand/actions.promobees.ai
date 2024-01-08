@@ -35,6 +35,19 @@ const campaignUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
     updateSet = { ...updateSet, campaign_type_id: data.campaign_type_id };
   }
   //
+  if (data.hasOwnProperty('source')) {
+    updateSet = { ...updateSet, source: data.source };
+  }
+  if (data.hasOwnProperty('data')) {
+    updateSet = { ...updateSet, data: data.data };
+  }
+  if (data.hasOwnProperty('specification')) {
+    updateSet = { ...updateSet, specification: data.specification };
+  }
+  if (data.hasOwnProperty('budget')) {
+    updateSet = { ...updateSet, budget: data.budget };
+  }
+  //
   updateCall.parameter = `$id_${updateCall.idx}: bigint!, $p_${updateCall.idx}: campaign_set_input`;
   updateCall.command = `
     data: update_campaign_by_pk(pk_columns: {id: $id_${updateCall.idx}}, _set: $p_${updateCall.idx}) {
