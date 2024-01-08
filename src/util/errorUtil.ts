@@ -5,8 +5,14 @@ const errors = new Map();
 
 errors.set(1, {id: "message.error-1"});
 
-// Account
-errors.set(320030, {id: "message.error-invalid-string-max-len", params: ["account_name", 256] });
+// Campaign
+errors.set(100000, {id: "message.error-invalid-int", params: ["organization_id"] });
+errors.set(100010, {id: "message.error-organization-session" });
+errors.set(100020, {id: "message.error-invalid-value", params: ["campaign_name"] });
+errors.set(100030, {id: "message.error-invalid-int", params: ["campaign_type_id"] });
+errors.set(100040, {id: "message.error-invalid-value", params: ["campaign_type_id"] });
+errors.set(100050, {id: "message.error-invalid-int", params: ["campaign_id"] });
+errors.set(100060, {id: "message.error-invalid-value-for-organization", params: ["campaign_id"] });
 
 export const customError = async (intl: IntlShape, id: number, section: string, params = null, extra = null): Promise<ActionOutputError> => {
     const err = errors.get(id) || {

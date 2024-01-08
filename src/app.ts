@@ -17,7 +17,7 @@ function authorizationMiddleware(req, res, next) {
 const isDev = app.get('env') === 'development';
 // Request Handler
 const handlers = [
-  'accountInsert'
+  'campaignInsert', 'campaignUpdate', 'campaignDelete'
 ];
 app.post(`/:route(${handlers.join('|')})`, express.json({ limit: '40mb' }), authorizationMiddleware,
   async (req: express.Request, res: express.Response, next) => {
