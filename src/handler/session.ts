@@ -27,7 +27,7 @@ export class HasuraSession {
     async getUserOrganizations(intl, isDev): Promise<Nullable<ActionOutputError>> {
         if (!this.isAdmin) {
             const { errors, data } = await executeGraphql(`
-                query ($user_id: bigint!) {
+                query ($user_id: Int!) {
                   data:user_by_pk(id: $user_id){
                     user_organizations {
                         ${FragmentOrganization}
@@ -36,10 +36,11 @@ export class HasuraSession {
                 }`, {
                 user_id: this.userId
             });
-            if (errors) {
-                isDev && console.log(errors[0]);
+            if (errors || !data.data) {
+                isDev && errors && console.log(errors[0]);
                 return await customError(intl, 0, SectionGeneral, [intl.formatMessage({ id: ErrorDatabase })]);
             } else {
+                console.log(data.data);
                 this.organizations = data.data.user_organizations.map(r => prepareOrganization(r));
                 this.organizationIds = this.organizations.map(r => r.id)
             }

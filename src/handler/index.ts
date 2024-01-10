@@ -122,7 +122,12 @@ export class BaseAction<T> {
         const intl = await loadLocale(locale);
         //
         const session = new HasuraSession(req.body.session_variables, locale);
-
+        let err = await session.getUserOrganizations(intl,isDev);
+        if (err) {
+            this.error(res, err);
+            return;
+        }
+        
         await this.handle(intl, res, isDev, data, session);
     }
 

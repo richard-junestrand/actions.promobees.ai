@@ -16,7 +16,7 @@ const campaignDeleteValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
   }
   //
   const deleteCall = await def.newCall();
-  deleteCall.parameter = `$id_${deleteCall.idx}: bigint!`;
+  deleteCall.parameter = `$id_${deleteCall.idx}: Int!`;
   deleteCall.command = `
     data2_${deleteCall.idx}: delete_campaign_template_cross(where: {campaign_id: {_eq: $id_${deleteCall.idx}}}){
       affected_rows
