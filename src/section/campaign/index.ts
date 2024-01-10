@@ -5,4 +5,5 @@ export type CampaignInput = {
     data: any
     specification: any
     budget: any
+    is_active: boolean
 }

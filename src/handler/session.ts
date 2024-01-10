@@ -40,7 +40,6 @@ export class HasuraSession {
                 isDev && errors && console.log(errors[0]);
                 return await customError(intl, 0, SectionGeneral, [intl.formatMessage({ id: ErrorDatabase })]);
             } else {
-                console.log(data.data);
                 this.organizations = data.data.user_organizations.map(r => prepareOrganization(r));
                 this.organizationIds = this.organizations.map(r => r.id)
             }

@@ -42,9 +42,9 @@ export async function isValidBoolean(val, required = true) {
 
 }
 
-export const checkBoolean = async (intl,section: string, val: boolean, err: number, required = true): Promise<Nullable<ActionOutputError>> => {
+export const checkBoolean = async (intl, section: string, val: boolean, err: number, required = true): Promise<Nullable<ActionOutputError>> => {
     if (!await isValidBoolean(val, required)) {
-        return await customError(intl,err, section);
+        return await customError(intl, err, section);
     }
     return null;
 }

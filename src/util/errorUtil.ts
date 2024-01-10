@@ -13,6 +13,7 @@ errors.set(100030, {id: "message.error-invalid-int", params: ["campaign_type_id"
 errors.set(100040, {id: "message.error-invalid-value", params: ["campaign_type_id"] });
 errors.set(100050, {id: "message.error-invalid-int", params: ["campaign_id"] });
 errors.set(100060, {id: "message.error-invalid-value-for-organization", params: ["campaign_id"] });
+errors.set(100070, {id: "message.error-invalid-boolean", params: ["is_active"] });
 
 export const customError = async (intl: IntlShape, id: number, section: string, params = null, extra = null): Promise<ActionOutputError> => {
     const err = errors.get(id) || {

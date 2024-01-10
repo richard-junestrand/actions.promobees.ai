@@ -2,7 +2,7 @@ import { ActionOutputError, Nullable, OrganizationIdInput } from '../../handler'
 import { CampaignInput } from '.';
 import { HasuraSession } from '../../handler/session';
 import { MutationDefinition } from '../../db';
-import { checkName, checkCampaignType } from './util';
+import { checkName, checkCampaignType, checkActive } from './util';
 import { IntlShape } from '@formatjs/intl';
 import { checkOrganizationIdBase } from '../organization/util';
 
@@ -22,6 +22,11 @@ const campaignInsertValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
   }
   //
   err = await checkCampaignType(intl, isDev, section, data);
+  if (err) {
+    return err;
+  }
+  //
+  err = await checkActive(intl, section, data);
   if (err) {
     return err;
   }
