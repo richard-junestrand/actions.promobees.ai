@@ -15,6 +15,14 @@ errors.set(100050, {id: "message.error-invalid-int", params: ["campaign_id"] });
 errors.set(100060, {id: "message.error-invalid-value-for-organization", params: ["campaign_id"] });
 errors.set(100070, {id: "message.error-invalid-boolean", params: ["is_active"] });
 
+// campaign_template_cross
+errors.set(110000, {id: "message.error-invalid-int", params: ["template_id"] });
+errors.set(110010, {id: "message.error-invalid-value-for-organization", params: ["template_id"] });
+errors.set(110020, {id: "message.error-invalid-int", params: ["order_by"] });
+errors.set(110030, {id: "message.error-invalid-int", params: ["campaign_template_cross_id"] });
+errors.set(110040, {id: "message.error-invalid-value", params: ["campaign_template_cross_id"] });
+errors.set(110050, {id: "message.error-not-match-parent", params: ["campaign_template_cross", "campaign_id"] });
+
 export const customError = async (intl: IntlShape, id: number, section: string, params = null, extra = null): Promise<ActionOutputError> => {
     const err = errors.get(id) || {
         id: params ? "message.error-detail" : "message.error",

@@ -1,12 +1,16 @@
-import { ActionOutputError, Nullable, OrganizationIdInput } from '../../handler';
+import { ActionOutputError, Nullable, OrganizationIdInput, RelListInput } from '../../handler';
 import { CampaignInput } from '.';
 import { HasuraSession } from '../../handler/session';
 import { MutationDefinition } from '../../db';
 import { checkName, checkCampaignType, checkActive } from './util';
 import { IntlShape } from '@formatjs/intl';
 import { checkOrganizationIdBase } from '../organization/util';
+import campaignTemplateCrossInsertValidateAndPrepare, { CampaignTemplateCrossInsertInput } from '../campaignTemplateCross/campaignTemplateCrossInsertValidateAndPrepare';
+import { checkRelList } from '../../util/dataUtil';
 
-export type CampaignInsertInput = CampaignInput & OrganizationIdInput
+export type CampaignInsertInput = CampaignInput & OrganizationIdInput & {
+  campaign_template_crosses: RelListInput<CampaignTemplateCrossInsertInput>
+}
 
 const campaignInsertValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: CampaignInsertInput, def: MutationDefinition, session: HasuraSession, validated: boolean = false): Promise<Nullable<ActionOutputError>> => {
   const section = "campaignInsert";
@@ -27,6 +31,12 @@ const campaignInsertValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
   }
   //
   err = await checkActive(intl, section, data);
+  if (err) {
+    return err;
+  }
+  // Validate the children
+  err = await checkRelList(intl, section, data.campaign_template_crosses, 
+    (r,idx)=>campaignTemplateCrossInsertValidateAndPrepare(intl, isDev, r, null, session, data.organization_id))
   if (err) {
     return err;
   }
