@@ -29,7 +29,7 @@ const campaignPreviewValidateAndPrepare = async (intl: IntlShape<string>, isDev:
   const fields = [
   ];
   const params = {
-    'creative': { 'object_story_spec': { 'link_data': { 'call_to_action': { 'type': 'SIGN_UP', 'value': { 'link': 'https://www.marindepan.se/begagnade-batar' } }, 'description': 'Description', 'link': 'https://www.marindepan.se/begagnade-batar', 'message': 'Message', 'name': 'Name' }, 'page_id': pageId } },
+    'creative': data.creative,
     'ad_format': 'DESKTOP_FEED_STANDARD',
   };
   const account=new AdAccount(id);
