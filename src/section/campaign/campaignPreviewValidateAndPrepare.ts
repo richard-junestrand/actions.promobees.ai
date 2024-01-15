@@ -40,8 +40,8 @@ const campaignPreviewValidateAndPrepare = async (intl: IntlShape<string>, isDev:
     return returnValue(def, {
       data: r
     })
-  }).catch(async err => {
-    return await customError(intl, 100080, section,[err]);
+  }).catch(async r => {
+    return await customError(intl, 100080, section,[r?.response?.error_user_msg || r?.response?.error_user_title || r?.message || r]);
   });
 };
 export default campaignPreviewValidateAndPrepare;
