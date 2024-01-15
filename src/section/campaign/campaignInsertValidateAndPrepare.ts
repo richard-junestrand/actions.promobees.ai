@@ -2,9 +2,8 @@ import { ActionOutputError, Nullable, OrganizationIdInput, RelListInput } from '
 import { CampaignInput } from '.';
 import { HasuraSession } from '../../handler/session';
 import { MutationDefinition } from '../../db';
-import { checkName, checkCampaignType, checkActive } from './util';
+import { checkName, checkCampaignType, checkActive, checkOrganizationId } from './util';
 import { IntlShape } from '@formatjs/intl';
-import { checkOrganizationIdBase } from '../organization/util';
 import campaignTemplateCrossInsertValidateAndPrepare, { CampaignTemplateCrossInsertInput } from '../campaignTemplateCross/campaignTemplateCrossInsertValidateAndPrepare';
 import { checkRelList } from '../../util/dataUtil';
 
@@ -15,7 +14,7 @@ export type CampaignInsertInput = CampaignInput & OrganizationIdInput & {
 const campaignInsertValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: CampaignInsertInput, def: MutationDefinition, session: HasuraSession, validated: boolean = false): Promise<Nullable<ActionOutputError>> => {
   const section = "campaignInsert";
   //
-  let err = await checkOrganizationIdBase(intl, section, data.organization_id, [100000, 100010], session);
+  let err = await checkOrganizationId(intl, section, data, session);
   if (err) {
     return err;
   }

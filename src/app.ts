@@ -17,7 +17,7 @@ function authorizationMiddleware(req, res, next) {
 const isDev = app.get('env') === 'development';
 // Request Handler
 const handlers = [
-  'campaignInsert', 'campaignUpdate', 'campaignDelete'
+  'campaignInsert', 'campaignUpdate', 'campaignDelete', 'campaignPreview'
 ];
 app.post(`/:route(${handlers.join('|')})`, express.json({ limit: '40mb' }), authorizationMiddleware,
   async (req: express.Request, res: express.Response, next) => {
@@ -41,7 +41,7 @@ app.use((err, req, res, next) => { // eslint-disable-line @typescript-eslint/no-
   });
 });
 
-app.listen(process.env.PORT || 3004, async () => {
-
+app.listen(process.env.PORT || 3003, async () => {
+  console.log('--up');
 });
 export default app;

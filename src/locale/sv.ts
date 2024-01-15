@@ -30,6 +30,7 @@ const data = {
     "message.error-file-not-found": "Filen har inte hittats.",
     "message.error-data-used": "Data används i {field0}",
     "message.error-1": "Du har ingen behörighet.",
+    "message.error-100080": "Generering av förhandsvisningar misslyckades: {p0}."
 }
 
 export default data;

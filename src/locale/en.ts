@@ -30,6 +30,7 @@ const data={
     "message.error-file-not-found": "File not found.",
     "message.error-data-used": "Data is used in {field0}",
     "message.error-1": "You have no permission.",
+    "message.error-100080": "Failed to generate previews: {p0}.",
 }
 
 export default data;

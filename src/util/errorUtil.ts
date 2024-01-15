@@ -14,6 +14,7 @@ errors.set(100040, {id: "message.error-invalid-value", params: ["campaign_type_i
 errors.set(100050, {id: "message.error-invalid-int", params: ["campaign_id"] });
 errors.set(100060, {id: "message.error-invalid-value-for-organization", params: ["campaign_id"] });
 errors.set(100070, {id: "message.error-invalid-boolean", params: ["is_active"] });
+errors.set(100080, {id: "message.error-100080" });
 
 // campaign_template_cross
 errors.set(110000, {id: "message.error-invalid-int", params: ["template_id"] });

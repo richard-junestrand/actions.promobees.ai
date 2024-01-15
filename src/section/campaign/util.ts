@@ -1,14 +1,14 @@
 import { CampaignInput } from ".";
 import { Campaign } from "../../db/generated";
-import { ActionOutputError, ActionOutputErrorOrData, Nullable, UpdateInput } from "../../handler";
+import { ActionOutputError, ActionOutputErrorOrData, Nullable, OrganizationIdInput, UpdateInput } from "../../handler";
 import { HasuraSession } from "../../handler/session";
 import { checkBoolean, checkDataBase } from "../../util/dataUtil";
 import { checkString } from "../../util/stringUtil";
-import { checkOrganizationDataBase } from "../organization/util";
+import { checkOrganizationDataBase, checkOrganizationIdBase } from "../organization/util";
 import { getCampaignById, getCampaignTypeById } from "./query";
 
 export const checkName = async (intl, section: string, data: CampaignInput): Promise<Nullable<ActionOutputError>> => {
-  return await checkString(intl, section, data.campaign_name, 100020, false);
+  return checkString(intl, section, data.campaign_name, 100020, false);
 }
 
 export const checkCampaignType = async (intl, isDev: boolean, section: string, data: CampaignInput): Promise<Nullable<ActionOutputError>> => {
@@ -32,5 +32,9 @@ export const checkId = async (intl, isDev: boolean, section: string, data: Updat
 }
 
 export const checkActive = async (intl, section: string, data: CampaignInput): Promise<Nullable<ActionOutputError>> => {
-  return await checkBoolean(intl, section, data.is_active, 100070);
+  return checkBoolean(intl, section, data.is_active, 100070);
+}
+
+export const checkOrganizationId = async (intl, section: string, data: OrganizationIdInput, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
+  return checkOrganizationIdBase(intl, section, data.organization_id, [100000, 100010], session);
 }
