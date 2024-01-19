@@ -5,7 +5,7 @@ const errors = new Map();
 
 errors.set(1, {id: "message.error-1"});
 
-// Campaign
+// campaign
 errors.set(100000, {id: "message.error-invalid-int", params: ["organization_id"] });
 errors.set(100010, {id: "message.error-organization-session" });
 errors.set(100020, {id: "message.error-invalid-value", params: ["campaign_name"] });
@@ -23,6 +23,16 @@ errors.set(110020, {id: "message.error-invalid-int", params: ["order_by"] });
 errors.set(110030, {id: "message.error-invalid-int", params: ["campaign_template_cross_id"] });
 errors.set(110040, {id: "message.error-invalid-value", params: ["campaign_template_cross_id"] });
 errors.set(110050, {id: "message.error-not-match-parent", params: ["campaign_template_cross", "campaign_id"] });
+
+// template
+errors.set(120000, {id: "message.error-invalid-int", params: ["organization_id"] });
+errors.set(120010, {id: "message.error-organization-session" });
+errors.set(120020, {id: "message.error-invalid-value", params: ["template_name"] });
+errors.set(120030, {id: "message.error-invalid-int", params: ["template_type_id"] });
+errors.set(120040, {id: "message.error-invalid-value", params: ["template_type_id"] });
+errors.set(120050, {id: "message.error-invalid-int", params: ["template_id"] });
+errors.set(120060, {id: "message.error-invalid-value-for-organization", params: ["template_id"] });
+errors.set(120070, {id: "message.error-data-used", params: ["campaign_template_cross"]});
 
 export const customError = async (intl: IntlShape, id: number, section: string, params = null, extra = null): Promise<ActionOutputError> => {
     const err = errors.get(id) || {

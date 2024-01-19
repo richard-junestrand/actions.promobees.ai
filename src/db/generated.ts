@@ -38,9 +38,20 @@ export type CampaignDeleteOutput = {
   id?: Maybe<Scalars['Int']>;
 };
 
+export type CampaignInsertCtcInsertInput = {
+  order_by?: Maybe<Scalars['Int']>;
+  specification?: Maybe<Scalars['jsonb']>;
+  template_id?: Maybe<Scalars['Int']>;
+};
+
+export type CampaignInsertCtcsRelInsertInput = {
+  data: Array<CampaignInsertCtcInsertInput>;
+};
+
 export type CampaignInsertInput = {
   budget?: Maybe<Scalars['jsonb']>;
   campaign_name?: Maybe<Scalars['String']>;
+  campaign_template_crosses: CampaignInsertCtcsRelInsertInput;
   campaign_type_id?: Maybe<Scalars['Int']>;
   data?: Maybe<Scalars['jsonb']>;
   is_active?: Maybe<Scalars['Boolean']>;
@@ -55,9 +66,42 @@ export type CampaignInsertOutput = {
   id?: Maybe<Scalars['Int']>;
 };
 
+export type CampaignPreviewInput = {
+  creative?: Maybe<Scalars['jsonb']>;
+  locale?: Maybe<Scalars['String']>;
+  organization_id?: Maybe<Scalars['Int']>;
+};
+
+export type CampaignPreviewOutput = {
+  __typename?: 'CampaignPreviewOutput';
+  data?: Maybe<Scalars['jsonb']>;
+};
+
+export type CampaignSourceFetchInput = {
+  locale?: Maybe<Scalars['String']>;
+  source?: Maybe<Scalars['jsonb']>;
+};
+
+export type CampaignSourceFetchOutput = {
+  __typename?: 'CampaignSourceFetchOutput';
+  data?: Maybe<Scalars['jsonb']>;
+};
+
+export type CampaignUpdateCtcUpdateInput = {
+  id?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Scalars['Int']>;
+  specification?: Maybe<Scalars['jsonb']>;
+  template_id?: Maybe<Scalars['Int']>;
+};
+
+export type CampaignUpdateCtcsRelUpdateInput = {
+  data: Array<CampaignUpdateCtcUpdateInput>;
+};
+
 export type CampaignUpdateInput = {
   budget?: Maybe<Scalars['jsonb']>;
   campaign_name?: Maybe<Scalars['String']>;
+  campaign_template_crosses?: Maybe<CampaignUpdateCtcsRelUpdateInput>;
   campaign_type_id?: Maybe<Scalars['Int']>;
   data?: Maybe<Scalars['jsonb']>;
   id?: Maybe<Scalars['Int']>;
@@ -1097,6 +1141,8 @@ export type Mutation_Root = {
   __typename?: 'mutation_root';
   CampaignDelete?: Maybe<CampaignDeleteOutput>;
   CampaignInsert?: Maybe<CampaignInsertOutput>;
+  CampaignPreview?: Maybe<CampaignPreviewOutput>;
+  CampaignSourceFetch?: Maybe<CampaignSourceFetchOutput>;
   CampaignUpdate?: Maybe<CampaignUpdateOutput>;
   /** delete data from the table: "campaign" */
   delete_campaign?: Maybe<Campaign_Mutation_Response>;
@@ -1218,6 +1264,18 @@ export type Mutation_RootCampaignDeleteArgs = {
 /** mutation root */
 export type Mutation_RootCampaignInsertArgs = {
   data: CampaignInsertInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCampaignPreviewArgs = {
+  data: CampaignPreviewInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCampaignSourceFetchArgs = {
+  data: CampaignSourceFetchInput;
 };
 
 
@@ -2834,11 +2892,35 @@ export type Subscription_RootUser_Organization_Role_By_PkArgs = {
 /** columns and relationships of "template" */
 export type Template = {
   __typename?: 'template';
+  /** An array relationship */
+  campaign_template_crosses: Array<Campaign_Template_Cross>;
+  /** An aggregate relationship */
+  campaign_template_crosses_aggregate: Campaign_Template_Cross_Aggregate;
   id: Scalars['Int'];
   organization_id: Scalars['Int'];
   specification?: Maybe<Scalars['jsonb']>;
   template_name?: Maybe<Scalars['String']>;
   template_type_id: Scalars['Int'];
+};
+
+
+/** columns and relationships of "template" */
+export type TemplateCampaign_Template_CrossesArgs = {
+  distinct_on?: Maybe<Array<Campaign_Template_Cross_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Campaign_Template_Cross_Order_By>>;
+  where?: Maybe<Campaign_Template_Cross_Bool_Exp>;
+};
+
+
+/** columns and relationships of "template" */
+export type TemplateCampaign_Template_Crosses_AggregateArgs = {
+  distinct_on?: Maybe<Array<Campaign_Template_Cross_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Campaign_Template_Cross_Order_By>>;
+  where?: Maybe<Campaign_Template_Cross_Bool_Exp>;
 };
 
 
@@ -2895,6 +2977,7 @@ export type Template_Bool_Exp = {
   _and?: Maybe<Array<Template_Bool_Exp>>;
   _not?: Maybe<Template_Bool_Exp>;
   _or?: Maybe<Array<Template_Bool_Exp>>;
+  campaign_template_crosses?: Maybe<Campaign_Template_Cross_Bool_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
   organization_id?: Maybe<Int_Comparison_Exp>;
   specification?: Maybe<Jsonb_Comparison_Exp>;
@@ -2932,6 +3015,7 @@ export type Template_Inc_Input = {
 
 /** input type for inserting data into table "template" */
 export type Template_Insert_Input = {
+  campaign_template_crosses?: Maybe<Campaign_Template_Cross_Arr_Rel_Insert_Input>;
   id?: Maybe<Scalars['Int']>;
   organization_id?: Maybe<Scalars['Int']>;
   specification?: Maybe<Scalars['jsonb']>;
@@ -2975,6 +3059,7 @@ export type Template_On_Conflict = {
 
 /** Ordering options when selecting data from "template". */
 export type Template_Order_By = {
+  campaign_template_crosses_aggregate?: Maybe<Campaign_Template_Cross_Aggregate_Order_By>;
   id?: Maybe<Order_By>;
   organization_id?: Maybe<Order_By>;
   specification?: Maybe<Order_By>;
