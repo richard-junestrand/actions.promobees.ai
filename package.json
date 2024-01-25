@@ -55,8 +55,8 @@
       "API_URL": "https://api.promobees.ai/v1/graphql",
       "API_ADMIN_SECRET": "k7dc3Q_@Ae",
       "ACTION_SECRET": "7VAenYWe_k",
-      "STORAGE_CONNECTION": "DefaultEndpointsProtocol=https;AccountName=x;AccountKey=x;EndpointSuffix=core.windows.net",
-      "STORAGE_URL": "//x.blob.core.windows.net"
+      "STORAGE_CONNECTION": "DefaultEndpointsProtocol=https;AccountName=promobeesblob;AccountKey=ue+6y8iNKGzpaegEgCEm40Z7D0Q0zMC8vfwweMuZRKiWSPjRb2DLBIMEAubQGonLpZhi68ZSLLD1+AStUOoxBg==;EndpointSuffix=core.windows.net",
+      "STORAGE_URL": "//promobeesblob.blob.core.windows.net"
     }
   },
   "keywords": []
