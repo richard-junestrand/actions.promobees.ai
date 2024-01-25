@@ -7,7 +7,7 @@ import { IntlShape } from '@formatjs/intl';
 
 export type TemplateInsertInput = TemplateInput & OrganizationIdInput
 
-const templateInsertValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: TemplateInsertInput, def: MutationDefinition, session: HasuraSession, validated: boolean = false): Promise<Nullable<ActionOutputError>> => {
+const templateInsertValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: TemplateInsertInput, def: MutationDefinition, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
   const section = "templateInsert";
   //
   let err = await checkOrganizationId(intl, section, data, session);

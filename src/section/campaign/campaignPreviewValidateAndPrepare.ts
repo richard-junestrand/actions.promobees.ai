@@ -10,7 +10,7 @@ export type CampaignPreviewInput = OrganizationIdInput & {
   creative: any
 }
 
-const campaignPreviewValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: CampaignPreviewInput, def: MutationDefinition, session: HasuraSession, validated: boolean = false): Promise<Nullable<ActionOutputError>> => {
+const campaignPreviewValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: CampaignPreviewInput, def: MutationDefinition, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
   const section = "campaignPreview";
   //
   let err = await checkOrganizationId(intl, section, data, session);

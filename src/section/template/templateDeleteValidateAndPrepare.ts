@@ -9,7 +9,7 @@ import { customError } from '../../util/errorUtil';
 
 export type TemplateDeleteInput = UpdateInput<Template>
 
-const templateDeleteValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: TemplateDeleteInput, def: MutationDefinition, session: HasuraSession, validated: boolean = false): Promise<Nullable<ActionOutputError>> => {
+const templateDeleteValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: TemplateDeleteInput, def: MutationDefinition, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
   const section = "templateDelete";
   //
   const err = await checkId(intl, isDev, section, data, session, TemplateQueryType.Delete);

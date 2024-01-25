@@ -9,7 +9,7 @@ import { changedSet } from '../../db/util';
 
 export type TemplateUpdateInput = TemplateInput & UpdateInput<Template>
 
-const templateUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: TemplateUpdateInput, def: MutationDefinition, session: HasuraSession, validated: boolean = false): Promise<Nullable<ActionOutputError>> => {
+const templateUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: TemplateUpdateInput, def: MutationDefinition, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
   const section = "templateUpdate";
   //
   const err = await checkId(intl, isDev, section, data, session);

@@ -19,7 +19,7 @@ const isDev = app.get('env') === 'development';
 const handlers = [
   'campaignInsert', 'campaignUpdate', 'campaignDelete', 'campaignPreview',
   'templateInsert', 'templateUpdate', 'templateDelete',
-  'userUpdate', 'userPasswordReset',
+  'userUpdate', 'userResetPassword',
 ];
 app.post(`/:route(${handlers.join('|')})`, express.json({ limit: '40mb' }), authorizationMiddleware,
   async (req: express.Request, res: express.Response, next) => {

@@ -7,7 +7,7 @@ import { Campaign } from '../../db/generated';
 
 export type CampaignDeleteInput = UpdateInput<Campaign>
 
-const campaignDeleteValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: CampaignDeleteInput, def: MutationDefinition, session: HasuraSession, validated: boolean = false): Promise<Nullable<ActionOutputError>> => {
+const campaignDeleteValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: CampaignDeleteInput, def: MutationDefinition, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
   const section = "campaignDelete";
   //
   const err = await checkId(intl, isDev, section, data, session);

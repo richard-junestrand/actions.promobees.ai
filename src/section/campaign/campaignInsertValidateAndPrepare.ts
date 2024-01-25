@@ -11,7 +11,7 @@ export type CampaignInsertInput = CampaignInput & OrganizationIdInput & {
   campaign_template_crosses: RelListInput<CampaignTemplateCrossInsertInput>
 }
 
-const campaignInsertValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: CampaignInsertInput, def: MutationDefinition, session: HasuraSession, validated: boolean = false): Promise<Nullable<ActionOutputError>> => {
+const campaignInsertValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: CampaignInsertInput, def: MutationDefinition, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
   const section = "campaignInsert";
   //
   let err = await checkOrganizationId(intl, section, data, session);

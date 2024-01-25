@@ -1,28 +1,30 @@
-import { UserInput } from "."
 import { MutationDefinition } from "../../db"
 import { User } from "../../db/generated"
-import { changedSet } from "../../db/util"
-import { ActionOutputError, HandlerOptions, Nullable, UpdateInput, returnIdValue } from "../../handler"
+import { ActionOutputError, Nullable, UpdateInput, returnIdValue } from "../../handler"
 import { HasuraSession } from "../../handler/session"
 import { getAuth0Token, updateAuth0Password } from "../../util/auth0Util"
+import { customError } from "../../util/errorUtil"
 import { UserQueryType } from "./query"
-import { checkConfirmPassword, checkFirstName, checkId, checkInitials, checkLastName, checkPassword, checkPhone } from "./util"
+import { checkConfirmPassword, checkId, checkPassword } from "./util"
 import { IntlShape } from '@formatjs/intl';
 
-export type UserPasswordResetInput = UpdateInput<User> & {
+export type UserResetPasswordInput = UpdateInput<User> & {
   password: string
   confirm_password: string
 }
 
-const userPasswordResetValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: UserPasswordResetInput,
-  def: MutationDefinition, session: HasuraSession, validated = false, options: HandlerOptions = null): Promise<Nullable<ActionOutputError>> => {
-  const section = "userPasswordReset"
+const userResetPasswordValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: UserResetPasswordInput,
+  def: MutationDefinition, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
+  const section = "userResetPassword"
 
   const errOrData = await checkId(intl, isDev, section, data, UserQueryType.Auth0User)
   if (errOrData.error) {
     return errOrData.error
   }
   data.db = errOrData.data
+  if(session.userId !== data.id){
+    return await customError(intl, 130010, section);
+  }
   //
   let err = await checkPassword(intl, section, data)
   if (err) {
@@ -41,9 +43,9 @@ const userPasswordResetValidateAndPrepare = async (intl: IntlShape<string>, isDe
   return returnIdValue(def, data.id)
 }
 
-export default userPasswordResetValidateAndPrepare
+export default userResetPasswordValidateAndPrepare
 
-export const resetPassword = async (intl, section: string, data: UserPasswordResetInput): Promise<Nullable<ActionOutputError>> => {
+export const resetPassword = async (intl, section: string, data: UserResetPasswordInput): Promise<Nullable<ActionOutputError>> => {
 
   //create Auth0 user
   const errOrToken = await getAuth0Token(intl, section);
