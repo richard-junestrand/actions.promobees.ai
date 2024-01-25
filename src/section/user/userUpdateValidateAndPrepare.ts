@@ -4,6 +4,7 @@ import { User } from "../../db/generated"
 import { changedSet } from "../../db/util"
 import { ActionOutputError, Nullable, UpdateInput } from "../../handler"
 import { HasuraSession } from "../../handler/session"
+import { customError } from "../../util/errorUtil"
 import { checkFirstName, checkId, checkInitials, checkLastName, checkPhone } from "./util"
 import { IntlShape } from '@formatjs/intl';
 
@@ -18,6 +19,9 @@ const userUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: bool
     return errOrData.error
   }
   data.db = errOrData.data
+  if(session.userId !== data.id){
+    return await customError(intl, 130010, section);
+  }
   //
   let updateSet = changedSet();
 
