@@ -22,6 +22,7 @@ const data={
     "message.error-used-value": "{field0} {p0} is used.",
     "message.error-conflicted-value": "{field0} {p0} is conflicted.",
     "message.error-fail-get-value": "Failed to get {field0}: {p0}.",
+    "message.error-not-match": "{field0} does not match {field1}.",
     "message.error-not-match-parent": "{field0} {p0} does not match {field1}.",
     "message.error-required": "{field0} is required.",
     "message.error-deactivated": "{field0} {p0} is deactivated.",
@@ -31,6 +32,8 @@ const data={
     "message.error-data-used": "Data is used in {field0}",
     "message.error-1": "You have no permission.",
     "message.error-100080": "Failed to generate previews: {p0}.",
+    "message.error-130090": "Failed to get Auth0 token: {p0}.",
+    "message.error-130100": "Failed to update Auth0 user password: {p0}.",
 }
 
 export default data;

@@ -22,7 +22,8 @@ const data = {
     "message.error-used-value": "{field0} {p0} används.",
     "message.error-conflicted-value": "{field0} {p0} är i konflikt.",
     "message.error-fail-get-value": "Misslyckades med att få {field0}: {p0}.",
-    "message.error-not-match-parent": "{p0} matchar inte {field1}.",
+    "message.error-not-match": "{field0} matchar inte {field1}.",
+    "message.error-not-match-parent": "{field0} {p0} matchar inte {field1}.",
     "message.error-required": "{field0} krävs.",
     "message.error-deactivated": "{field0} {p0} är avaktiverad.",
     "message.error-inactive": "{field0} {p0} är inaktiv.",
@@ -30,7 +31,9 @@ const data = {
     "message.error-file-not-found": "Filen har inte hittats.",
     "message.error-data-used": "Data används i {field0}",
     "message.error-1": "Du har ingen behörighet.",
-    "message.error-100080": "Generering av förhandsvisningar misslyckades: {p0}."
+    "message.error-100080": "Generering av förhandsvisningar misslyckades: {p0}.",
+    "message.error-130090": "Misslyckades med att få Auth0 token: {p0}.",
+    "message.error-130100": "Uppdatering av Auth0-användarlösenordet misslyckades: {p0}."
 }
 
 export default data;

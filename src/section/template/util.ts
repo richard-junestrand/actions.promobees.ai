@@ -13,7 +13,7 @@ export const checkTemplateBase = async (intl, isDev: boolean, section: string, v
 }
 
 export const checkName = async (intl, section: string, data: TemplateInput): Promise<Nullable<ActionOutputError>> => {
-    return checkString(intl, section, data.template_name, 120020, false);
+    return checkString(intl, section, data.template_name, 120020, false, 256);
 }
 
 export const checkTemplateType = async (intl, isDev: boolean, section: string, data: TemplateInput): Promise<Nullable<ActionOutputError>> => {

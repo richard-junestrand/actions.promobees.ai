@@ -56,7 +56,10 @@
       "API_ADMIN_SECRET": "k7dc3Q_@Ae",
       "ACTION_SECRET": "7VAenYWe_k",
       "STORAGE_CONNECTION": "DefaultEndpointsProtocol=https;AccountName=promobeesblob;AccountKey=ue+6y8iNKGzpaegEgCEm40Z7D0Q0zMC8vfwweMuZRKiWSPjRb2DLBIMEAubQGonLpZhi68ZSLLD1+AStUOoxBg==;EndpointSuffix=core.windows.net",
-      "STORAGE_URL": "//promobeesblob.blob.core.windows.net"
+      "STORAGE_URL": "//promobeesblob.blob.core.windows.net",
+      "AUTH0_URL": "https://promobees.eu.auth0.com",
+      "AUTH0_CLIENT_ID": "oBHjuH0KnHC5ZpgXm7aFzicRg3EaxyKL",
+      "AUTH0_CLIENT_SECRET": "sywlcNg-rrDwQeVtP4cLYodhNraKk0eX3zIavLezm-Mo6OZ-bCnpu9Tc7PxVkvL4"
     }
   },
   "keywords": []

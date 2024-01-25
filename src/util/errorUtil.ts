@@ -8,7 +8,7 @@ errors.set(1, {id: "message.error-1"});
 // campaign
 errors.set(100000, {id: "message.error-invalid-int", params: ["organization_id"] });
 errors.set(100010, {id: "message.error-organization-session" });
-errors.set(100020, {id: "message.error-invalid-value", params: ["campaign_name"] });
+errors.set(100020, {id: "message.error-invalid-string-max-len", params: ["campaign_name", 256] });
 errors.set(100030, {id: "message.error-invalid-int", params: ["campaign_type_id"] });
 errors.set(100040, {id: "message.error-invalid-value", params: ["campaign_type_id"] });
 errors.set(100050, {id: "message.error-invalid-int", params: ["campaign_id"] });
@@ -27,12 +27,25 @@ errors.set(110050, {id: "message.error-not-match-parent", params: ["campaign_tem
 // template
 errors.set(120000, {id: "message.error-invalid-int", params: ["organization_id"] });
 errors.set(120010, {id: "message.error-organization-session" });
-errors.set(120020, {id: "message.error-invalid-value", params: ["template_name"] });
+errors.set(120020, {id: "message.error-invalid-string-max-len", params: ["template_name", 256] });
 errors.set(120030, {id: "message.error-invalid-int", params: ["template_type_id"] });
 errors.set(120040, {id: "message.error-invalid-value", params: ["template_type_id"] });
 errors.set(120050, {id: "message.error-invalid-int", params: ["template_id"] });
 errors.set(120060, {id: "message.error-invalid-value-for-organization", params: ["template_id"] });
 errors.set(120070, {id: "message.error-data-used", params: ["campaign_template_cross"]});
+
+// user
+errors.set(130000, {id: "message.error-invalid-int", params: ["id"] });
+errors.set(130010, {id: "message.error-invalid-value", params: ["id"] });
+errors.set(130020, {id: "message.error-invalid-string-max-len", params: ["user_email", 256] });
+errors.set(130030, {id: "message.error-invalid-string-max-len", params: ["phone", 256] });
+errors.set(130040, {id: "message.error-invalid-string-max-len", params: ["first_name", 256] });
+errors.set(130050, {id: "message.error-invalid-string-max-len", params: ["initials", 3] });
+errors.set(130060, {id: "message.error-invalid-string-max-len", params: ["last_name", 256] });
+errors.set(130070, {id: "message.error-invalid-string-max-len", params: ["password", 20] });
+errors.set(130080, {id: "message.error-not-match", params: ["password", "confirm_password"] });
+errors.set(130090, {id: "message.error-130090" });
+errors.set(130100, {id: "message.error-130100" });
 
 export const customError = async (intl: IntlShape, id: number, section: string, params = null, extra = null): Promise<ActionOutputError> => {
     const err = errors.get(id) || {

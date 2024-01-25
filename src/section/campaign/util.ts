@@ -8,7 +8,7 @@ import { checkOrganizationDataBase, checkOrganizationIdBase } from "../organizat
 import { getCampaignById, getCampaignTypeById } from "./query";
 
 export const checkName = async (intl, section: string, data: CampaignInput): Promise<Nullable<ActionOutputError>> => {
-  return checkString(intl, section, data.campaign_name, 100020, false);
+  return checkString(intl, section, data.campaign_name, 100020, false, 256);
 }
 
 export const checkCampaignType = async (intl, isDev: boolean, section: string, data: CampaignInput): Promise<Nullable<ActionOutputError>> => {
