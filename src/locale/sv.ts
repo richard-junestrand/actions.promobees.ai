@@ -30,7 +30,9 @@ const data = {
     "message.error-not-found": "{p0} hittades inte.",
     "message.error-file-not-found": "Filen har inte hittats.",
     "message.error-data-used": "Data används i {field0}",
-    "message.error-1": "Du har ingen behörighet.",
+    "message.error-organization-session": "organization_id måste matcha det organization.id som för närvarande är registrerat i användarsessionen.",
+    "message.error-invalid-sweden-zip-code": "Ogiltigt postnummer för Sverige (5 siffror).",
+    "message.error-no-permission": "Du har ingen behörighet.",
     "message.error-100080": "Generering av förhandsvisningar misslyckades: {p0}.",
     "message.error-130090": "Misslyckades med att få Auth0 token: {p0}.",
     "message.error-130100": "Uppdatering av Auth0-användarlösenordet misslyckades: {p0}."

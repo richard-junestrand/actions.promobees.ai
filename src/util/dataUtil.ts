@@ -97,7 +97,7 @@ export const checkDataBase = async <T>(intl, isDev: boolean, section: string, va
         //
         db = dataDb.data
         if (db === null) {
-            return { error: await customError(intl, errs[1], section, val, options?.line) }
+            return { error: await customError(intl, errs[1], section, [val], options?.line) }
         } else if (funcValidate) {
             const err = await funcValidate(db)
             if (err) {
@@ -108,6 +108,21 @@ export const checkDataBase = async <T>(intl, isDev: boolean, section: string, va
     return {
         data: db
     };
+}
+
+export const checkDataExistBase = async (intl, isDev: boolean, section: string,
+    funcQuery: () => Promise<GraphqlOutput>, err?: number): Promise<ActionOutputErrorOrData<boolean>> => {
+    const { errors, data } = await funcQuery();
+    if (errors) {
+        isDev && console.log(errors[0]);
+        return { error: await customError(intl, 0, section, [intl.formatMessage({ id: ErrorDatabase })]) };
+    }
+    //
+    const notExist=await isEmptyArray(data.data)
+    if (notExist && err) {
+        return { error: await customError(intl, err, section) }
+    } 
+    return { data: !notExist }
 }
 
 export const checkList = async <T>(intl, section: string, data: T[],

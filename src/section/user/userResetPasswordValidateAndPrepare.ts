@@ -23,7 +23,7 @@ const userResetPasswordValidateAndPrepare = async (intl: IntlShape<string>, isDe
   }
   data.db = errOrData.data
   if(session.userId !== data.id){
-    return await customError(intl, 130010, section);
+    return await customError(intl, 1, section);
   }
   //
   let err = await checkPassword(intl, section, data)

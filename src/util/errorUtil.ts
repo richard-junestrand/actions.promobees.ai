@@ -3,7 +3,7 @@ import { ActionOutputError } from '../handler';
 
 const errors = new Map();
 
-errors.set(1, {id: "message.error-1"});
+errors.set(1, {id: "message.error-no-permission"});
 
 // campaign
 errors.set(100000, {id: "message.error-invalid-int", params: ["organization_id"] });
@@ -46,6 +46,25 @@ errors.set(130070, {id: "message.error-invalid-string-max-len", params: ["passwo
 errors.set(130080, {id: "message.error-not-match", params: ["password", "confirm_password"] });
 errors.set(130090, {id: "message.error-130090" });
 errors.set(130100, {id: "message.error-130100" });
+errors.set(130110, {id: "message.error-invalid-int", params: ["role_id"] });
+errors.set(130120, {id: "message.error-invalid-value", params: ["role_id"] });
+
+// organization
+errors.set(140000, {id: "message.error-invalid-int", params: ["id"] });
+errors.set(140010, {id: "message.error-organization-session" });
+errors.set(140020, {id: "message.error-invalid-value", params: ["id"] });
+errors.set(140030, {id: "message.error-invalid-int", params: ["payment_type_id"] });
+errors.set(140040, {id: "message.error-invalid-string-max-len", params: ["organization_name", 256] });
+errors.set(140050, {id: "message.error-invalid-string-max-len", params: ["street_address", 256] });
+errors.set(140060, {id: "message.error-invalid-string-max-len", params: ["zipcode", 10] });
+errors.set(140070, {id: "message.error-invalid-sweden-zip-code"});
+errors.set(140080, {id: "message.error-invalid-string-max-len", params: ["city", 256] });
+errors.set(140090, {id: "message.error-invalid-int", params: ["country_id"] });
+errors.set(140100, {id: "message.error-invalid-value", params: ["country_id"] });
+errors.set(140110, {id: "message.error-invalid-string-max-len", params: ["info_email", 256] });
+errors.set(140120, {id: "message.error-invalid-string-max-len", params: ["invoice_email", 256] });
+errors.set(140130, {id: "message.error-invalid-string-max-len", params: ["organization_reg_nr", 256] });
+errors.set(140140, {id: "message.error-invalid-string-max-len", params: ["vat_nr", 256] });
 
 export const customError = async (intl: IntlShape, id: number, section: string, params = null, extra = null): Promise<ActionOutputError> => {
     const err = errors.get(id) || {

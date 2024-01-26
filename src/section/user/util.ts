@@ -1,6 +1,6 @@
-import { PasswordInput, UserInput } from ".";
+import { PasswordInput, UserInput, UserOrganizationRoleInput } from ".";
 import { User } from "../../db/generated";
-import { UserQueryType, getUserById } from "./query";
+import { UserQueryType, getRoleById, getUserById } from "./query";
 import { ActionOutputError, ActionOutputErrorOrData, Nullable, UpdateInput } from "../../handler";
 import { checkDataBase } from "../../util/dataUtil";
 import { checkString } from "../../util/stringUtil";
@@ -39,4 +39,12 @@ export const checkConfirmPassword = async (intl, section: string, data: Password
     return await customError(intl, 130080, section);
   }
   return null;
+}
+
+export const checkRoleBase = async (intl, isDev: boolean, section: string, val: number, errs: number[]): Promise<Nullable<ActionOutputError>> => {
+  return (await checkDataBase(intl, isDev, section, val, errs, getRoleById)).error
+}
+
+export const checkRole = async (intl, isDev: boolean, section: string, data: UserOrganizationRoleInput): Promise<Nullable<ActionOutputError>> => {
+  return await checkRoleBase(intl, isDev, section, data.role_id, [130110, 130120])
 }
