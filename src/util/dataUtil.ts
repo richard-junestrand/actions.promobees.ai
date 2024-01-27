@@ -111,7 +111,7 @@ export const checkDataBase = async <T>(intl, isDev: boolean, section: string, va
 }
 
 export const checkDataExistBase = async (intl, isDev: boolean, section: string,
-    funcQuery: () => Promise<GraphqlOutput>, err?: number): Promise<ActionOutputErrorOrData<boolean>> => {
+    funcQuery: () => Promise<GraphqlOutput>): Promise<ActionOutputErrorOrData<boolean>> => {
     const { errors, data } = await funcQuery();
     if (errors) {
         isDev && console.log(errors[0]);
@@ -119,9 +119,6 @@ export const checkDataExistBase = async (intl, isDev: boolean, section: string,
     }
     //
     const notExist=await isEmptyArray(data.data)
-    if (notExist && err) {
-        return { error: await customError(intl, err, section) }
-    } 
     return { data: !notExist }
 }
 

@@ -45,3 +45,18 @@ export const updateAuth0Password = async (intl, section: string, token: string, 
         }
     });
 }
+
+export const createAuth0User = async (intl, section: string, token: string, email: string, password: string): Promise<ActionOutputErrorOrData<any>> => {
+    return callAuth0Data(intl, section, token, 'api/v2/users', 130130, 'post', {
+        data: {
+            email,
+            password,
+            connection: 'democamajudb'
+        }
+    });
+}
+
+export const getAuth0UserByEmail = async (intl, section: string, token: string, email: string): Promise<ActionOutputErrorOrData<any>> => {
+    return callAuth0Data(intl, section, token, 'api/v2/users-by-email', 130120, 'get',
+        { params: { email } });
+}

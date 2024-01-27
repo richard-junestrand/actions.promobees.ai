@@ -46,8 +46,9 @@ errors.set(130070, {id: "message.error-invalid-string-max-len", params: ["passwo
 errors.set(130080, {id: "message.error-not-match", params: ["password", "confirm_password"] });
 errors.set(130090, {id: "message.error-130090" });
 errors.set(130100, {id: "message.error-130100" });
-errors.set(130110, {id: "message.error-invalid-int", params: ["role_id"] });
-errors.set(130120, {id: "message.error-invalid-value", params: ["role_id"] });
+errors.set(130110, {id: "message.error-duplicated-value", params: ["user_email"] });
+errors.set(130120, {id: "message.error-130120" });
+errors.set(130130, {id: "message.error-130130" });
 
 // organization
 errors.set(140000, {id: "message.error-invalid-int", params: ["id"] });
@@ -65,6 +66,17 @@ errors.set(140110, {id: "message.error-invalid-string-max-len", params: ["info_e
 errors.set(140120, {id: "message.error-invalid-string-max-len", params: ["invoice_email", 256] });
 errors.set(140130, {id: "message.error-invalid-string-max-len", params: ["organization_reg_nr", 256] });
 errors.set(140140, {id: "message.error-invalid-string-max-len", params: ["vat_nr", 256] });
+
+// organization_user
+errors.set(150000, {id: "message.error-invalid-int", params: ["id"] });
+errors.set(150010, {id: "message.error-invalid-value", params: ["id"] });
+errors.set(150020, {id: "message.error-invalid-int", params: ["organization_id"] });
+errors.set(150030, {id: "message.error-organization-session" });
+errors.set(150040, {id: "message.error-duplicated-value2", params: ["user_id", "organization_id"] });
+
+// organization_user_role
+errors.set(160000, {id: "message.error-invalid-int", params: ["role_id"] });
+errors.set(160010, {id: "message.error-invalid-value", params: ["role_id"] });
 
 export const customError = async (intl: IntlShape, id: number, section: string, params = null, extra = null): Promise<ActionOutputError> => {
     const err = errors.get(id) || {

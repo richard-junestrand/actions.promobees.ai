@@ -36,6 +36,8 @@ const data={
     "message.error-100080": "Failed to generate previews: {p0}.",
     "message.error-130090": "Failed to get Auth0 token: {p0}.",
     "message.error-130100": "Failed to update Auth0 user password: {p0}.",
+    "message.error-130120": "Failed to get Auth0 user: {p0}.",
+    "message.error-130130": "Failed to create Auth0 user: {p0}.",
 }
 
 export default data;

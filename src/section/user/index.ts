@@ -6,12 +6,11 @@ export type UserInput = {
 }
 
 export type PasswordInput={
-  password: string
-  confirm_password: string
+  password?: string
+  confirm_password?: string
 }
 
-export type UserOrganizationRoleInput = {
-  organization_id: number
-  user_id: number
-  role_id: number
+export type Auth0UserInput=PasswordInput & {
+  user_email: string
+  external_user_id?: string
 }

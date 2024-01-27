@@ -35,7 +35,9 @@ const data = {
     "message.error-no-permission": "Du har ingen behörighet.",
     "message.error-100080": "Generering av förhandsvisningar misslyckades: {p0}.",
     "message.error-130090": "Misslyckades med att få Auth0 token: {p0}.",
-    "message.error-130100": "Uppdatering av Auth0-användarlösenordet misslyckades: {p0}."
+    "message.error-130100": "Uppdatering av Auth0-användarlösenordet misslyckades: {p0}.",
+    "message.error-130120": "Det gick inte att få Auth0-användaren: {p0}.",
+    "message.error-130130": "Det gick inte att skapa användaren Auth0: {p0}.",
 }
 
 export default data;

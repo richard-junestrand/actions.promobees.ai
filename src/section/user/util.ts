@@ -1,12 +1,14 @@
-import { PasswordInput, UserInput, UserOrganizationRoleInput } from ".";
+import { Auth0UserInput, PasswordInput, UserInput } from ".";
 import { User } from "../../db/generated";
-import { UserQueryType, getRoleById, getUserById } from "./query";
+import { UserQueryType, getUserByEmail, getUserById } from "./query";
 import { ActionOutputError, ActionOutputErrorOrData, Nullable, UpdateInput } from "../../handler";
-import { checkDataBase } from "../../util/dataUtil";
-import { checkString } from "../../util/stringUtil";
+import { checkDataBase, isEmptyArray } from "../../util/dataUtil";
+import { ErrorDatabase, checkString, isValidString } from "../../util/stringUtil";
 import { customError } from "../../util/errorUtil";
+import { UserInsertInput } from "./userInsertValidateAndPrepare";
+import { createAuth0User, getAuth0Token, getAuth0UserByEmail } from "../../util/auth0Util";
 
-export const checkUserBase = async (intl, isDev: boolean, section: string, val: number, errs: number[], type: UserQueryType): Promise<ActionOutputErrorOrData<User>> => {
+export const checkUserBase = async (intl, isDev: boolean, section: string, val: number, errs: number[], type: UserQueryType=UserQueryType.Default): Promise<ActionOutputErrorOrData<User>> => {
   return checkDataBase(intl, isDev, section, val, errs, v=>getUserById(v,type))
 }
 
@@ -41,10 +43,44 @@ export const checkConfirmPassword = async (intl, section: string, data: Password
   return null;
 }
 
-export const checkRoleBase = async (intl, isDev: boolean, section: string, val: number, errs: number[]): Promise<Nullable<ActionOutputError>> => {
-  return (await checkDataBase(intl, isDev, section, val, errs, getRoleById)).error
+export const checkUserEmail = async (intl, isDev: boolean, section: string, data: UserInsertInput, throwErrorIfExist=true): Promise<ActionOutputErrorOrData<User>> => {
+  if (!await isValidString(data.user_email, true, 256)) {
+    return { error: await customError(intl, 130020, section) }
+  }
+  //check database user
+  const { errors, data: dataDb } = await getUserByEmail(data.user_email)
+  if (errors) {
+    isDev && console.log(errors[0])
+    return { error: await customError(intl, 0, section, [intl.formatMessage({ id: ErrorDatabase })]) }
+  }
+  const notExist = await isEmptyArray(dataDb.data);
+  if (!notExist && throwErrorIfExist) {
+    return {error:await customError(intl, 130110, section, [data.user_email])}
+  }
+  return { data: notExist ? null : dataDb.data[0] }
 }
 
-export const checkRole = async (intl, isDev: boolean, section: string, data: UserOrganizationRoleInput): Promise<Nullable<ActionOutputError>> => {
-  return await checkRoleBase(intl, isDev, section, data.role_id, [130110, 130120])
+export const createAuth0UserIfNotExist = async (intl, section: string, data: Auth0UserInput): Promise<ActionOutputErrorOrData<string>> => {
+
+  //create Auth0 user
+  const errOrToken = await getAuth0Token(intl, section);
+  if (errOrToken.error) {
+    return errOrToken;
+  }
+  const token = errOrToken.data;console.log('--1');
+  //
+  const errOrAuth0Users = await getAuth0UserByEmail(intl, section, token, data.user_email);
+  if (errOrAuth0Users.error) {
+    return errOrAuth0Users;
+  }
+  const auth0Users = errOrAuth0Users.data;console.log('--2');
+  if (auth0Users.length === 0) {
+    const errOrAuth0User = await createAuth0User(intl, section, token, data.user_email, data.password);console.log('--3');
+    if (errOrAuth0User.error) {
+      return errOrAuth0User;
+    }
+    return { data: errOrAuth0User.data.user_id };
+  } else {
+    return { data: auth0Users[0].user_id };
+  }
 }

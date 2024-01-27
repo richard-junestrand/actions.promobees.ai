@@ -59,7 +59,8 @@
       "STORAGE_URL": "//promobeesblob.blob.core.windows.net",
       "AUTH0_URL": "https://promobees.eu.auth0.com",
       "AUTH0_CLIENT_ID": "oBHjuH0KnHC5ZpgXm7aFzicRg3EaxyKL",
-      "AUTH0_CLIENT_SECRET": "sywlcNg-rrDwQeVtP4cLYodhNraKk0eX3zIavLezm-Mo6OZ-bCnpu9Tc7PxVkvL4"
+      "AUTH0_CLIENT_SECRET": "sywlcNg-rrDwQeVtP4cLYodhNraKk0eX3zIavLezm-Mo6OZ-bCnpu9Tc7PxVkvL4",
+      "AUTH0_DEFAULT_PASSWORD": "Prom0bees!"
     }
   },
   "keywords": []

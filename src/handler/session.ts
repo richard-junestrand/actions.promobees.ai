@@ -5,12 +5,14 @@ import { customError } from "../util/errorUtil";
 import { intVal } from "../util/numUtil";
 import { ErrorDatabase, SectionGeneral } from "../util/stringUtil";
 
+export type OrganizationSession = Organization & { role_ids: number[] };
+
 export class HasuraSession {
     userId: number
     role: string
     isAdmin: boolean
     organizationIds: number[]
-    organizations: Organization[]
+    organizations: OrganizationSession[]
     locale: string
 
     constructor(session, locale?: string) {
@@ -21,6 +23,32 @@ export class HasuraSession {
         if (this.isAdmin) {
             this.organizationIds = [];
         }
+    }
+
+    async getOrganization(intl, isDev, id: number): Promise<ActionOutputErrorOrData<OrganizationSession>> {
+        const m = this.organizations.find(r => r.id == id);
+
+        if (!m) {
+            const { errors, data } = await executeGraphql(`
+                query ($organization_id: Int!,$user_id: Int!) {
+                    data:organization_by_pk(id: $organization_id){
+                        ${FragmentOrganization}
+                    }
+                }
+                `, {
+                organization_id: id,
+                user_id: this.userId
+            });
+            if (errors) {
+                isDev && console.log(errors[0]);
+                return { error: await customError(intl, 0, SectionGeneral, [intl.formatMessage({ id: ErrorDatabase })]) };
+            } else {
+                const org: OrganizationSession = prepareOrganization(data.data);
+                this.organizations.push(org);
+                return { data: org };
+            }
+        }
+        return { data: m };
     }
 
     async getUserOrganizations(intl, isDev): Promise<Nullable<ActionOutputError>> {
@@ -39,43 +67,30 @@ export class HasuraSession {
                 isDev && errors && console.log(errors[0]);
                 return await customError(intl, 0, SectionGeneral, [intl.formatMessage({ id: ErrorDatabase })]);
             } else {
-                this.organizations = data.data.user_organizations
+                this.organizations = data.data.user_organizations.map(r => prepareOrganization(r));
                 this.organizationIds = this.organizations.map(r => r.id)
             }
         }
         return null;
     }
 
-    async getOrganization(intl, isDev, id: number): Promise<ActionOutputErrorOrData<Organization>> {
-        const m = this.organizations.find(r => r.id == id);
 
-        if (!m) {
-            const { errors, data } = await executeGraphql(`
-                query ($organization_id: Int!,$user_id: Int!) {
-                    data:organization_by_pk(id: $organization_id){
-                        ${FragmentOrganization}
-                    }
-                }
-                `, {
-                organization_id: id,
-                user_id: this.userId
-            });
-            if (errors) {
-                isDev && console.log(errors[0]);
-                return { error: await customError(intl,0, SectionGeneral, [intl.formatMessage({id:ErrorDatabase})]) };
-            } else {
-                const org: Organization = data.data;
-                this.organizations.push(org);
-                return { data: org };
-            }
-        }
-        return { data: m };
-    }
 }
 
 const FragmentOrganization = `
     id
-    user_organization_roles(where: {user_id:{_eq:$user_id}},order_by:{role_id: asc}){
-        role_id
+    organization_users(where: {user_id:{_eq:$user_id}}){
+        organization_user_roles(order_by:{role_id: asc}){
+            role_id
+        }
     }
     `;
+
+const prepareOrganization = (val: Organization) => {
+    return {
+        ...val,
+        role_ids: val.organization_users.flatMap(r => {
+            return r.organization_user_roles.map(rr => rr.role_id);
+        })
+    }
+}

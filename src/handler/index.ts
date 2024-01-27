@@ -109,7 +109,7 @@ export class BaseAction<T> {
             if (this.def.returnFieldCallback === undefined) {
                 ret[this.def.returnField] = dataMutation.data[this.def.returnField] || 0;
             } else {
-                ret[this.def.returnField] = this.def.returnFieldCallback(dataMutation.data);
+                ret = this.def.returnFieldCallback(dataMutation.data);
             }
 
             this.success(res, ret);
@@ -142,23 +142,19 @@ export class BaseAction<T> {
 }
 
 export function returnValue(def: MutationDefinition, val) {
-    if(def) {
-        def.notExecute = true;
-        def.ret = val;
-    }
-    
-    return null;
-}
-
-export function returnIdValue(def: MutationDefinition, val) {
     if (def.canExecute()) {
         def.returnFieldCallback = (ret) => {
             return val;
         }
     } else {
-        return returnValue(def, { id: val })
+        def.notExecute = true;
+        def.ret = val;
     }
     return null;
+}
+
+export function returnIdValue(def: MutationDefinition, val) {
+    return returnValue(def, { id: val })
 }
 
 export enum HasuraRole {

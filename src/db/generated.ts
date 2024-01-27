@@ -162,6 +162,93 @@ export type String_Comparison_Exp = {
   _similar?: Maybe<Scalars['String']>;
 };
 
+export type TemplateDeleteInput = {
+  id?: Maybe<Scalars['Int']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+export type TemplateDeleteOutput = {
+  __typename?: 'TemplateDeleteOutput';
+  id?: Maybe<Scalars['Int']>;
+};
+
+export type TemplateInsertInput = {
+  locale?: Maybe<Scalars['String']>;
+  organization_id?: Maybe<Scalars['Int']>;
+  specification?: Maybe<Scalars['jsonb']>;
+  template_name?: Maybe<Scalars['String']>;
+  template_type_id?: Maybe<Scalars['Int']>;
+};
+
+export type TemplateInsertOutput = {
+  __typename?: 'TemplateInsertOutput';
+  id?: Maybe<Scalars['Int']>;
+};
+
+export type TemplateUpdateInput = {
+  id?: Maybe<Scalars['Int']>;
+  locale?: Maybe<Scalars['String']>;
+  specification?: Maybe<Scalars['jsonb']>;
+  template_name?: Maybe<Scalars['String']>;
+  template_type_id?: Maybe<Scalars['Int']>;
+};
+
+export type TemplateUpdateOutput = {
+  __typename?: 'TemplateUpdateOutput';
+  id?: Maybe<Scalars['Int']>;
+};
+
+export type UserOrganizationUpdateInput = {
+  locale?: Maybe<Scalars['String']>;
+  organization_id?: Maybe<Scalars['Int']>;
+  role_ids: Array<Scalars['Int']>;
+  user?: Maybe<UserOrganizationUserRelUpdateInput>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+export type UserOrganizationUpdateOutput = {
+  __typename?: 'UserOrganizationUpdateOutput';
+  organization_id?: Maybe<Scalars['Int']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+export type UserOrganizationUserRelUpdateInput = {
+  data?: Maybe<UserOrganizationUserUpdateInput>;
+};
+
+export type UserOrganizationUserUpdateInput = {
+  first_name?: Maybe<Scalars['String']>;
+  initials?: Maybe<Scalars['String']>;
+  last_name?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+};
+
+export type UserResetPasswordInput = {
+  confirm_password?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  locale?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+};
+
+export type UserResetPasswordOutput = {
+  __typename?: 'UserResetPasswordOutput';
+  id?: Maybe<Scalars['Int']>;
+};
+
+export type UserUpdateInput = {
+  first_name?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  initials?: Maybe<Scalars['String']>;
+  last_name?: Maybe<Scalars['String']>;
+  locale?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+};
+
+export type UserUpdateOutput = {
+  __typename?: 'UserUpdateOutput';
+  id?: Maybe<Scalars['Int']>;
+};
+
 /** columns and relationships of "campaign" */
 export type Campaign = {
   __typename?: 'campaign';
@@ -1111,6 +1198,240 @@ export type Campaign_Variance_Fields = {
   organization_id?: Maybe<Scalars['Float']>;
 };
 
+/** columns and relationships of "country" */
+export type Country = {
+  __typename?: 'country';
+  country_name?: Maybe<Scalars['String']>;
+  country_name_translated?: Maybe<Scalars['jsonb']>;
+  id: Scalars['Int'];
+  is_eu: Scalars['Boolean'];
+  short_name?: Maybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "country" */
+export type CountryCountry_Name_TranslatedArgs = {
+  path?: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "country" */
+export type Country_Aggregate = {
+  __typename?: 'country_aggregate';
+  aggregate?: Maybe<Country_Aggregate_Fields>;
+  nodes: Array<Country>;
+};
+
+/** aggregate fields of "country" */
+export type Country_Aggregate_Fields = {
+  __typename?: 'country_aggregate_fields';
+  avg?: Maybe<Country_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Country_Max_Fields>;
+  min?: Maybe<Country_Min_Fields>;
+  stddev?: Maybe<Country_Stddev_Fields>;
+  stddev_pop?: Maybe<Country_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Country_Stddev_Samp_Fields>;
+  sum?: Maybe<Country_Sum_Fields>;
+  var_pop?: Maybe<Country_Var_Pop_Fields>;
+  var_samp?: Maybe<Country_Var_Samp_Fields>;
+  variance?: Maybe<Country_Variance_Fields>;
+};
+
+
+/** aggregate fields of "country" */
+export type Country_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Country_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Country_Append_Input = {
+  country_name_translated?: Maybe<Scalars['jsonb']>;
+};
+
+/** aggregate avg on columns */
+export type Country_Avg_Fields = {
+  __typename?: 'country_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "country". All fields are combined with a logical 'AND'. */
+export type Country_Bool_Exp = {
+  _and?: Maybe<Array<Country_Bool_Exp>>;
+  _not?: Maybe<Country_Bool_Exp>;
+  _or?: Maybe<Array<Country_Bool_Exp>>;
+  country_name?: Maybe<String_Comparison_Exp>;
+  country_name_translated?: Maybe<Jsonb_Comparison_Exp>;
+  id?: Maybe<Int_Comparison_Exp>;
+  is_eu?: Maybe<Boolean_Comparison_Exp>;
+  short_name?: Maybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "country" */
+export enum Country_Constraint {
+  /** unique or primary key constraint */
+  PkCountry = 'pk_country'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Country_Delete_At_Path_Input = {
+  country_name_translated?: Maybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Country_Delete_Elem_Input = {
+  country_name_translated?: Maybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Country_Delete_Key_Input = {
+  country_name_translated?: Maybe<Scalars['String']>;
+};
+
+/** input type for incrementing numeric columns in table "country" */
+export type Country_Inc_Input = {
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "country" */
+export type Country_Insert_Input = {
+  country_name?: Maybe<Scalars['String']>;
+  country_name_translated?: Maybe<Scalars['jsonb']>;
+  id?: Maybe<Scalars['Int']>;
+  is_eu?: Maybe<Scalars['Boolean']>;
+  short_name?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Country_Max_Fields = {
+  __typename?: 'country_max_fields';
+  country_name?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  short_name?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Country_Min_Fields = {
+  __typename?: 'country_min_fields';
+  country_name?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  short_name?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "country" */
+export type Country_Mutation_Response = {
+  __typename?: 'country_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Country>;
+};
+
+/** on_conflict condition type for table "country" */
+export type Country_On_Conflict = {
+  constraint: Country_Constraint;
+  update_columns?: Array<Country_Update_Column>;
+  where?: Maybe<Country_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "country". */
+export type Country_Order_By = {
+  country_name?: Maybe<Order_By>;
+  country_name_translated?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  is_eu?: Maybe<Order_By>;
+  short_name?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: country */
+export type Country_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Country_Prepend_Input = {
+  country_name_translated?: Maybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "country" */
+export enum Country_Select_Column {
+  /** column name */
+  CountryName = 'country_name',
+  /** column name */
+  CountryNameTranslated = 'country_name_translated',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IsEu = 'is_eu',
+  /** column name */
+  ShortName = 'short_name'
+}
+
+/** input type for updating data in table "country" */
+export type Country_Set_Input = {
+  country_name?: Maybe<Scalars['String']>;
+  country_name_translated?: Maybe<Scalars['jsonb']>;
+  id?: Maybe<Scalars['Int']>;
+  is_eu?: Maybe<Scalars['Boolean']>;
+  short_name?: Maybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type Country_Stddev_Fields = {
+  __typename?: 'country_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Country_Stddev_Pop_Fields = {
+  __typename?: 'country_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Country_Stddev_Samp_Fields = {
+  __typename?: 'country_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Country_Sum_Fields = {
+  __typename?: 'country_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "country" */
+export enum Country_Update_Column {
+  /** column name */
+  CountryName = 'country_name',
+  /** column name */
+  CountryNameTranslated = 'country_name_translated',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  IsEu = 'is_eu',
+  /** column name */
+  ShortName = 'short_name'
+}
+
+/** aggregate var_pop on columns */
+export type Country_Var_Pop_Fields = {
+  __typename?: 'country_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Country_Var_Samp_Fields = {
+  __typename?: 'country_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Country_Variance_Fields = {
+  __typename?: 'country_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
 
 
 /** Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'. */
@@ -1144,6 +1465,12 @@ export type Mutation_Root = {
   CampaignPreview?: Maybe<CampaignPreviewOutput>;
   CampaignSourceFetch?: Maybe<CampaignSourceFetchOutput>;
   CampaignUpdate?: Maybe<CampaignUpdateOutput>;
+  TemplateDelete?: Maybe<TemplateDeleteOutput>;
+  TemplateInsert?: Maybe<TemplateInsertOutput>;
+  TemplateUpdate?: Maybe<TemplateUpdateOutput>;
+  UserOrganizationUpdate?: Maybe<UserOrganizationUpdateOutput>;
+  UserResetPassword?: Maybe<UserResetPasswordOutput>;
+  UserUpdate?: Maybe<UserUpdateOutput>;
   /** delete data from the table: "campaign" */
   delete_campaign?: Maybe<Campaign_Mutation_Response>;
   /** delete single row from the table: "campaign" */
@@ -1156,10 +1483,22 @@ export type Mutation_Root = {
   delete_campaign_type?: Maybe<Campaign_Type_Mutation_Response>;
   /** delete single row from the table: "campaign_type" */
   delete_campaign_type_by_pk?: Maybe<Campaign_Type>;
+  /** delete data from the table: "country" */
+  delete_country?: Maybe<Country_Mutation_Response>;
+  /** delete single row from the table: "country" */
+  delete_country_by_pk?: Maybe<Country>;
   /** delete data from the table: "organization" */
   delete_organization?: Maybe<Organization_Mutation_Response>;
   /** delete single row from the table: "organization" */
   delete_organization_by_pk?: Maybe<Organization>;
+  /** delete data from the table: "organization_user" */
+  delete_organization_user?: Maybe<Organization_User_Mutation_Response>;
+  /** delete single row from the table: "organization_user" */
+  delete_organization_user_by_pk?: Maybe<Organization_User>;
+  /** delete data from the table: "organization_user_role" */
+  delete_organization_user_role?: Maybe<Organization_User_Role_Mutation_Response>;
+  /** delete single row from the table: "organization_user_role" */
+  delete_organization_user_role_by_pk?: Maybe<Organization_User_Role>;
   /** delete data from the table: "role" */
   delete_role?: Maybe<Role_Mutation_Response>;
   /** delete single row from the table: "role" */
@@ -1176,10 +1515,6 @@ export type Mutation_Root = {
   delete_user?: Maybe<User_Mutation_Response>;
   /** delete single row from the table: "user" */
   delete_user_by_pk?: Maybe<User>;
-  /** delete data from the table: "user_organization_role" */
-  delete_user_organization_role?: Maybe<User_Organization_Role_Mutation_Response>;
-  /** delete single row from the table: "user_organization_role" */
-  delete_user_organization_role_by_pk?: Maybe<User_Organization_Role>;
   /** insert data into the table: "campaign" */
   insert_campaign?: Maybe<Campaign_Mutation_Response>;
   /** insert a single row into the table: "campaign" */
@@ -1192,10 +1527,22 @@ export type Mutation_Root = {
   insert_campaign_type?: Maybe<Campaign_Type_Mutation_Response>;
   /** insert a single row into the table: "campaign_type" */
   insert_campaign_type_one?: Maybe<Campaign_Type>;
+  /** insert data into the table: "country" */
+  insert_country?: Maybe<Country_Mutation_Response>;
+  /** insert a single row into the table: "country" */
+  insert_country_one?: Maybe<Country>;
   /** insert data into the table: "organization" */
   insert_organization?: Maybe<Organization_Mutation_Response>;
   /** insert a single row into the table: "organization" */
   insert_organization_one?: Maybe<Organization>;
+  /** insert data into the table: "organization_user" */
+  insert_organization_user?: Maybe<Organization_User_Mutation_Response>;
+  /** insert a single row into the table: "organization_user" */
+  insert_organization_user_one?: Maybe<Organization_User>;
+  /** insert data into the table: "organization_user_role" */
+  insert_organization_user_role?: Maybe<Organization_User_Role_Mutation_Response>;
+  /** insert a single row into the table: "organization_user_role" */
+  insert_organization_user_role_one?: Maybe<Organization_User_Role>;
   /** insert data into the table: "role" */
   insert_role?: Maybe<Role_Mutation_Response>;
   /** insert a single row into the table: "role" */
@@ -1212,10 +1559,6 @@ export type Mutation_Root = {
   insert_user?: Maybe<User_Mutation_Response>;
   /** insert a single row into the table: "user" */
   insert_user_one?: Maybe<User>;
-  /** insert data into the table: "user_organization_role" */
-  insert_user_organization_role?: Maybe<User_Organization_Role_Mutation_Response>;
-  /** insert a single row into the table: "user_organization_role" */
-  insert_user_organization_role_one?: Maybe<User_Organization_Role>;
   /** update data of the table: "campaign" */
   update_campaign?: Maybe<Campaign_Mutation_Response>;
   /** update single row of the table: "campaign" */
@@ -1228,10 +1571,22 @@ export type Mutation_Root = {
   update_campaign_type?: Maybe<Campaign_Type_Mutation_Response>;
   /** update single row of the table: "campaign_type" */
   update_campaign_type_by_pk?: Maybe<Campaign_Type>;
+  /** update data of the table: "country" */
+  update_country?: Maybe<Country_Mutation_Response>;
+  /** update single row of the table: "country" */
+  update_country_by_pk?: Maybe<Country>;
   /** update data of the table: "organization" */
   update_organization?: Maybe<Organization_Mutation_Response>;
   /** update single row of the table: "organization" */
   update_organization_by_pk?: Maybe<Organization>;
+  /** update data of the table: "organization_user" */
+  update_organization_user?: Maybe<Organization_User_Mutation_Response>;
+  /** update single row of the table: "organization_user" */
+  update_organization_user_by_pk?: Maybe<Organization_User>;
+  /** update data of the table: "organization_user_role" */
+  update_organization_user_role?: Maybe<Organization_User_Role_Mutation_Response>;
+  /** update single row of the table: "organization_user_role" */
+  update_organization_user_role_by_pk?: Maybe<Organization_User_Role>;
   /** update data of the table: "role" */
   update_role?: Maybe<Role_Mutation_Response>;
   /** update single row of the table: "role" */
@@ -1248,10 +1603,6 @@ export type Mutation_Root = {
   update_user?: Maybe<User_Mutation_Response>;
   /** update single row of the table: "user" */
   update_user_by_pk?: Maybe<User>;
-  /** update data of the table: "user_organization_role" */
-  update_user_organization_role?: Maybe<User_Organization_Role_Mutation_Response>;
-  /** update single row of the table: "user_organization_role" */
-  update_user_organization_role_by_pk?: Maybe<User_Organization_Role>;
 };
 
 
@@ -1282,6 +1633,42 @@ export type Mutation_RootCampaignSourceFetchArgs = {
 /** mutation root */
 export type Mutation_RootCampaignUpdateArgs = {
   data: CampaignUpdateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootTemplateDeleteArgs = {
+  data: TemplateDeleteInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootTemplateInsertArgs = {
+  data: TemplateInsertInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootTemplateUpdateArgs = {
+  data: TemplateUpdateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUserOrganizationUpdateArgs = {
+  data: UserOrganizationUpdateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUserResetPasswordArgs = {
+  data: UserResetPasswordInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootUserUpdateArgs = {
+  data: UserUpdateInput;
 };
 
 
@@ -1322,6 +1709,18 @@ export type Mutation_RootDelete_Campaign_Type_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_CountryArgs = {
+  where: Country_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Country_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_OrganizationArgs = {
   where: Organization_Bool_Exp;
 };
@@ -1329,6 +1728,30 @@ export type Mutation_RootDelete_OrganizationArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Organization_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Organization_UserArgs = {
+  where: Organization_User_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Organization_User_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Organization_User_RoleArgs = {
+  where: Organization_User_Role_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Organization_User_Role_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -1382,20 +1805,6 @@ export type Mutation_RootDelete_User_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDelete_User_Organization_RoleArgs = {
-  where: User_Organization_Role_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_User_Organization_Role_By_PkArgs = {
-  organization_id: Scalars['Int'];
-  role_id: Scalars['Int'];
-  user_id: Scalars['Int'];
-};
-
-
-/** mutation root */
 export type Mutation_RootInsert_CampaignArgs = {
   objects: Array<Campaign_Insert_Input>;
   on_conflict?: Maybe<Campaign_On_Conflict>;
@@ -1438,6 +1847,20 @@ export type Mutation_RootInsert_Campaign_Type_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_CountryArgs = {
+  objects: Array<Country_Insert_Input>;
+  on_conflict?: Maybe<Country_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Country_OneArgs = {
+  object: Country_Insert_Input;
+  on_conflict?: Maybe<Country_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_OrganizationArgs = {
   objects: Array<Organization_Insert_Input>;
   on_conflict?: Maybe<Organization_On_Conflict>;
@@ -1448,6 +1871,34 @@ export type Mutation_RootInsert_OrganizationArgs = {
 export type Mutation_RootInsert_Organization_OneArgs = {
   object: Organization_Insert_Input;
   on_conflict?: Maybe<Organization_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Organization_UserArgs = {
+  objects: Array<Organization_User_Insert_Input>;
+  on_conflict?: Maybe<Organization_User_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Organization_User_OneArgs = {
+  object: Organization_User_Insert_Input;
+  on_conflict?: Maybe<Organization_User_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Organization_User_RoleArgs = {
+  objects: Array<Organization_User_Role_Insert_Input>;
+  on_conflict?: Maybe<Organization_User_Role_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Organization_User_Role_OneArgs = {
+  object: Organization_User_Role_Insert_Input;
+  on_conflict?: Maybe<Organization_User_Role_On_Conflict>;
 };
 
 
@@ -1504,20 +1955,6 @@ export type Mutation_RootInsert_UserArgs = {
 export type Mutation_RootInsert_User_OneArgs = {
   object: User_Insert_Input;
   on_conflict?: Maybe<User_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_User_Organization_RoleArgs = {
-  objects: Array<User_Organization_Role_Insert_Input>;
-  on_conflict?: Maybe<User_Organization_Role_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_User_Organization_Role_OneArgs = {
-  object: User_Organization_Role_Insert_Input;
-  on_conflict?: Maybe<User_Organization_Role_On_Conflict>;
 };
 
 
@@ -1590,6 +2027,32 @@ export type Mutation_RootUpdate_Campaign_Type_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_CountryArgs = {
+  _append?: Maybe<Country_Append_Input>;
+  _delete_at_path?: Maybe<Country_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Country_Delete_Elem_Input>;
+  _delete_key?: Maybe<Country_Delete_Key_Input>;
+  _inc?: Maybe<Country_Inc_Input>;
+  _prepend?: Maybe<Country_Prepend_Input>;
+  _set?: Maybe<Country_Set_Input>;
+  where: Country_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Country_By_PkArgs = {
+  _append?: Maybe<Country_Append_Input>;
+  _delete_at_path?: Maybe<Country_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Country_Delete_Elem_Input>;
+  _delete_key?: Maybe<Country_Delete_Key_Input>;
+  _inc?: Maybe<Country_Inc_Input>;
+  _prepend?: Maybe<Country_Prepend_Input>;
+  _set?: Maybe<Country_Set_Input>;
+  pk_columns: Country_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_OrganizationArgs = {
   _inc?: Maybe<Organization_Inc_Input>;
   _set?: Maybe<Organization_Set_Input>;
@@ -1602,6 +2065,38 @@ export type Mutation_RootUpdate_Organization_By_PkArgs = {
   _inc?: Maybe<Organization_Inc_Input>;
   _set?: Maybe<Organization_Set_Input>;
   pk_columns: Organization_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Organization_UserArgs = {
+  _inc?: Maybe<Organization_User_Inc_Input>;
+  _set?: Maybe<Organization_User_Set_Input>;
+  where: Organization_User_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Organization_User_By_PkArgs = {
+  _inc?: Maybe<Organization_User_Inc_Input>;
+  _set?: Maybe<Organization_User_Set_Input>;
+  pk_columns: Organization_User_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Organization_User_RoleArgs = {
+  _inc?: Maybe<Organization_User_Role_Inc_Input>;
+  _set?: Maybe<Organization_User_Role_Set_Input>;
+  where: Organization_User_Role_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Organization_User_Role_By_PkArgs = {
+  _inc?: Maybe<Organization_User_Role_Inc_Input>;
+  _set?: Maybe<Organization_User_Role_Set_Input>;
+  pk_columns: Organization_User_Role_Pk_Columns_Input;
 };
 
 
@@ -1688,22 +2183,6 @@ export type Mutation_RootUpdate_User_By_PkArgs = {
   pk_columns: User_Pk_Columns_Input;
 };
 
-
-/** mutation root */
-export type Mutation_RootUpdate_User_Organization_RoleArgs = {
-  _inc?: Maybe<User_Organization_Role_Inc_Input>;
-  _set?: Maybe<User_Organization_Role_Set_Input>;
-  where: User_Organization_Role_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_User_Organization_Role_By_PkArgs = {
-  _inc?: Maybe<User_Organization_Role_Inc_Input>;
-  _set?: Maybe<User_Organization_Role_Set_Input>;
-  pk_columns: User_Organization_Role_Pk_Columns_Input;
-};
-
 /** column ordering options */
 export enum Order_By {
   /** in ascending order, nulls last */
@@ -1723,38 +2202,42 @@ export enum Order_By {
 /** columns and relationships of "organization" */
 export type Organization = {
   __typename?: 'organization';
+  changed_at?: Maybe<Scalars['timestamptz']>;
   city?: Maybe<Scalars['String']>;
   country_id?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
-  organization_name?: Maybe<Scalars['String']>;
+  info_email?: Maybe<Scalars['String']>;
+  invoice_email?: Maybe<Scalars['String']>;
+  organization_name: Scalars['String'];
   organization_reg_nr?: Maybe<Scalars['String']>;
+  /** An array relationship */
+  organization_users: Array<Organization_User>;
+  /** An aggregate relationship */
+  organization_users_aggregate: Organization_User_Aggregate;
   payment_type_id?: Maybe<Scalars['Int']>;
   street_address?: Maybe<Scalars['String']>;
-  /** An array relationship */
-  user_organization_roles: Array<User_Organization_Role>;
-  /** An aggregate relationship */
-  user_organization_roles_aggregate: User_Organization_Role_Aggregate;
+  vat_nr?: Maybe<Scalars['String']>;
   zipcode?: Maybe<Scalars['String']>;
 };
 
 
 /** columns and relationships of "organization" */
-export type OrganizationUser_Organization_RolesArgs = {
-  distinct_on?: Maybe<Array<User_Organization_Role_Select_Column>>;
+export type OrganizationOrganization_UsersArgs = {
+  distinct_on?: Maybe<Array<Organization_User_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Organization_Role_Order_By>>;
-  where?: Maybe<User_Organization_Role_Bool_Exp>;
+  order_by?: Maybe<Array<Organization_User_Order_By>>;
+  where?: Maybe<Organization_User_Bool_Exp>;
 };
 
 
 /** columns and relationships of "organization" */
-export type OrganizationUser_Organization_Roles_AggregateArgs = {
-  distinct_on?: Maybe<Array<User_Organization_Role_Select_Column>>;
+export type OrganizationOrganization_Users_AggregateArgs = {
+  distinct_on?: Maybe<Array<Organization_User_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Organization_Role_Order_By>>;
-  where?: Maybe<User_Organization_Role_Bool_Exp>;
+  order_by?: Maybe<Array<Organization_User_Order_By>>;
+  where?: Maybe<Organization_User_Bool_Exp>;
 };
 
 /** aggregated selection of "organization" */
@@ -1822,14 +2305,18 @@ export type Organization_Bool_Exp = {
   _and?: Maybe<Array<Organization_Bool_Exp>>;
   _not?: Maybe<Organization_Bool_Exp>;
   _or?: Maybe<Array<Organization_Bool_Exp>>;
+  changed_at?: Maybe<Timestamptz_Comparison_Exp>;
   city?: Maybe<String_Comparison_Exp>;
   country_id?: Maybe<Int_Comparison_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
+  info_email?: Maybe<String_Comparison_Exp>;
+  invoice_email?: Maybe<String_Comparison_Exp>;
   organization_name?: Maybe<String_Comparison_Exp>;
   organization_reg_nr?: Maybe<String_Comparison_Exp>;
+  organization_users?: Maybe<Organization_User_Bool_Exp>;
   payment_type_id?: Maybe<Int_Comparison_Exp>;
   street_address?: Maybe<String_Comparison_Exp>;
-  user_organization_roles?: Maybe<User_Organization_Role_Bool_Exp>;
+  vat_nr?: Maybe<String_Comparison_Exp>;
   zipcode?: Maybe<String_Comparison_Exp>;
 };
 
@@ -1848,64 +2335,84 @@ export type Organization_Inc_Input = {
 
 /** input type for inserting data into table "organization" */
 export type Organization_Insert_Input = {
+  changed_at?: Maybe<Scalars['timestamptz']>;
   city?: Maybe<Scalars['String']>;
   country_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
+  info_email?: Maybe<Scalars['String']>;
+  invoice_email?: Maybe<Scalars['String']>;
   organization_name?: Maybe<Scalars['String']>;
   organization_reg_nr?: Maybe<Scalars['String']>;
+  organization_users?: Maybe<Organization_User_Arr_Rel_Insert_Input>;
   payment_type_id?: Maybe<Scalars['Int']>;
   street_address?: Maybe<Scalars['String']>;
-  user_organization_roles?: Maybe<User_Organization_Role_Arr_Rel_Insert_Input>;
+  vat_nr?: Maybe<Scalars['String']>;
   zipcode?: Maybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
 export type Organization_Max_Fields = {
   __typename?: 'organization_max_fields';
+  changed_at?: Maybe<Scalars['timestamptz']>;
   city?: Maybe<Scalars['String']>;
   country_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
+  info_email?: Maybe<Scalars['String']>;
+  invoice_email?: Maybe<Scalars['String']>;
   organization_name?: Maybe<Scalars['String']>;
   organization_reg_nr?: Maybe<Scalars['String']>;
   payment_type_id?: Maybe<Scalars['Int']>;
   street_address?: Maybe<Scalars['String']>;
+  vat_nr?: Maybe<Scalars['String']>;
   zipcode?: Maybe<Scalars['String']>;
 };
 
 /** order by max() on columns of table "organization" */
 export type Organization_Max_Order_By = {
+  changed_at?: Maybe<Order_By>;
   city?: Maybe<Order_By>;
   country_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  info_email?: Maybe<Order_By>;
+  invoice_email?: Maybe<Order_By>;
   organization_name?: Maybe<Order_By>;
   organization_reg_nr?: Maybe<Order_By>;
   payment_type_id?: Maybe<Order_By>;
   street_address?: Maybe<Order_By>;
+  vat_nr?: Maybe<Order_By>;
   zipcode?: Maybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Organization_Min_Fields = {
   __typename?: 'organization_min_fields';
+  changed_at?: Maybe<Scalars['timestamptz']>;
   city?: Maybe<Scalars['String']>;
   country_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
+  info_email?: Maybe<Scalars['String']>;
+  invoice_email?: Maybe<Scalars['String']>;
   organization_name?: Maybe<Scalars['String']>;
   organization_reg_nr?: Maybe<Scalars['String']>;
   payment_type_id?: Maybe<Scalars['Int']>;
   street_address?: Maybe<Scalars['String']>;
+  vat_nr?: Maybe<Scalars['String']>;
   zipcode?: Maybe<Scalars['String']>;
 };
 
 /** order by min() on columns of table "organization" */
 export type Organization_Min_Order_By = {
+  changed_at?: Maybe<Order_By>;
   city?: Maybe<Order_By>;
   country_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  info_email?: Maybe<Order_By>;
+  invoice_email?: Maybe<Order_By>;
   organization_name?: Maybe<Order_By>;
   organization_reg_nr?: Maybe<Order_By>;
   payment_type_id?: Maybe<Order_By>;
   street_address?: Maybe<Order_By>;
+  vat_nr?: Maybe<Order_By>;
   zipcode?: Maybe<Order_By>;
 };
 
@@ -1927,14 +2434,18 @@ export type Organization_On_Conflict = {
 
 /** Ordering options when selecting data from "organization". */
 export type Organization_Order_By = {
+  changed_at?: Maybe<Order_By>;
   city?: Maybe<Order_By>;
   country_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  info_email?: Maybe<Order_By>;
+  invoice_email?: Maybe<Order_By>;
   organization_name?: Maybe<Order_By>;
   organization_reg_nr?: Maybe<Order_By>;
+  organization_users_aggregate?: Maybe<Organization_User_Aggregate_Order_By>;
   payment_type_id?: Maybe<Order_By>;
   street_address?: Maybe<Order_By>;
-  user_organization_roles_aggregate?: Maybe<User_Organization_Role_Aggregate_Order_By>;
+  vat_nr?: Maybe<Order_By>;
   zipcode?: Maybe<Order_By>;
 };
 
@@ -1946,11 +2457,17 @@ export type Organization_Pk_Columns_Input = {
 /** select columns of table "organization" */
 export enum Organization_Select_Column {
   /** column name */
+  ChangedAt = 'changed_at',
+  /** column name */
   City = 'city',
   /** column name */
   CountryId = 'country_id',
   /** column name */
   Id = 'id',
+  /** column name */
+  InfoEmail = 'info_email',
+  /** column name */
+  InvoiceEmail = 'invoice_email',
   /** column name */
   OrganizationName = 'organization_name',
   /** column name */
@@ -1960,18 +2477,24 @@ export enum Organization_Select_Column {
   /** column name */
   StreetAddress = 'street_address',
   /** column name */
+  VatNr = 'vat_nr',
+  /** column name */
   Zipcode = 'zipcode'
 }
 
 /** input type for updating data in table "organization" */
 export type Organization_Set_Input = {
+  changed_at?: Maybe<Scalars['timestamptz']>;
   city?: Maybe<Scalars['String']>;
   country_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
+  info_email?: Maybe<Scalars['String']>;
+  invoice_email?: Maybe<Scalars['String']>;
   organization_name?: Maybe<Scalars['String']>;
   organization_reg_nr?: Maybe<Scalars['String']>;
   payment_type_id?: Maybe<Scalars['Int']>;
   street_address?: Maybe<Scalars['String']>;
+  vat_nr?: Maybe<Scalars['String']>;
   zipcode?: Maybe<Scalars['String']>;
 };
 
@@ -2038,11 +2561,17 @@ export type Organization_Sum_Order_By = {
 /** update columns of table "organization" */
 export enum Organization_Update_Column {
   /** column name */
+  ChangedAt = 'changed_at',
+  /** column name */
   City = 'city',
   /** column name */
   CountryId = 'country_id',
   /** column name */
   Id = 'id',
+  /** column name */
+  InfoEmail = 'info_email',
+  /** column name */
+  InvoiceEmail = 'invoice_email',
   /** column name */
   OrganizationName = 'organization_name',
   /** column name */
@@ -2052,8 +2581,661 @@ export enum Organization_Update_Column {
   /** column name */
   StreetAddress = 'street_address',
   /** column name */
+  VatNr = 'vat_nr',
+  /** column name */
   Zipcode = 'zipcode'
 }
+
+/** columns and relationships of "organization_user" */
+export type Organization_User = {
+  __typename?: 'organization_user';
+  changed_at?: Maybe<Scalars['timestamptz']>;
+  id: Scalars['Int'];
+  organization_id: Scalars['Int'];
+  /** An array relationship */
+  organization_user_roles: Array<Organization_User_Role>;
+  /** An aggregate relationship */
+  organization_user_roles_aggregate: Organization_User_Role_Aggregate;
+  /** An object relationship */
+  user: User;
+  user_id: Scalars['Int'];
+};
+
+
+/** columns and relationships of "organization_user" */
+export type Organization_UserOrganization_User_RolesArgs = {
+  distinct_on?: Maybe<Array<Organization_User_Role_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Organization_User_Role_Order_By>>;
+  where?: Maybe<Organization_User_Role_Bool_Exp>;
+};
+
+
+/** columns and relationships of "organization_user" */
+export type Organization_UserOrganization_User_Roles_AggregateArgs = {
+  distinct_on?: Maybe<Array<Organization_User_Role_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Organization_User_Role_Order_By>>;
+  where?: Maybe<Organization_User_Role_Bool_Exp>;
+};
+
+/** aggregated selection of "organization_user" */
+export type Organization_User_Aggregate = {
+  __typename?: 'organization_user_aggregate';
+  aggregate?: Maybe<Organization_User_Aggregate_Fields>;
+  nodes: Array<Organization_User>;
+};
+
+/** aggregate fields of "organization_user" */
+export type Organization_User_Aggregate_Fields = {
+  __typename?: 'organization_user_aggregate_fields';
+  avg?: Maybe<Organization_User_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Organization_User_Max_Fields>;
+  min?: Maybe<Organization_User_Min_Fields>;
+  stddev?: Maybe<Organization_User_Stddev_Fields>;
+  stddev_pop?: Maybe<Organization_User_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Organization_User_Stddev_Samp_Fields>;
+  sum?: Maybe<Organization_User_Sum_Fields>;
+  var_pop?: Maybe<Organization_User_Var_Pop_Fields>;
+  var_samp?: Maybe<Organization_User_Var_Samp_Fields>;
+  variance?: Maybe<Organization_User_Variance_Fields>;
+};
+
+
+/** aggregate fields of "organization_user" */
+export type Organization_User_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Organization_User_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "organization_user" */
+export type Organization_User_Aggregate_Order_By = {
+  avg?: Maybe<Organization_User_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Organization_User_Max_Order_By>;
+  min?: Maybe<Organization_User_Min_Order_By>;
+  stddev?: Maybe<Organization_User_Stddev_Order_By>;
+  stddev_pop?: Maybe<Organization_User_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Organization_User_Stddev_Samp_Order_By>;
+  sum?: Maybe<Organization_User_Sum_Order_By>;
+  var_pop?: Maybe<Organization_User_Var_Pop_Order_By>;
+  var_samp?: Maybe<Organization_User_Var_Samp_Order_By>;
+  variance?: Maybe<Organization_User_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "organization_user" */
+export type Organization_User_Arr_Rel_Insert_Input = {
+  data: Array<Organization_User_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: Maybe<Organization_User_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Organization_User_Avg_Fields = {
+  __typename?: 'organization_user_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+  organization_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "organization_user" */
+export type Organization_User_Avg_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "organization_user". All fields are combined with a logical 'AND'. */
+export type Organization_User_Bool_Exp = {
+  _and?: Maybe<Array<Organization_User_Bool_Exp>>;
+  _not?: Maybe<Organization_User_Bool_Exp>;
+  _or?: Maybe<Array<Organization_User_Bool_Exp>>;
+  changed_at?: Maybe<Timestamptz_Comparison_Exp>;
+  id?: Maybe<Int_Comparison_Exp>;
+  organization_id?: Maybe<Int_Comparison_Exp>;
+  organization_user_roles?: Maybe<Organization_User_Role_Bool_Exp>;
+  user?: Maybe<User_Bool_Exp>;
+  user_id?: Maybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "organization_user" */
+export enum Organization_User_Constraint {
+  /** unique or primary key constraint */
+  IxOrganizationUserOrganizationUser = 'ix_organization_user_organization_user',
+  /** unique or primary key constraint */
+  PkOrganizationUser = 'pk_organization_user'
+}
+
+/** input type for incrementing numeric columns in table "organization_user" */
+export type Organization_User_Inc_Input = {
+  id?: Maybe<Scalars['Int']>;
+  organization_id?: Maybe<Scalars['Int']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "organization_user" */
+export type Organization_User_Insert_Input = {
+  changed_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  organization_id?: Maybe<Scalars['Int']>;
+  organization_user_roles?: Maybe<Organization_User_Role_Arr_Rel_Insert_Input>;
+  user?: Maybe<User_Obj_Rel_Insert_Input>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Organization_User_Max_Fields = {
+  __typename?: 'organization_user_max_fields';
+  changed_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  organization_id?: Maybe<Scalars['Int']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "organization_user" */
+export type Organization_User_Max_Order_By = {
+  changed_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Organization_User_Min_Fields = {
+  __typename?: 'organization_user_min_fields';
+  changed_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  organization_id?: Maybe<Scalars['Int']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "organization_user" */
+export type Organization_User_Min_Order_By = {
+  changed_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "organization_user" */
+export type Organization_User_Mutation_Response = {
+  __typename?: 'organization_user_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Organization_User>;
+};
+
+/** input type for inserting object relation for remote table "organization_user" */
+export type Organization_User_Obj_Rel_Insert_Input = {
+  data: Organization_User_Insert_Input;
+  /** upsert condition */
+  on_conflict?: Maybe<Organization_User_On_Conflict>;
+};
+
+/** on_conflict condition type for table "organization_user" */
+export type Organization_User_On_Conflict = {
+  constraint: Organization_User_Constraint;
+  update_columns?: Array<Organization_User_Update_Column>;
+  where?: Maybe<Organization_User_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "organization_user". */
+export type Organization_User_Order_By = {
+  changed_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
+  organization_user_roles_aggregate?: Maybe<Organization_User_Role_Aggregate_Order_By>;
+  user?: Maybe<User_Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: organization_user */
+export type Organization_User_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** columns and relationships of "organization_user_role" */
+export type Organization_User_Role = {
+  __typename?: 'organization_user_role';
+  id: Scalars['Int'];
+  /** An object relationship */
+  organization_user: Organization_User;
+  organization_user_id: Scalars['Int'];
+  role_id: Scalars['Int'];
+};
+
+/** aggregated selection of "organization_user_role" */
+export type Organization_User_Role_Aggregate = {
+  __typename?: 'organization_user_role_aggregate';
+  aggregate?: Maybe<Organization_User_Role_Aggregate_Fields>;
+  nodes: Array<Organization_User_Role>;
+};
+
+/** aggregate fields of "organization_user_role" */
+export type Organization_User_Role_Aggregate_Fields = {
+  __typename?: 'organization_user_role_aggregate_fields';
+  avg?: Maybe<Organization_User_Role_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Organization_User_Role_Max_Fields>;
+  min?: Maybe<Organization_User_Role_Min_Fields>;
+  stddev?: Maybe<Organization_User_Role_Stddev_Fields>;
+  stddev_pop?: Maybe<Organization_User_Role_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Organization_User_Role_Stddev_Samp_Fields>;
+  sum?: Maybe<Organization_User_Role_Sum_Fields>;
+  var_pop?: Maybe<Organization_User_Role_Var_Pop_Fields>;
+  var_samp?: Maybe<Organization_User_Role_Var_Samp_Fields>;
+  variance?: Maybe<Organization_User_Role_Variance_Fields>;
+};
+
+
+/** aggregate fields of "organization_user_role" */
+export type Organization_User_Role_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Organization_User_Role_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "organization_user_role" */
+export type Organization_User_Role_Aggregate_Order_By = {
+  avg?: Maybe<Organization_User_Role_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Organization_User_Role_Max_Order_By>;
+  min?: Maybe<Organization_User_Role_Min_Order_By>;
+  stddev?: Maybe<Organization_User_Role_Stddev_Order_By>;
+  stddev_pop?: Maybe<Organization_User_Role_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Organization_User_Role_Stddev_Samp_Order_By>;
+  sum?: Maybe<Organization_User_Role_Sum_Order_By>;
+  var_pop?: Maybe<Organization_User_Role_Var_Pop_Order_By>;
+  var_samp?: Maybe<Organization_User_Role_Var_Samp_Order_By>;
+  variance?: Maybe<Organization_User_Role_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "organization_user_role" */
+export type Organization_User_Role_Arr_Rel_Insert_Input = {
+  data: Array<Organization_User_Role_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: Maybe<Organization_User_Role_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Organization_User_Role_Avg_Fields = {
+  __typename?: 'organization_user_role_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+  organization_user_id?: Maybe<Scalars['Float']>;
+  role_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "organization_user_role" */
+export type Organization_User_Role_Avg_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_user_id?: Maybe<Order_By>;
+  role_id?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "organization_user_role". All fields are combined with a logical 'AND'. */
+export type Organization_User_Role_Bool_Exp = {
+  _and?: Maybe<Array<Organization_User_Role_Bool_Exp>>;
+  _not?: Maybe<Organization_User_Role_Bool_Exp>;
+  _or?: Maybe<Array<Organization_User_Role_Bool_Exp>>;
+  id?: Maybe<Int_Comparison_Exp>;
+  organization_user?: Maybe<Organization_User_Bool_Exp>;
+  organization_user_id?: Maybe<Int_Comparison_Exp>;
+  role_id?: Maybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "organization_user_role" */
+export enum Organization_User_Role_Constraint {
+  /** unique or primary key constraint */
+  IxOrganizationUserRoleOrganizationUserRole = 'ix_organization_user_role_organization_user_role',
+  /** unique or primary key constraint */
+  PkOrganizationUserRole = 'pk_organization_user_role'
+}
+
+/** input type for incrementing numeric columns in table "organization_user_role" */
+export type Organization_User_Role_Inc_Input = {
+  id?: Maybe<Scalars['Int']>;
+  organization_user_id?: Maybe<Scalars['Int']>;
+  role_id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "organization_user_role" */
+export type Organization_User_Role_Insert_Input = {
+  id?: Maybe<Scalars['Int']>;
+  organization_user?: Maybe<Organization_User_Obj_Rel_Insert_Input>;
+  organization_user_id?: Maybe<Scalars['Int']>;
+  role_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Organization_User_Role_Max_Fields = {
+  __typename?: 'organization_user_role_max_fields';
+  id?: Maybe<Scalars['Int']>;
+  organization_user_id?: Maybe<Scalars['Int']>;
+  role_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "organization_user_role" */
+export type Organization_User_Role_Max_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_user_id?: Maybe<Order_By>;
+  role_id?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Organization_User_Role_Min_Fields = {
+  __typename?: 'organization_user_role_min_fields';
+  id?: Maybe<Scalars['Int']>;
+  organization_user_id?: Maybe<Scalars['Int']>;
+  role_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "organization_user_role" */
+export type Organization_User_Role_Min_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_user_id?: Maybe<Order_By>;
+  role_id?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "organization_user_role" */
+export type Organization_User_Role_Mutation_Response = {
+  __typename?: 'organization_user_role_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Organization_User_Role>;
+};
+
+/** on_conflict condition type for table "organization_user_role" */
+export type Organization_User_Role_On_Conflict = {
+  constraint: Organization_User_Role_Constraint;
+  update_columns?: Array<Organization_User_Role_Update_Column>;
+  where?: Maybe<Organization_User_Role_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "organization_user_role". */
+export type Organization_User_Role_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_user?: Maybe<Organization_User_Order_By>;
+  organization_user_id?: Maybe<Order_By>;
+  role_id?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: organization_user_role */
+export type Organization_User_Role_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "organization_user_role" */
+export enum Organization_User_Role_Select_Column {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizationUserId = 'organization_user_id',
+  /** column name */
+  RoleId = 'role_id'
+}
+
+/** input type for updating data in table "organization_user_role" */
+export type Organization_User_Role_Set_Input = {
+  id?: Maybe<Scalars['Int']>;
+  organization_user_id?: Maybe<Scalars['Int']>;
+  role_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Organization_User_Role_Stddev_Fields = {
+  __typename?: 'organization_user_role_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+  organization_user_id?: Maybe<Scalars['Float']>;
+  role_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "organization_user_role" */
+export type Organization_User_Role_Stddev_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_user_id?: Maybe<Order_By>;
+  role_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Organization_User_Role_Stddev_Pop_Fields = {
+  __typename?: 'organization_user_role_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  organization_user_id?: Maybe<Scalars['Float']>;
+  role_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "organization_user_role" */
+export type Organization_User_Role_Stddev_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_user_id?: Maybe<Order_By>;
+  role_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Organization_User_Role_Stddev_Samp_Fields = {
+  __typename?: 'organization_user_role_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  organization_user_id?: Maybe<Scalars['Float']>;
+  role_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "organization_user_role" */
+export type Organization_User_Role_Stddev_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_user_id?: Maybe<Order_By>;
+  role_id?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Organization_User_Role_Sum_Fields = {
+  __typename?: 'organization_user_role_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+  organization_user_id?: Maybe<Scalars['Int']>;
+  role_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "organization_user_role" */
+export type Organization_User_Role_Sum_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_user_id?: Maybe<Order_By>;
+  role_id?: Maybe<Order_By>;
+};
+
+/** update columns of table "organization_user_role" */
+export enum Organization_User_Role_Update_Column {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizationUserId = 'organization_user_id',
+  /** column name */
+  RoleId = 'role_id'
+}
+
+/** aggregate var_pop on columns */
+export type Organization_User_Role_Var_Pop_Fields = {
+  __typename?: 'organization_user_role_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  organization_user_id?: Maybe<Scalars['Float']>;
+  role_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "organization_user_role" */
+export type Organization_User_Role_Var_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_user_id?: Maybe<Order_By>;
+  role_id?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Organization_User_Role_Var_Samp_Fields = {
+  __typename?: 'organization_user_role_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  organization_user_id?: Maybe<Scalars['Float']>;
+  role_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "organization_user_role" */
+export type Organization_User_Role_Var_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_user_id?: Maybe<Order_By>;
+  role_id?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Organization_User_Role_Variance_Fields = {
+  __typename?: 'organization_user_role_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+  organization_user_id?: Maybe<Scalars['Float']>;
+  role_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "organization_user_role" */
+export type Organization_User_Role_Variance_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_user_id?: Maybe<Order_By>;
+  role_id?: Maybe<Order_By>;
+};
+
+/** select columns of table "organization_user" */
+export enum Organization_User_Select_Column {
+  /** column name */
+  ChangedAt = 'changed_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizationId = 'organization_id',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "organization_user" */
+export type Organization_User_Set_Input = {
+  changed_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['Int']>;
+  organization_id?: Maybe<Scalars['Int']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Organization_User_Stddev_Fields = {
+  __typename?: 'organization_user_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+  organization_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "organization_user" */
+export type Organization_User_Stddev_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Organization_User_Stddev_Pop_Fields = {
+  __typename?: 'organization_user_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  organization_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "organization_user" */
+export type Organization_User_Stddev_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Organization_User_Stddev_Samp_Fields = {
+  __typename?: 'organization_user_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  organization_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "organization_user" */
+export type Organization_User_Stddev_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Organization_User_Sum_Fields = {
+  __typename?: 'organization_user_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+  organization_id?: Maybe<Scalars['Int']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "organization_user" */
+export type Organization_User_Sum_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** update columns of table "organization_user" */
+export enum Organization_User_Update_Column {
+  /** column name */
+  ChangedAt = 'changed_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizationId = 'organization_id',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** aggregate var_pop on columns */
+export type Organization_User_Var_Pop_Fields = {
+  __typename?: 'organization_user_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  organization_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "organization_user" */
+export type Organization_User_Var_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Organization_User_Var_Samp_Fields = {
+  __typename?: 'organization_user_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  organization_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "organization_user" */
+export type Organization_User_Var_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Organization_User_Variance_Fields = {
+  __typename?: 'organization_user_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+  organization_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "organization_user" */
+export type Organization_User_Variance_Order_By = {
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
 
 /** aggregate var_pop on columns */
 export type Organization_Var_Pop_Fields = {
@@ -2124,12 +3306,30 @@ export type Query_Root = {
   campaign_type_aggregate: Campaign_Type_Aggregate;
   /** fetch data from the table: "campaign_type" using primary key columns */
   campaign_type_by_pk?: Maybe<Campaign_Type>;
+  /** fetch data from the table: "country" */
+  country: Array<Country>;
+  /** fetch aggregated fields from the table: "country" */
+  country_aggregate: Country_Aggregate;
+  /** fetch data from the table: "country" using primary key columns */
+  country_by_pk?: Maybe<Country>;
   /** fetch data from the table: "organization" */
   organization: Array<Organization>;
   /** fetch aggregated fields from the table: "organization" */
   organization_aggregate: Organization_Aggregate;
   /** fetch data from the table: "organization" using primary key columns */
   organization_by_pk?: Maybe<Organization>;
+  /** fetch data from the table: "organization_user" */
+  organization_user: Array<Organization_User>;
+  /** fetch aggregated fields from the table: "organization_user" */
+  organization_user_aggregate: Organization_User_Aggregate;
+  /** fetch data from the table: "organization_user" using primary key columns */
+  organization_user_by_pk?: Maybe<Organization_User>;
+  /** fetch data from the table: "organization_user_role" */
+  organization_user_role: Array<Organization_User_Role>;
+  /** fetch aggregated fields from the table: "organization_user_role" */
+  organization_user_role_aggregate: Organization_User_Role_Aggregate;
+  /** fetch data from the table: "organization_user_role" using primary key columns */
+  organization_user_role_by_pk?: Maybe<Organization_User_Role>;
   /** fetch data from the table: "role" */
   role: Array<Role>;
   /** fetch aggregated fields from the table: "role" */
@@ -2142,6 +3342,10 @@ export type Query_Root = {
   template_aggregate: Template_Aggregate;
   /** fetch data from the table: "template" using primary key columns */
   template_by_pk?: Maybe<Template>;
+  /** execute function "template_search" which returns "template" */
+  template_search: Array<Template>;
+  /** execute function "template_search" and query aggregates on result of table type "template" */
+  template_search_aggregate: Template_Aggregate;
   /** fetch data from the table: "template_type" */
   template_type: Array<Template_Type>;
   /** fetch aggregated fields from the table: "template_type" */
@@ -2154,12 +3358,6 @@ export type Query_Root = {
   user_aggregate: User_Aggregate;
   /** fetch data from the table: "user" using primary key columns */
   user_by_pk?: Maybe<User>;
-  /** fetch data from the table: "user_organization_role" */
-  user_organization_role: Array<User_Organization_Role>;
-  /** fetch aggregated fields from the table: "user_organization_role" */
-  user_organization_role_aggregate: User_Organization_Role_Aggregate;
-  /** fetch data from the table: "user_organization_role" using primary key columns */
-  user_organization_role_by_pk?: Maybe<User_Organization_Role>;
 };
 
 
@@ -2252,6 +3450,29 @@ export type Query_RootCampaign_Type_By_PkArgs = {
 };
 
 
+export type Query_RootCountryArgs = {
+  distinct_on?: Maybe<Array<Country_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Country_Order_By>>;
+  where?: Maybe<Country_Bool_Exp>;
+};
+
+
+export type Query_RootCountry_AggregateArgs = {
+  distinct_on?: Maybe<Array<Country_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Country_Order_By>>;
+  where?: Maybe<Country_Bool_Exp>;
+};
+
+
+export type Query_RootCountry_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type Query_RootOrganizationArgs = {
   distinct_on?: Maybe<Array<Organization_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2271,6 +3492,52 @@ export type Query_RootOrganization_AggregateArgs = {
 
 
 export type Query_RootOrganization_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootOrganization_UserArgs = {
+  distinct_on?: Maybe<Array<Organization_User_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Organization_User_Order_By>>;
+  where?: Maybe<Organization_User_Bool_Exp>;
+};
+
+
+export type Query_RootOrganization_User_AggregateArgs = {
+  distinct_on?: Maybe<Array<Organization_User_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Organization_User_Order_By>>;
+  where?: Maybe<Organization_User_Bool_Exp>;
+};
+
+
+export type Query_RootOrganization_User_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootOrganization_User_RoleArgs = {
+  distinct_on?: Maybe<Array<Organization_User_Role_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Organization_User_Role_Order_By>>;
+  where?: Maybe<Organization_User_Role_Bool_Exp>;
+};
+
+
+export type Query_RootOrganization_User_Role_AggregateArgs = {
+  distinct_on?: Maybe<Array<Organization_User_Role_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Organization_User_Role_Order_By>>;
+  where?: Maybe<Organization_User_Role_Bool_Exp>;
+};
+
+
+export type Query_RootOrganization_User_Role_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -2321,6 +3588,26 @@ export type Query_RootTemplate_By_PkArgs = {
 };
 
 
+export type Query_RootTemplate_SearchArgs = {
+  args: Template_Search_Args;
+  distinct_on?: Maybe<Array<Template_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Template_Order_By>>;
+  where?: Maybe<Template_Bool_Exp>;
+};
+
+
+export type Query_RootTemplate_Search_AggregateArgs = {
+  args: Template_Search_Args;
+  distinct_on?: Maybe<Array<Template_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Template_Order_By>>;
+  where?: Maybe<Template_Bool_Exp>;
+};
+
+
 export type Query_RootTemplate_TypeArgs = {
   distinct_on?: Maybe<Array<Template_Type_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2364,31 +3651,6 @@ export type Query_RootUser_AggregateArgs = {
 
 export type Query_RootUser_By_PkArgs = {
   id: Scalars['Int'];
-};
-
-
-export type Query_RootUser_Organization_RoleArgs = {
-  distinct_on?: Maybe<Array<User_Organization_Role_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Organization_Role_Order_By>>;
-  where?: Maybe<User_Organization_Role_Bool_Exp>;
-};
-
-
-export type Query_RootUser_Organization_Role_AggregateArgs = {
-  distinct_on?: Maybe<Array<User_Organization_Role_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Organization_Role_Order_By>>;
-  where?: Maybe<User_Organization_Role_Bool_Exp>;
-};
-
-
-export type Query_RootUser_Organization_Role_By_PkArgs = {
-  organization_id: Scalars['Int'];
-  role_id: Scalars['Int'];
-  user_id: Scalars['Int'];
 };
 
 /** columns and relationships of "role" */
@@ -2622,12 +3884,30 @@ export type Subscription_Root = {
   campaign_type_aggregate: Campaign_Type_Aggregate;
   /** fetch data from the table: "campaign_type" using primary key columns */
   campaign_type_by_pk?: Maybe<Campaign_Type>;
+  /** fetch data from the table: "country" */
+  country: Array<Country>;
+  /** fetch aggregated fields from the table: "country" */
+  country_aggregate: Country_Aggregate;
+  /** fetch data from the table: "country" using primary key columns */
+  country_by_pk?: Maybe<Country>;
   /** fetch data from the table: "organization" */
   organization: Array<Organization>;
   /** fetch aggregated fields from the table: "organization" */
   organization_aggregate: Organization_Aggregate;
   /** fetch data from the table: "organization" using primary key columns */
   organization_by_pk?: Maybe<Organization>;
+  /** fetch data from the table: "organization_user" */
+  organization_user: Array<Organization_User>;
+  /** fetch aggregated fields from the table: "organization_user" */
+  organization_user_aggregate: Organization_User_Aggregate;
+  /** fetch data from the table: "organization_user" using primary key columns */
+  organization_user_by_pk?: Maybe<Organization_User>;
+  /** fetch data from the table: "organization_user_role" */
+  organization_user_role: Array<Organization_User_Role>;
+  /** fetch aggregated fields from the table: "organization_user_role" */
+  organization_user_role_aggregate: Organization_User_Role_Aggregate;
+  /** fetch data from the table: "organization_user_role" using primary key columns */
+  organization_user_role_by_pk?: Maybe<Organization_User_Role>;
   /** fetch data from the table: "role" */
   role: Array<Role>;
   /** fetch aggregated fields from the table: "role" */
@@ -2640,6 +3920,10 @@ export type Subscription_Root = {
   template_aggregate: Template_Aggregate;
   /** fetch data from the table: "template" using primary key columns */
   template_by_pk?: Maybe<Template>;
+  /** execute function "template_search" which returns "template" */
+  template_search: Array<Template>;
+  /** execute function "template_search" and query aggregates on result of table type "template" */
+  template_search_aggregate: Template_Aggregate;
   /** fetch data from the table: "template_type" */
   template_type: Array<Template_Type>;
   /** fetch aggregated fields from the table: "template_type" */
@@ -2652,12 +3936,6 @@ export type Subscription_Root = {
   user_aggregate: User_Aggregate;
   /** fetch data from the table: "user" using primary key columns */
   user_by_pk?: Maybe<User>;
-  /** fetch data from the table: "user_organization_role" */
-  user_organization_role: Array<User_Organization_Role>;
-  /** fetch aggregated fields from the table: "user_organization_role" */
-  user_organization_role_aggregate: User_Organization_Role_Aggregate;
-  /** fetch data from the table: "user_organization_role" using primary key columns */
-  user_organization_role_by_pk?: Maybe<User_Organization_Role>;
 };
 
 
@@ -2750,6 +4028,29 @@ export type Subscription_RootCampaign_Type_By_PkArgs = {
 };
 
 
+export type Subscription_RootCountryArgs = {
+  distinct_on?: Maybe<Array<Country_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Country_Order_By>>;
+  where?: Maybe<Country_Bool_Exp>;
+};
+
+
+export type Subscription_RootCountry_AggregateArgs = {
+  distinct_on?: Maybe<Array<Country_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Country_Order_By>>;
+  where?: Maybe<Country_Bool_Exp>;
+};
+
+
+export type Subscription_RootCountry_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type Subscription_RootOrganizationArgs = {
   distinct_on?: Maybe<Array<Organization_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2769,6 +4070,52 @@ export type Subscription_RootOrganization_AggregateArgs = {
 
 
 export type Subscription_RootOrganization_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootOrganization_UserArgs = {
+  distinct_on?: Maybe<Array<Organization_User_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Organization_User_Order_By>>;
+  where?: Maybe<Organization_User_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganization_User_AggregateArgs = {
+  distinct_on?: Maybe<Array<Organization_User_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Organization_User_Order_By>>;
+  where?: Maybe<Organization_User_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganization_User_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootOrganization_User_RoleArgs = {
+  distinct_on?: Maybe<Array<Organization_User_Role_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Organization_User_Role_Order_By>>;
+  where?: Maybe<Organization_User_Role_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganization_User_Role_AggregateArgs = {
+  distinct_on?: Maybe<Array<Organization_User_Role_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Organization_User_Role_Order_By>>;
+  where?: Maybe<Organization_User_Role_Bool_Exp>;
+};
+
+
+export type Subscription_RootOrganization_User_Role_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -2819,6 +4166,26 @@ export type Subscription_RootTemplate_By_PkArgs = {
 };
 
 
+export type Subscription_RootTemplate_SearchArgs = {
+  args: Template_Search_Args;
+  distinct_on?: Maybe<Array<Template_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Template_Order_By>>;
+  where?: Maybe<Template_Bool_Exp>;
+};
+
+
+export type Subscription_RootTemplate_Search_AggregateArgs = {
+  args: Template_Search_Args;
+  distinct_on?: Maybe<Array<Template_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Template_Order_By>>;
+  where?: Maybe<Template_Bool_Exp>;
+};
+
+
 export type Subscription_RootTemplate_TypeArgs = {
   distinct_on?: Maybe<Array<Template_Type_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2864,31 +4231,6 @@ export type Subscription_RootUser_By_PkArgs = {
   id: Scalars['Int'];
 };
 
-
-export type Subscription_RootUser_Organization_RoleArgs = {
-  distinct_on?: Maybe<Array<User_Organization_Role_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Organization_Role_Order_By>>;
-  where?: Maybe<User_Organization_Role_Bool_Exp>;
-};
-
-
-export type Subscription_RootUser_Organization_Role_AggregateArgs = {
-  distinct_on?: Maybe<Array<User_Organization_Role_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<User_Organization_Role_Order_By>>;
-  where?: Maybe<User_Organization_Role_Bool_Exp>;
-};
-
-
-export type Subscription_RootUser_Organization_Role_By_PkArgs = {
-  organization_id: Scalars['Int'];
-  role_id: Scalars['Int'];
-  user_id: Scalars['Int'];
-};
-
 /** columns and relationships of "template" */
 export type Template = {
   __typename?: 'template';
@@ -2896,6 +4238,7 @@ export type Template = {
   campaign_template_crosses: Array<Campaign_Template_Cross>;
   /** An aggregate relationship */
   campaign_template_crosses_aggregate: Campaign_Template_Cross_Aggregate;
+  changed_at?: Maybe<Scalars['timestamptz']>;
   id: Scalars['Int'];
   organization_id: Scalars['Int'];
   specification?: Maybe<Scalars['jsonb']>;
@@ -2978,6 +4321,7 @@ export type Template_Bool_Exp = {
   _not?: Maybe<Template_Bool_Exp>;
   _or?: Maybe<Array<Template_Bool_Exp>>;
   campaign_template_crosses?: Maybe<Campaign_Template_Cross_Bool_Exp>;
+  changed_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
   organization_id?: Maybe<Int_Comparison_Exp>;
   specification?: Maybe<Jsonb_Comparison_Exp>;
@@ -3016,6 +4360,7 @@ export type Template_Inc_Input = {
 /** input type for inserting data into table "template" */
 export type Template_Insert_Input = {
   campaign_template_crosses?: Maybe<Campaign_Template_Cross_Arr_Rel_Insert_Input>;
+  changed_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['Int']>;
   organization_id?: Maybe<Scalars['Int']>;
   specification?: Maybe<Scalars['jsonb']>;
@@ -3026,6 +4371,7 @@ export type Template_Insert_Input = {
 /** aggregate max on columns */
 export type Template_Max_Fields = {
   __typename?: 'template_max_fields';
+  changed_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['Int']>;
   organization_id?: Maybe<Scalars['Int']>;
   template_name?: Maybe<Scalars['String']>;
@@ -3035,6 +4381,7 @@ export type Template_Max_Fields = {
 /** aggregate min on columns */
 export type Template_Min_Fields = {
   __typename?: 'template_min_fields';
+  changed_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['Int']>;
   organization_id?: Maybe<Scalars['Int']>;
   template_name?: Maybe<Scalars['String']>;
@@ -3060,6 +4407,7 @@ export type Template_On_Conflict = {
 /** Ordering options when selecting data from "template". */
 export type Template_Order_By = {
   campaign_template_crosses_aggregate?: Maybe<Campaign_Template_Cross_Aggregate_Order_By>;
+  changed_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   organization_id?: Maybe<Order_By>;
   specification?: Maybe<Order_By>;
@@ -3077,8 +4425,14 @@ export type Template_Prepend_Input = {
   specification?: Maybe<Scalars['jsonb']>;
 };
 
+export type Template_Search_Args = {
+  _filter?: Maybe<Scalars['json']>;
+};
+
 /** select columns of table "template" */
 export enum Template_Select_Column {
+  /** column name */
+  ChangedAt = 'changed_at',
   /** column name */
   Id = 'id',
   /** column name */
@@ -3093,6 +4447,7 @@ export enum Template_Select_Column {
 
 /** input type for updating data in table "template" */
 export type Template_Set_Input = {
+  changed_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['Int']>;
   organization_id?: Maybe<Scalars['Int']>;
   specification?: Maybe<Scalars['jsonb']>;
@@ -3400,6 +4755,8 @@ export type Template_Type_Variance_Fields = {
 /** update columns of table "template" */
 export enum Template_Update_Column {
   /** column name */
+  ChangedAt = 'changed_at',
+  /** column name */
   Id = 'id',
   /** column name */
   OrganizationId = 'organization_id',
@@ -3452,14 +4809,42 @@ export type Timestamptz_Comparison_Exp = {
 /** columns and relationships of "user" */
 export type User = {
   __typename?: 'user';
+  changed_at?: Maybe<Scalars['timestamptz']>;
   external_user_id?: Maybe<Scalars['String']>;
+  first_name?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   initials?: Maybe<Scalars['String']>;
+  last_name?: Maybe<Scalars['String']>;
+  /** An array relationship */
+  organization_users: Array<Organization_User>;
+  /** An aggregate relationship */
+  organization_users_aggregate: Organization_User_Aggregate;
+  phone?: Maybe<Scalars['String']>;
   user_email: Scalars['String'];
   /** A computed field, executes function "user_hasura_session" */
   user_hasura_session?: Maybe<Scalars['jsonb']>;
   /** A computed field, executes function "user_organizations" */
   user_organizations?: Maybe<Array<Organization>>;
+};
+
+
+/** columns and relationships of "user" */
+export type UserOrganization_UsersArgs = {
+  distinct_on?: Maybe<Array<Organization_User_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Organization_User_Order_By>>;
+  where?: Maybe<Organization_User_Bool_Exp>;
+};
+
+
+/** columns and relationships of "user" */
+export type UserOrganization_Users_AggregateArgs = {
+  distinct_on?: Maybe<Array<Organization_User_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Organization_User_Order_By>>;
+  where?: Maybe<Organization_User_Bool_Exp>;
 };
 
 
@@ -3519,9 +4904,14 @@ export type User_Bool_Exp = {
   _and?: Maybe<Array<User_Bool_Exp>>;
   _not?: Maybe<User_Bool_Exp>;
   _or?: Maybe<Array<User_Bool_Exp>>;
+  changed_at?: Maybe<Timestamptz_Comparison_Exp>;
   external_user_id?: Maybe<String_Comparison_Exp>;
+  first_name?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
   initials?: Maybe<String_Comparison_Exp>;
+  last_name?: Maybe<String_Comparison_Exp>;
+  organization_users?: Maybe<Organization_User_Bool_Exp>;
+  phone?: Maybe<String_Comparison_Exp>;
   user_email?: Maybe<String_Comparison_Exp>;
   user_hasura_session?: Maybe<Jsonb_Comparison_Exp>;
   user_organizations?: Maybe<Organization_Bool_Exp>;
@@ -3544,27 +4934,40 @@ export type User_Inc_Input = {
 
 /** input type for inserting data into table "user" */
 export type User_Insert_Input = {
+  changed_at?: Maybe<Scalars['timestamptz']>;
   external_user_id?: Maybe<Scalars['String']>;
+  first_name?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   initials?: Maybe<Scalars['String']>;
+  last_name?: Maybe<Scalars['String']>;
+  organization_users?: Maybe<Organization_User_Arr_Rel_Insert_Input>;
+  phone?: Maybe<Scalars['String']>;
   user_email?: Maybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
 export type User_Max_Fields = {
   __typename?: 'user_max_fields';
+  changed_at?: Maybe<Scalars['timestamptz']>;
   external_user_id?: Maybe<Scalars['String']>;
+  first_name?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   initials?: Maybe<Scalars['String']>;
+  last_name?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
   user_email?: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
 export type User_Min_Fields = {
   __typename?: 'user_min_fields';
+  changed_at?: Maybe<Scalars['timestamptz']>;
   external_user_id?: Maybe<Scalars['String']>;
+  first_name?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   initials?: Maybe<Scalars['String']>;
+  last_name?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
   user_email?: Maybe<Scalars['String']>;
 };
 
@@ -3577,6 +4980,13 @@ export type User_Mutation_Response = {
   returning: Array<User>;
 };
 
+/** input type for inserting object relation for remote table "user" */
+export type User_Obj_Rel_Insert_Input = {
+  data: User_Insert_Input;
+  /** upsert condition */
+  on_conflict?: Maybe<User_On_Conflict>;
+};
+
 /** on_conflict condition type for table "user" */
 export type User_On_Conflict = {
   constraint: User_Constraint;
@@ -3586,309 +4996,17 @@ export type User_On_Conflict = {
 
 /** Ordering options when selecting data from "user". */
 export type User_Order_By = {
+  changed_at?: Maybe<Order_By>;
   external_user_id?: Maybe<Order_By>;
+  first_name?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   initials?: Maybe<Order_By>;
+  last_name?: Maybe<Order_By>;
+  organization_users_aggregate?: Maybe<Organization_User_Aggregate_Order_By>;
+  phone?: Maybe<Order_By>;
   user_email?: Maybe<Order_By>;
   user_hasura_session?: Maybe<Order_By>;
   user_organizations_aggregate?: Maybe<Organization_Aggregate_Order_By>;
-};
-
-/** columns and relationships of "user_organization_role" */
-export type User_Organization_Role = {
-  __typename?: 'user_organization_role';
-  organization_id: Scalars['Int'];
-  role_id: Scalars['Int'];
-  user_id: Scalars['Int'];
-};
-
-/** aggregated selection of "user_organization_role" */
-export type User_Organization_Role_Aggregate = {
-  __typename?: 'user_organization_role_aggregate';
-  aggregate?: Maybe<User_Organization_Role_Aggregate_Fields>;
-  nodes: Array<User_Organization_Role>;
-};
-
-/** aggregate fields of "user_organization_role" */
-export type User_Organization_Role_Aggregate_Fields = {
-  __typename?: 'user_organization_role_aggregate_fields';
-  avg?: Maybe<User_Organization_Role_Avg_Fields>;
-  count: Scalars['Int'];
-  max?: Maybe<User_Organization_Role_Max_Fields>;
-  min?: Maybe<User_Organization_Role_Min_Fields>;
-  stddev?: Maybe<User_Organization_Role_Stddev_Fields>;
-  stddev_pop?: Maybe<User_Organization_Role_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<User_Organization_Role_Stddev_Samp_Fields>;
-  sum?: Maybe<User_Organization_Role_Sum_Fields>;
-  var_pop?: Maybe<User_Organization_Role_Var_Pop_Fields>;
-  var_samp?: Maybe<User_Organization_Role_Var_Samp_Fields>;
-  variance?: Maybe<User_Organization_Role_Variance_Fields>;
-};
-
-
-/** aggregate fields of "user_organization_role" */
-export type User_Organization_Role_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<User_Organization_Role_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "user_organization_role" */
-export type User_Organization_Role_Aggregate_Order_By = {
-  avg?: Maybe<User_Organization_Role_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<User_Organization_Role_Max_Order_By>;
-  min?: Maybe<User_Organization_Role_Min_Order_By>;
-  stddev?: Maybe<User_Organization_Role_Stddev_Order_By>;
-  stddev_pop?: Maybe<User_Organization_Role_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<User_Organization_Role_Stddev_Samp_Order_By>;
-  sum?: Maybe<User_Organization_Role_Sum_Order_By>;
-  var_pop?: Maybe<User_Organization_Role_Var_Pop_Order_By>;
-  var_samp?: Maybe<User_Organization_Role_Var_Samp_Order_By>;
-  variance?: Maybe<User_Organization_Role_Variance_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "user_organization_role" */
-export type User_Organization_Role_Arr_Rel_Insert_Input = {
-  data: Array<User_Organization_Role_Insert_Input>;
-  /** upsert condition */
-  on_conflict?: Maybe<User_Organization_Role_On_Conflict>;
-};
-
-/** aggregate avg on columns */
-export type User_Organization_Role_Avg_Fields = {
-  __typename?: 'user_organization_role_avg_fields';
-  organization_id?: Maybe<Scalars['Float']>;
-  role_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
-};
-
-/** order by avg() on columns of table "user_organization_role" */
-export type User_Organization_Role_Avg_Order_By = {
-  organization_id?: Maybe<Order_By>;
-  role_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
-};
-
-/** Boolean expression to filter rows from the table "user_organization_role". All fields are combined with a logical 'AND'. */
-export type User_Organization_Role_Bool_Exp = {
-  _and?: Maybe<Array<User_Organization_Role_Bool_Exp>>;
-  _not?: Maybe<User_Organization_Role_Bool_Exp>;
-  _or?: Maybe<Array<User_Organization_Role_Bool_Exp>>;
-  organization_id?: Maybe<Int_Comparison_Exp>;
-  role_id?: Maybe<Int_Comparison_Exp>;
-  user_id?: Maybe<Int_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "user_organization_role" */
-export enum User_Organization_Role_Constraint {
-  /** unique or primary key constraint */
-  UserOrganizationRolePk = 'user_organization_role_pk'
-}
-
-/** input type for incrementing numeric columns in table "user_organization_role" */
-export type User_Organization_Role_Inc_Input = {
-  organization_id?: Maybe<Scalars['Int']>;
-  role_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
-};
-
-/** input type for inserting data into table "user_organization_role" */
-export type User_Organization_Role_Insert_Input = {
-  organization_id?: Maybe<Scalars['Int']>;
-  role_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
-};
-
-/** aggregate max on columns */
-export type User_Organization_Role_Max_Fields = {
-  __typename?: 'user_organization_role_max_fields';
-  organization_id?: Maybe<Scalars['Int']>;
-  role_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
-};
-
-/** order by max() on columns of table "user_organization_role" */
-export type User_Organization_Role_Max_Order_By = {
-  organization_id?: Maybe<Order_By>;
-  role_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type User_Organization_Role_Min_Fields = {
-  __typename?: 'user_organization_role_min_fields';
-  organization_id?: Maybe<Scalars['Int']>;
-  role_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
-};
-
-/** order by min() on columns of table "user_organization_role" */
-export type User_Organization_Role_Min_Order_By = {
-  organization_id?: Maybe<Order_By>;
-  role_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
-};
-
-/** response of any mutation on the table "user_organization_role" */
-export type User_Organization_Role_Mutation_Response = {
-  __typename?: 'user_organization_role_mutation_response';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<User_Organization_Role>;
-};
-
-/** on_conflict condition type for table "user_organization_role" */
-export type User_Organization_Role_On_Conflict = {
-  constraint: User_Organization_Role_Constraint;
-  update_columns?: Array<User_Organization_Role_Update_Column>;
-  where?: Maybe<User_Organization_Role_Bool_Exp>;
-};
-
-/** Ordering options when selecting data from "user_organization_role". */
-export type User_Organization_Role_Order_By = {
-  organization_id?: Maybe<Order_By>;
-  role_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
-};
-
-/** primary key columns input for table: user_organization_role */
-export type User_Organization_Role_Pk_Columns_Input = {
-  organization_id: Scalars['Int'];
-  role_id: Scalars['Int'];
-  user_id: Scalars['Int'];
-};
-
-/** select columns of table "user_organization_role" */
-export enum User_Organization_Role_Select_Column {
-  /** column name */
-  OrganizationId = 'organization_id',
-  /** column name */
-  RoleId = 'role_id',
-  /** column name */
-  UserId = 'user_id'
-}
-
-/** input type for updating data in table "user_organization_role" */
-export type User_Organization_Role_Set_Input = {
-  organization_id?: Maybe<Scalars['Int']>;
-  role_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
-};
-
-/** aggregate stddev on columns */
-export type User_Organization_Role_Stddev_Fields = {
-  __typename?: 'user_organization_role_stddev_fields';
-  organization_id?: Maybe<Scalars['Float']>;
-  role_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev() on columns of table "user_organization_role" */
-export type User_Organization_Role_Stddev_Order_By = {
-  organization_id?: Maybe<Order_By>;
-  role_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
-};
-
-/** aggregate stddev_pop on columns */
-export type User_Organization_Role_Stddev_Pop_Fields = {
-  __typename?: 'user_organization_role_stddev_pop_fields';
-  organization_id?: Maybe<Scalars['Float']>;
-  role_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_pop() on columns of table "user_organization_role" */
-export type User_Organization_Role_Stddev_Pop_Order_By = {
-  organization_id?: Maybe<Order_By>;
-  role_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
-};
-
-/** aggregate stddev_samp on columns */
-export type User_Organization_Role_Stddev_Samp_Fields = {
-  __typename?: 'user_organization_role_stddev_samp_fields';
-  organization_id?: Maybe<Scalars['Float']>;
-  role_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_samp() on columns of table "user_organization_role" */
-export type User_Organization_Role_Stddev_Samp_Order_By = {
-  organization_id?: Maybe<Order_By>;
-  role_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
-};
-
-/** aggregate sum on columns */
-export type User_Organization_Role_Sum_Fields = {
-  __typename?: 'user_organization_role_sum_fields';
-  organization_id?: Maybe<Scalars['Int']>;
-  role_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
-};
-
-/** order by sum() on columns of table "user_organization_role" */
-export type User_Organization_Role_Sum_Order_By = {
-  organization_id?: Maybe<Order_By>;
-  role_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
-};
-
-/** update columns of table "user_organization_role" */
-export enum User_Organization_Role_Update_Column {
-  /** column name */
-  OrganizationId = 'organization_id',
-  /** column name */
-  RoleId = 'role_id',
-  /** column name */
-  UserId = 'user_id'
-}
-
-/** aggregate var_pop on columns */
-export type User_Organization_Role_Var_Pop_Fields = {
-  __typename?: 'user_organization_role_var_pop_fields';
-  organization_id?: Maybe<Scalars['Float']>;
-  role_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_pop() on columns of table "user_organization_role" */
-export type User_Organization_Role_Var_Pop_Order_By = {
-  organization_id?: Maybe<Order_By>;
-  role_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
-};
-
-/** aggregate var_samp on columns */
-export type User_Organization_Role_Var_Samp_Fields = {
-  __typename?: 'user_organization_role_var_samp_fields';
-  organization_id?: Maybe<Scalars['Float']>;
-  role_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_samp() on columns of table "user_organization_role" */
-export type User_Organization_Role_Var_Samp_Order_By = {
-  organization_id?: Maybe<Order_By>;
-  role_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
-};
-
-/** aggregate variance on columns */
-export type User_Organization_Role_Variance_Fields = {
-  __typename?: 'user_organization_role_variance_fields';
-  organization_id?: Maybe<Scalars['Float']>;
-  role_id?: Maybe<Scalars['Float']>;
-  user_id?: Maybe<Scalars['Float']>;
-};
-
-/** order by variance() on columns of table "user_organization_role" */
-export type User_Organization_Role_Variance_Order_By = {
-  organization_id?: Maybe<Order_By>;
-  role_id?: Maybe<Order_By>;
-  user_id?: Maybe<Order_By>;
 };
 
 /** primary key columns input for table: user */
@@ -3899,20 +5017,32 @@ export type User_Pk_Columns_Input = {
 /** select columns of table "user" */
 export enum User_Select_Column {
   /** column name */
+  ChangedAt = 'changed_at',
+  /** column name */
   ExternalUserId = 'external_user_id',
+  /** column name */
+  FirstName = 'first_name',
   /** column name */
   Id = 'id',
   /** column name */
   Initials = 'initials',
+  /** column name */
+  LastName = 'last_name',
+  /** column name */
+  Phone = 'phone',
   /** column name */
   UserEmail = 'user_email'
 }
 
 /** input type for updating data in table "user" */
 export type User_Set_Input = {
+  changed_at?: Maybe<Scalars['timestamptz']>;
   external_user_id?: Maybe<Scalars['String']>;
+  first_name?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   initials?: Maybe<Scalars['String']>;
+  last_name?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
   user_email?: Maybe<Scalars['String']>;
 };
 
@@ -3943,11 +5073,19 @@ export type User_Sum_Fields = {
 /** update columns of table "user" */
 export enum User_Update_Column {
   /** column name */
+  ChangedAt = 'changed_at',
+  /** column name */
   ExternalUserId = 'external_user_id',
+  /** column name */
+  FirstName = 'first_name',
   /** column name */
   Id = 'id',
   /** column name */
   Initials = 'initials',
+  /** column name */
+  LastName = 'last_name',
+  /** column name */
+  Phone = 'phone',
   /** column name */
   UserEmail = 'user_email'
 }
