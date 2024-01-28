@@ -67,15 +67,15 @@ export const createAuth0UserIfNotExist = async (intl, section: string, data: Aut
   if (errOrToken.error) {
     return errOrToken;
   }
-  const token = errOrToken.data;console.log('--1');
+  const token = errOrToken.data;
   //
   const errOrAuth0Users = await getAuth0UserByEmail(intl, section, token, data.user_email);
   if (errOrAuth0Users.error) {
     return errOrAuth0Users;
   }
-  const auth0Users = errOrAuth0Users.data;console.log('--2');
+  const auth0Users = errOrAuth0Users.data;
   if (auth0Users.length === 0) {
-    const errOrAuth0User = await createAuth0User(intl, section, token, data.user_email, data.password);console.log('--3');
+    const errOrAuth0User = await createAuth0User(intl, section, token, data.user_email, data.password);
     if (errOrAuth0User.error) {
       return errOrAuth0User;
     }

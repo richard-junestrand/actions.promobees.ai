@@ -51,7 +51,7 @@ export const createAuth0User = async (intl, section: string, token: string, emai
         data: {
             email,
             password,
-            connection: 'democamajudb'
+            connection: 'promobeesdb'
         }
     });
 }
