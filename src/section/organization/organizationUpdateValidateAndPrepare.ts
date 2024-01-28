@@ -24,7 +24,7 @@ const organizationUpdateValidateAndPrepare = async (intl: IntlShape<string>,isDe
     return errOrOrg.error;
   }
   const organization = errOrOrg.data;
-  if (!hasUserRole(organization.user_organization_roles.map(r=> r.role_id), [Role.OrganizationAdministration])) {
+  if (!hasUserRole(organization.role_ids, [Role.OrganizationAdministration])) {
     return await customError(intl,1, section)
   }
   //

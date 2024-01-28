@@ -20,7 +20,7 @@ const handlers = [
   'campaignInsert', 'campaignUpdate', 'campaignDelete', 'campaignPreview',
   'templateInsert', 'templateUpdate', 'templateDelete',
   'userUpdate', 'userResetPassword',
-  'organizationUpdate',
+  'organizationInsert','organizationUpdate',
   'organizationUserInsert','organizationUserUpdate','organizationUserDelete'
 ];
 app.post(`/:route(${handlers.join('|')})`, express.json({ limit: '40mb' }), authorizationMiddleware,
