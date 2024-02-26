@@ -7,6 +7,6 @@ export const getCountryById = async (id: number) => {
           id
         }
       }`, {
-      id: id
+      id
     });
   }

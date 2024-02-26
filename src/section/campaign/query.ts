@@ -7,7 +7,7 @@ export const getCampaignTypeById = async (id: number) => {
         id
       }
     }`, {
-    id: id
+    id
   });
 }
 
@@ -18,6 +18,6 @@ export const getCampaignById = async (id: number) => {
       organization_id
     }
   }`, {
-    id: id
+    id
   });
 }

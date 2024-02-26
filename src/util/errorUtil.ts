@@ -78,6 +78,15 @@ errors.set(150040, {id: "message.error-duplicated-value2", params: ["user_id", "
 errors.set(160000, {id: "message.error-invalid-int", params: ["role_id"] });
 errors.set(160010, {id: "message.error-invalid-value", params: ["role_id"] });
 
+// connection
+errors.set(170000, {id: "message.error-invalid-int", params: ["id"] });
+errors.set(170010, {id: "message.error-invalid-value", params: ["id"] });
+errors.set(170020, {id: "message.error-invalid-int", params: ["organization_id"] });
+errors.set(170030, {id: "message.error-organization-session" });
+errors.set(170040, {id: "message.error-duplicated-value2", params: ["connection_type_id", "organization_id"] });
+errors.set(170050, {id: "message.error-invalid-int", params: ["connection_type_id"] });
+errors.set(170080, {id: "message.error-invalid-value", params: ["connection_type_id"] });
+
 export const customError = async (intl: IntlShape, id: number, section: string, params = null, extra = null): Promise<ActionOutputError> => {
     const err = errors.get(id) || {
         id: params ? "message.error-detail" : "message.error",

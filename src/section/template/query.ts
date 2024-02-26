@@ -22,7 +22,7 @@ export const getTemplateById = async (id: number, type=TemplateQueryType.Default
         ${fields}
       }
     }`, {
-    id: id
+    id
   });
 }
 
@@ -33,6 +33,6 @@ export const getTemplateTypeById = async (id: number) => {
         id
       }
     }`, {
-    id: id
+    id
   });
 }

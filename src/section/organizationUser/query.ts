@@ -37,6 +37,6 @@ export const getOrganizationUserById = async (id: number, type=OrganizationUserQ
         ${fields}
       }
     }`, {
-    id: id
+    id
   });
 }

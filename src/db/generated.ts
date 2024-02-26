@@ -129,6 +129,114 @@ export type Int_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['Int']>>;
 };
 
+export type OrganizationInsertInput = {
+  city?: Maybe<Scalars['String']>;
+  country_id?: Maybe<Scalars['Int']>;
+  info_email?: Maybe<Scalars['String']>;
+  invoice_email?: Maybe<Scalars['String']>;
+  locale?: Maybe<Scalars['String']>;
+  organization_name?: Maybe<Scalars['String']>;
+  organization_reg_nr?: Maybe<Scalars['String']>;
+  payment_type_id?: Maybe<Scalars['Int']>;
+  street_address?: Maybe<Scalars['String']>;
+  vat_nr?: Maybe<Scalars['String']>;
+  zipcode?: Maybe<Scalars['String']>;
+};
+
+export type OrganizationInsertOutput = {
+  __typename?: 'OrganizationInsertOutput';
+  id?: Maybe<Scalars['Int']>;
+};
+
+export type OrganizationUpdateInput = {
+  city?: Maybe<Scalars['String']>;
+  country_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  info_email?: Maybe<Scalars['String']>;
+  invoice_email?: Maybe<Scalars['String']>;
+  locale?: Maybe<Scalars['String']>;
+  organization_name?: Maybe<Scalars['String']>;
+  organization_reg_nr?: Maybe<Scalars['String']>;
+  payment_type_id?: Maybe<Scalars['Int']>;
+  street_address?: Maybe<Scalars['String']>;
+  vat_nr?: Maybe<Scalars['String']>;
+  zipcode?: Maybe<Scalars['String']>;
+};
+
+export type OrganizationUpdateOutput = {
+  __typename?: 'OrganizationUpdateOutput';
+  id?: Maybe<Scalars['Int']>;
+};
+
+export type OrganizationUserDeleteInput = {
+  id?: Maybe<Scalars['Int']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+export type OrganizationUserDeleteOutput = {
+  __typename?: 'OrganizationUserDeleteOutput';
+  id?: Maybe<Scalars['Int']>;
+};
+
+export type OrganizationUserInsertInput = {
+  locale?: Maybe<Scalars['String']>;
+  organization_id?: Maybe<Scalars['Int']>;
+  organization_user_roles?: Maybe<OrganizationUserInsertRolesRelInsertInput>;
+  user?: Maybe<OrganizationUserInsertUserRelInsertInput>;
+};
+
+export type OrganizationUserInsertOutput = {
+  __typename?: 'OrganizationUserInsertOutput';
+  id?: Maybe<Scalars['Int']>;
+};
+
+export type OrganizationUserInsertRoleInsertInput = {
+  role_id?: Maybe<Scalars['Int']>;
+};
+
+export type OrganizationUserInsertRolesRelInsertInput = {
+  data: Array<OrganizationUserInsertRoleInsertInput>;
+};
+
+export type OrganizationUserInsertUserInsertInput = {
+  user_email?: Maybe<Scalars['String']>;
+};
+
+export type OrganizationUserInsertUserRelInsertInput = {
+  data: OrganizationUserInsertUserInsertInput;
+};
+
+export type OrganizationUserUpdateInput = {
+  id?: Maybe<Scalars['Int']>;
+  locale?: Maybe<Scalars['String']>;
+  organization_user_roles?: Maybe<OrganizationUserUpdateRolesRelUpdateInput>;
+  user?: Maybe<OrganizationUserUpdateUserRelUpdateInput>;
+};
+
+export type OrganizationUserUpdateOutput = {
+  __typename?: 'OrganizationUserUpdateOutput';
+  id?: Maybe<Scalars['Int']>;
+};
+
+export type OrganizationUserUpdateRoleUpdateInput = {
+  role_id?: Maybe<Scalars['Int']>;
+};
+
+export type OrganizationUserUpdateRolesRelUpdateInput = {
+  data: Array<OrganizationUserUpdateRoleUpdateInput>;
+};
+
+export type OrganizationUserUpdateUserRelUpdateInput = {
+  data: OrganizationUserUpdateUserUpdateInput;
+};
+
+export type OrganizationUserUpdateUserUpdateInput = {
+  first_name?: Maybe<Scalars['String']>;
+  initials?: Maybe<Scalars['String']>;
+  last_name?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+};
+
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
 export type String_Comparison_Exp = {
   _eq?: Maybe<Scalars['String']>;
@@ -196,31 +304,6 @@ export type TemplateUpdateInput = {
 export type TemplateUpdateOutput = {
   __typename?: 'TemplateUpdateOutput';
   id?: Maybe<Scalars['Int']>;
-};
-
-export type UserOrganizationUpdateInput = {
-  locale?: Maybe<Scalars['String']>;
-  organization_id?: Maybe<Scalars['Int']>;
-  role_ids: Array<Scalars['Int']>;
-  user?: Maybe<UserOrganizationUserRelUpdateInput>;
-  user_id?: Maybe<Scalars['Int']>;
-};
-
-export type UserOrganizationUpdateOutput = {
-  __typename?: 'UserOrganizationUpdateOutput';
-  organization_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
-};
-
-export type UserOrganizationUserRelUpdateInput = {
-  data?: Maybe<UserOrganizationUserUpdateInput>;
-};
-
-export type UserOrganizationUserUpdateInput = {
-  first_name?: Maybe<Scalars['String']>;
-  initials?: Maybe<Scalars['String']>;
-  last_name?: Maybe<Scalars['String']>;
-  phone?: Maybe<Scalars['String']>;
 };
 
 export type UserResetPasswordInput = {
@@ -1198,6 +1281,530 @@ export type Campaign_Variance_Fields = {
   organization_id?: Maybe<Scalars['Float']>;
 };
 
+/** columns and relationships of "connection" */
+export type Connection = {
+  __typename?: 'connection';
+  /** An object relationship */
+  connection_type: Connection_Type;
+  connection_type_id: Scalars['Int'];
+  credentials?: Maybe<Scalars['jsonb']>;
+  id: Scalars['Int'];
+  organization_id: Scalars['Int'];
+};
+
+
+/** columns and relationships of "connection" */
+export type ConnectionCredentialsArgs = {
+  path?: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "connection" */
+export type Connection_Aggregate = {
+  __typename?: 'connection_aggregate';
+  aggregate?: Maybe<Connection_Aggregate_Fields>;
+  nodes: Array<Connection>;
+};
+
+/** aggregate fields of "connection" */
+export type Connection_Aggregate_Fields = {
+  __typename?: 'connection_aggregate_fields';
+  avg?: Maybe<Connection_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Connection_Max_Fields>;
+  min?: Maybe<Connection_Min_Fields>;
+  stddev?: Maybe<Connection_Stddev_Fields>;
+  stddev_pop?: Maybe<Connection_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Connection_Stddev_Samp_Fields>;
+  sum?: Maybe<Connection_Sum_Fields>;
+  var_pop?: Maybe<Connection_Var_Pop_Fields>;
+  var_samp?: Maybe<Connection_Var_Samp_Fields>;
+  variance?: Maybe<Connection_Variance_Fields>;
+};
+
+
+/** aggregate fields of "connection" */
+export type Connection_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Connection_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Connection_Append_Input = {
+  credentials?: Maybe<Scalars['jsonb']>;
+};
+
+/** aggregate avg on columns */
+export type Connection_Avg_Fields = {
+  __typename?: 'connection_avg_fields';
+  connection_type_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  organization_id?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "connection". All fields are combined with a logical 'AND'. */
+export type Connection_Bool_Exp = {
+  _and?: Maybe<Array<Connection_Bool_Exp>>;
+  _not?: Maybe<Connection_Bool_Exp>;
+  _or?: Maybe<Array<Connection_Bool_Exp>>;
+  connection_type?: Maybe<Connection_Type_Bool_Exp>;
+  connection_type_id?: Maybe<Int_Comparison_Exp>;
+  credentials?: Maybe<Jsonb_Comparison_Exp>;
+  id?: Maybe<Int_Comparison_Exp>;
+  organization_id?: Maybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "connection" */
+export enum Connection_Constraint {
+  /** unique or primary key constraint */
+  ConnectionPk = 'connection_pk',
+  /** unique or primary key constraint */
+  IxConnectionOrganizationConnectionType = 'ix_connection_organization_connection_type'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Connection_Delete_At_Path_Input = {
+  credentials?: Maybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Connection_Delete_Elem_Input = {
+  credentials?: Maybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Connection_Delete_Key_Input = {
+  credentials?: Maybe<Scalars['String']>;
+};
+
+/** input type for incrementing numeric columns in table "connection" */
+export type Connection_Inc_Input = {
+  connection_type_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  organization_id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "connection" */
+export type Connection_Insert_Input = {
+  connection_type?: Maybe<Connection_Type_Obj_Rel_Insert_Input>;
+  connection_type_id?: Maybe<Scalars['Int']>;
+  credentials?: Maybe<Scalars['jsonb']>;
+  id?: Maybe<Scalars['Int']>;
+  organization_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Connection_Max_Fields = {
+  __typename?: 'connection_max_fields';
+  connection_type_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  organization_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type Connection_Min_Fields = {
+  __typename?: 'connection_min_fields';
+  connection_type_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  organization_id?: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "connection" */
+export type Connection_Mutation_Response = {
+  __typename?: 'connection_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Connection>;
+};
+
+/** on_conflict condition type for table "connection" */
+export type Connection_On_Conflict = {
+  constraint: Connection_Constraint;
+  update_columns?: Array<Connection_Update_Column>;
+  where?: Maybe<Connection_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "connection". */
+export type Connection_Order_By = {
+  connection_type?: Maybe<Connection_Type_Order_By>;
+  connection_type_id?: Maybe<Order_By>;
+  credentials?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: connection */
+export type Connection_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Connection_Prepend_Input = {
+  credentials?: Maybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "connection" */
+export enum Connection_Select_Column {
+  /** column name */
+  ConnectionTypeId = 'connection_type_id',
+  /** column name */
+  Credentials = 'credentials',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizationId = 'organization_id'
+}
+
+/** input type for updating data in table "connection" */
+export type Connection_Set_Input = {
+  connection_type_id?: Maybe<Scalars['Int']>;
+  credentials?: Maybe<Scalars['jsonb']>;
+  id?: Maybe<Scalars['Int']>;
+  organization_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Connection_Stddev_Fields = {
+  __typename?: 'connection_stddev_fields';
+  connection_type_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  organization_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Connection_Stddev_Pop_Fields = {
+  __typename?: 'connection_stddev_pop_fields';
+  connection_type_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  organization_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Connection_Stddev_Samp_Fields = {
+  __typename?: 'connection_stddev_samp_fields';
+  connection_type_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  organization_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Connection_Sum_Fields = {
+  __typename?: 'connection_sum_fields';
+  connection_type_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['Int']>;
+  organization_id?: Maybe<Scalars['Int']>;
+};
+
+/** columns and relationships of "connection_type" */
+export type Connection_Type = {
+  __typename?: 'connection_type';
+  connection_type_caption?: Maybe<Scalars['String']>;
+  connection_type_description?: Maybe<Scalars['String']>;
+  connection_type_description_translated?: Maybe<Scalars['jsonb']>;
+  connection_type_name?: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  order_by: Scalars['Int'];
+};
+
+
+/** columns and relationships of "connection_type" */
+export type Connection_TypeConnection_Type_Description_TranslatedArgs = {
+  path?: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "connection_type" */
+export type Connection_Type_Aggregate = {
+  __typename?: 'connection_type_aggregate';
+  aggregate?: Maybe<Connection_Type_Aggregate_Fields>;
+  nodes: Array<Connection_Type>;
+};
+
+/** aggregate fields of "connection_type" */
+export type Connection_Type_Aggregate_Fields = {
+  __typename?: 'connection_type_aggregate_fields';
+  avg?: Maybe<Connection_Type_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Connection_Type_Max_Fields>;
+  min?: Maybe<Connection_Type_Min_Fields>;
+  stddev?: Maybe<Connection_Type_Stddev_Fields>;
+  stddev_pop?: Maybe<Connection_Type_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Connection_Type_Stddev_Samp_Fields>;
+  sum?: Maybe<Connection_Type_Sum_Fields>;
+  var_pop?: Maybe<Connection_Type_Var_Pop_Fields>;
+  var_samp?: Maybe<Connection_Type_Var_Samp_Fields>;
+  variance?: Maybe<Connection_Type_Variance_Fields>;
+};
+
+
+/** aggregate fields of "connection_type" */
+export type Connection_Type_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Connection_Type_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Connection_Type_Append_Input = {
+  connection_type_description_translated?: Maybe<Scalars['jsonb']>;
+};
+
+/** aggregate avg on columns */
+export type Connection_Type_Avg_Fields = {
+  __typename?: 'connection_type_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+  order_by?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "connection_type". All fields are combined with a logical 'AND'. */
+export type Connection_Type_Bool_Exp = {
+  _and?: Maybe<Array<Connection_Type_Bool_Exp>>;
+  _not?: Maybe<Connection_Type_Bool_Exp>;
+  _or?: Maybe<Array<Connection_Type_Bool_Exp>>;
+  connection_type_caption?: Maybe<String_Comparison_Exp>;
+  connection_type_description?: Maybe<String_Comparison_Exp>;
+  connection_type_description_translated?: Maybe<Jsonb_Comparison_Exp>;
+  connection_type_name?: Maybe<String_Comparison_Exp>;
+  icon?: Maybe<String_Comparison_Exp>;
+  id?: Maybe<Int_Comparison_Exp>;
+  order_by?: Maybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "connection_type" */
+export enum Connection_Type_Constraint {
+  /** unique or primary key constraint */
+  ConnectionTypePk = 'connection_type_pk'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Connection_Type_Delete_At_Path_Input = {
+  connection_type_description_translated?: Maybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Connection_Type_Delete_Elem_Input = {
+  connection_type_description_translated?: Maybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Connection_Type_Delete_Key_Input = {
+  connection_type_description_translated?: Maybe<Scalars['String']>;
+};
+
+/** input type for incrementing numeric columns in table "connection_type" */
+export type Connection_Type_Inc_Input = {
+  id?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "connection_type" */
+export type Connection_Type_Insert_Input = {
+  connection_type_caption?: Maybe<Scalars['String']>;
+  connection_type_description?: Maybe<Scalars['String']>;
+  connection_type_description_translated?: Maybe<Scalars['jsonb']>;
+  connection_type_name?: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Connection_Type_Max_Fields = {
+  __typename?: 'connection_type_max_fields';
+  connection_type_caption?: Maybe<Scalars['String']>;
+  connection_type_description?: Maybe<Scalars['String']>;
+  connection_type_name?: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type Connection_Type_Min_Fields = {
+  __typename?: 'connection_type_min_fields';
+  connection_type_caption?: Maybe<Scalars['String']>;
+  connection_type_description?: Maybe<Scalars['String']>;
+  connection_type_name?: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "connection_type" */
+export type Connection_Type_Mutation_Response = {
+  __typename?: 'connection_type_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Connection_Type>;
+};
+
+/** input type for inserting object relation for remote table "connection_type" */
+export type Connection_Type_Obj_Rel_Insert_Input = {
+  data: Connection_Type_Insert_Input;
+  /** upsert condition */
+  on_conflict?: Maybe<Connection_Type_On_Conflict>;
+};
+
+/** on_conflict condition type for table "connection_type" */
+export type Connection_Type_On_Conflict = {
+  constraint: Connection_Type_Constraint;
+  update_columns?: Array<Connection_Type_Update_Column>;
+  where?: Maybe<Connection_Type_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "connection_type". */
+export type Connection_Type_Order_By = {
+  connection_type_caption?: Maybe<Order_By>;
+  connection_type_description?: Maybe<Order_By>;
+  connection_type_description_translated?: Maybe<Order_By>;
+  connection_type_name?: Maybe<Order_By>;
+  icon?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  order_by?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: connection_type */
+export type Connection_Type_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Connection_Type_Prepend_Input = {
+  connection_type_description_translated?: Maybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "connection_type" */
+export enum Connection_Type_Select_Column {
+  /** column name */
+  ConnectionTypeCaption = 'connection_type_caption',
+  /** column name */
+  ConnectionTypeDescription = 'connection_type_description',
+  /** column name */
+  ConnectionTypeDescriptionTranslated = 'connection_type_description_translated',
+  /** column name */
+  ConnectionTypeName = 'connection_type_name',
+  /** column name */
+  Icon = 'icon',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrderBy = 'order_by'
+}
+
+/** input type for updating data in table "connection_type" */
+export type Connection_Type_Set_Input = {
+  connection_type_caption?: Maybe<Scalars['String']>;
+  connection_type_description?: Maybe<Scalars['String']>;
+  connection_type_description_translated?: Maybe<Scalars['jsonb']>;
+  connection_type_name?: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Connection_Type_Stddev_Fields = {
+  __typename?: 'connection_type_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+  order_by?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Connection_Type_Stddev_Pop_Fields = {
+  __typename?: 'connection_type_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  order_by?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Connection_Type_Stddev_Samp_Fields = {
+  __typename?: 'connection_type_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  order_by?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Connection_Type_Sum_Fields = {
+  __typename?: 'connection_type_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "connection_type" */
+export enum Connection_Type_Update_Column {
+  /** column name */
+  ConnectionTypeCaption = 'connection_type_caption',
+  /** column name */
+  ConnectionTypeDescription = 'connection_type_description',
+  /** column name */
+  ConnectionTypeDescriptionTranslated = 'connection_type_description_translated',
+  /** column name */
+  ConnectionTypeName = 'connection_type_name',
+  /** column name */
+  Icon = 'icon',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrderBy = 'order_by'
+}
+
+/** aggregate var_pop on columns */
+export type Connection_Type_Var_Pop_Fields = {
+  __typename?: 'connection_type_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  order_by?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Connection_Type_Var_Samp_Fields = {
+  __typename?: 'connection_type_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  order_by?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Connection_Type_Variance_Fields = {
+  __typename?: 'connection_type_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+  order_by?: Maybe<Scalars['Float']>;
+};
+
+/** update columns of table "connection" */
+export enum Connection_Update_Column {
+  /** column name */
+  ConnectionTypeId = 'connection_type_id',
+  /** column name */
+  Credentials = 'credentials',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  OrganizationId = 'organization_id'
+}
+
+/** aggregate var_pop on columns */
+export type Connection_Var_Pop_Fields = {
+  __typename?: 'connection_var_pop_fields';
+  connection_type_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  organization_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Connection_Var_Samp_Fields = {
+  __typename?: 'connection_var_samp_fields';
+  connection_type_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  organization_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Connection_Variance_Fields = {
+  __typename?: 'connection_variance_fields';
+  connection_type_id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['Float']>;
+  organization_id?: Maybe<Scalars['Float']>;
+};
+
 /** columns and relationships of "country" */
 export type Country = {
   __typename?: 'country';
@@ -1465,10 +2072,14 @@ export type Mutation_Root = {
   CampaignPreview?: Maybe<CampaignPreviewOutput>;
   CampaignSourceFetch?: Maybe<CampaignSourceFetchOutput>;
   CampaignUpdate?: Maybe<CampaignUpdateOutput>;
+  OrganizationInsert?: Maybe<OrganizationInsertOutput>;
+  OrganizationUpdate?: Maybe<OrganizationUpdateOutput>;
+  OrganizationUserDelete?: Maybe<OrganizationUserDeleteOutput>;
+  OrganizationUserInsert?: Maybe<OrganizationUserInsertOutput>;
+  OrganizationUserUpdate?: Maybe<OrganizationUserUpdateOutput>;
   TemplateDelete?: Maybe<TemplateDeleteOutput>;
   TemplateInsert?: Maybe<TemplateInsertOutput>;
   TemplateUpdate?: Maybe<TemplateUpdateOutput>;
-  UserOrganizationUpdate?: Maybe<UserOrganizationUpdateOutput>;
   UserResetPassword?: Maybe<UserResetPasswordOutput>;
   UserUpdate?: Maybe<UserUpdateOutput>;
   /** delete data from the table: "campaign" */
@@ -1483,6 +2094,14 @@ export type Mutation_Root = {
   delete_campaign_type?: Maybe<Campaign_Type_Mutation_Response>;
   /** delete single row from the table: "campaign_type" */
   delete_campaign_type_by_pk?: Maybe<Campaign_Type>;
+  /** delete data from the table: "connection" */
+  delete_connection?: Maybe<Connection_Mutation_Response>;
+  /** delete single row from the table: "connection" */
+  delete_connection_by_pk?: Maybe<Connection>;
+  /** delete data from the table: "connection_type" */
+  delete_connection_type?: Maybe<Connection_Type_Mutation_Response>;
+  /** delete single row from the table: "connection_type" */
+  delete_connection_type_by_pk?: Maybe<Connection_Type>;
   /** delete data from the table: "country" */
   delete_country?: Maybe<Country_Mutation_Response>;
   /** delete single row from the table: "country" */
@@ -1527,6 +2146,14 @@ export type Mutation_Root = {
   insert_campaign_type?: Maybe<Campaign_Type_Mutation_Response>;
   /** insert a single row into the table: "campaign_type" */
   insert_campaign_type_one?: Maybe<Campaign_Type>;
+  /** insert data into the table: "connection" */
+  insert_connection?: Maybe<Connection_Mutation_Response>;
+  /** insert a single row into the table: "connection" */
+  insert_connection_one?: Maybe<Connection>;
+  /** insert data into the table: "connection_type" */
+  insert_connection_type?: Maybe<Connection_Type_Mutation_Response>;
+  /** insert a single row into the table: "connection_type" */
+  insert_connection_type_one?: Maybe<Connection_Type>;
   /** insert data into the table: "country" */
   insert_country?: Maybe<Country_Mutation_Response>;
   /** insert a single row into the table: "country" */
@@ -1571,6 +2198,14 @@ export type Mutation_Root = {
   update_campaign_type?: Maybe<Campaign_Type_Mutation_Response>;
   /** update single row of the table: "campaign_type" */
   update_campaign_type_by_pk?: Maybe<Campaign_Type>;
+  /** update data of the table: "connection" */
+  update_connection?: Maybe<Connection_Mutation_Response>;
+  /** update single row of the table: "connection" */
+  update_connection_by_pk?: Maybe<Connection>;
+  /** update data of the table: "connection_type" */
+  update_connection_type?: Maybe<Connection_Type_Mutation_Response>;
+  /** update single row of the table: "connection_type" */
+  update_connection_type_by_pk?: Maybe<Connection_Type>;
   /** update data of the table: "country" */
   update_country?: Maybe<Country_Mutation_Response>;
   /** update single row of the table: "country" */
@@ -1637,6 +2272,36 @@ export type Mutation_RootCampaignUpdateArgs = {
 
 
 /** mutation root */
+export type Mutation_RootOrganizationInsertArgs = {
+  data: OrganizationInsertInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootOrganizationUpdateArgs = {
+  data: OrganizationUpdateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootOrganizationUserDeleteArgs = {
+  data: OrganizationUserDeleteInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootOrganizationUserInsertArgs = {
+  data: OrganizationUserInsertInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootOrganizationUserUpdateArgs = {
+  data: OrganizationUserUpdateInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootTemplateDeleteArgs = {
   data: TemplateDeleteInput;
 };
@@ -1651,12 +2316,6 @@ export type Mutation_RootTemplateInsertArgs = {
 /** mutation root */
 export type Mutation_RootTemplateUpdateArgs = {
   data: TemplateUpdateInput;
-};
-
-
-/** mutation root */
-export type Mutation_RootUserOrganizationUpdateArgs = {
-  data: UserOrganizationUpdateInput;
 };
 
 
@@ -1704,6 +2363,30 @@ export type Mutation_RootDelete_Campaign_TypeArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Campaign_Type_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ConnectionArgs = {
+  where: Connection_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Connection_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Connection_TypeArgs = {
+  where: Connection_Type_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Connection_Type_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -1843,6 +2526,34 @@ export type Mutation_RootInsert_Campaign_TypeArgs = {
 export type Mutation_RootInsert_Campaign_Type_OneArgs = {
   object: Campaign_Type_Insert_Input;
   on_conflict?: Maybe<Campaign_Type_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ConnectionArgs = {
+  objects: Array<Connection_Insert_Input>;
+  on_conflict?: Maybe<Connection_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Connection_OneArgs = {
+  object: Connection_Insert_Input;
+  on_conflict?: Maybe<Connection_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Connection_TypeArgs = {
+  objects: Array<Connection_Type_Insert_Input>;
+  on_conflict?: Maybe<Connection_Type_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Connection_Type_OneArgs = {
+  object: Connection_Type_Insert_Input;
+  on_conflict?: Maybe<Connection_Type_On_Conflict>;
 };
 
 
@@ -2023,6 +2734,58 @@ export type Mutation_RootUpdate_Campaign_Type_By_PkArgs = {
   _inc?: Maybe<Campaign_Type_Inc_Input>;
   _set?: Maybe<Campaign_Type_Set_Input>;
   pk_columns: Campaign_Type_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ConnectionArgs = {
+  _append?: Maybe<Connection_Append_Input>;
+  _delete_at_path?: Maybe<Connection_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Connection_Delete_Elem_Input>;
+  _delete_key?: Maybe<Connection_Delete_Key_Input>;
+  _inc?: Maybe<Connection_Inc_Input>;
+  _prepend?: Maybe<Connection_Prepend_Input>;
+  _set?: Maybe<Connection_Set_Input>;
+  where: Connection_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Connection_By_PkArgs = {
+  _append?: Maybe<Connection_Append_Input>;
+  _delete_at_path?: Maybe<Connection_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Connection_Delete_Elem_Input>;
+  _delete_key?: Maybe<Connection_Delete_Key_Input>;
+  _inc?: Maybe<Connection_Inc_Input>;
+  _prepend?: Maybe<Connection_Prepend_Input>;
+  _set?: Maybe<Connection_Set_Input>;
+  pk_columns: Connection_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Connection_TypeArgs = {
+  _append?: Maybe<Connection_Type_Append_Input>;
+  _delete_at_path?: Maybe<Connection_Type_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Connection_Type_Delete_Elem_Input>;
+  _delete_key?: Maybe<Connection_Type_Delete_Key_Input>;
+  _inc?: Maybe<Connection_Type_Inc_Input>;
+  _prepend?: Maybe<Connection_Type_Prepend_Input>;
+  _set?: Maybe<Connection_Type_Set_Input>;
+  where: Connection_Type_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Connection_Type_By_PkArgs = {
+  _append?: Maybe<Connection_Type_Append_Input>;
+  _delete_at_path?: Maybe<Connection_Type_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Connection_Type_Delete_Elem_Input>;
+  _delete_key?: Maybe<Connection_Type_Delete_Key_Input>;
+  _inc?: Maybe<Connection_Type_Inc_Input>;
+  _prepend?: Maybe<Connection_Type_Prepend_Input>;
+  _set?: Maybe<Connection_Type_Set_Input>;
+  pk_columns: Connection_Type_Pk_Columns_Input;
 };
 
 
@@ -3306,6 +4069,18 @@ export type Query_Root = {
   campaign_type_aggregate: Campaign_Type_Aggregate;
   /** fetch data from the table: "campaign_type" using primary key columns */
   campaign_type_by_pk?: Maybe<Campaign_Type>;
+  /** fetch data from the table: "connection" */
+  connection: Array<Connection>;
+  /** fetch aggregated fields from the table: "connection" */
+  connection_aggregate: Connection_Aggregate;
+  /** fetch data from the table: "connection" using primary key columns */
+  connection_by_pk?: Maybe<Connection>;
+  /** fetch data from the table: "connection_type" */
+  connection_type: Array<Connection_Type>;
+  /** fetch aggregated fields from the table: "connection_type" */
+  connection_type_aggregate: Connection_Type_Aggregate;
+  /** fetch data from the table: "connection_type" using primary key columns */
+  connection_type_by_pk?: Maybe<Connection_Type>;
   /** fetch data from the table: "country" */
   country: Array<Country>;
   /** fetch aggregated fields from the table: "country" */
@@ -3446,6 +4221,52 @@ export type Query_RootCampaign_Type_AggregateArgs = {
 
 
 export type Query_RootCampaign_Type_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootConnectionArgs = {
+  distinct_on?: Maybe<Array<Connection_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Connection_Order_By>>;
+  where?: Maybe<Connection_Bool_Exp>;
+};
+
+
+export type Query_RootConnection_AggregateArgs = {
+  distinct_on?: Maybe<Array<Connection_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Connection_Order_By>>;
+  where?: Maybe<Connection_Bool_Exp>;
+};
+
+
+export type Query_RootConnection_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootConnection_TypeArgs = {
+  distinct_on?: Maybe<Array<Connection_Type_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Connection_Type_Order_By>>;
+  where?: Maybe<Connection_Type_Bool_Exp>;
+};
+
+
+export type Query_RootConnection_Type_AggregateArgs = {
+  distinct_on?: Maybe<Array<Connection_Type_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Connection_Type_Order_By>>;
+  where?: Maybe<Connection_Type_Bool_Exp>;
+};
+
+
+export type Query_RootConnection_Type_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -3884,6 +4705,18 @@ export type Subscription_Root = {
   campaign_type_aggregate: Campaign_Type_Aggregate;
   /** fetch data from the table: "campaign_type" using primary key columns */
   campaign_type_by_pk?: Maybe<Campaign_Type>;
+  /** fetch data from the table: "connection" */
+  connection: Array<Connection>;
+  /** fetch aggregated fields from the table: "connection" */
+  connection_aggregate: Connection_Aggregate;
+  /** fetch data from the table: "connection" using primary key columns */
+  connection_by_pk?: Maybe<Connection>;
+  /** fetch data from the table: "connection_type" */
+  connection_type: Array<Connection_Type>;
+  /** fetch aggregated fields from the table: "connection_type" */
+  connection_type_aggregate: Connection_Type_Aggregate;
+  /** fetch data from the table: "connection_type" using primary key columns */
+  connection_type_by_pk?: Maybe<Connection_Type>;
   /** fetch data from the table: "country" */
   country: Array<Country>;
   /** fetch aggregated fields from the table: "country" */
@@ -4024,6 +4857,52 @@ export type Subscription_RootCampaign_Type_AggregateArgs = {
 
 
 export type Subscription_RootCampaign_Type_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootConnectionArgs = {
+  distinct_on?: Maybe<Array<Connection_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Connection_Order_By>>;
+  where?: Maybe<Connection_Bool_Exp>;
+};
+
+
+export type Subscription_RootConnection_AggregateArgs = {
+  distinct_on?: Maybe<Array<Connection_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Connection_Order_By>>;
+  where?: Maybe<Connection_Bool_Exp>;
+};
+
+
+export type Subscription_RootConnection_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootConnection_TypeArgs = {
+  distinct_on?: Maybe<Array<Connection_Type_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Connection_Type_Order_By>>;
+  where?: Maybe<Connection_Type_Bool_Exp>;
+};
+
+
+export type Subscription_RootConnection_Type_AggregateArgs = {
+  distinct_on?: Maybe<Array<Connection_Type_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Connection_Type_Order_By>>;
+  where?: Maybe<Connection_Type_Bool_Exp>;
+};
+
+
+export type Subscription_RootConnection_Type_By_PkArgs = {
   id: Scalars['Int'];
 };
 
