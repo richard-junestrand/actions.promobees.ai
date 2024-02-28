@@ -6,12 +6,11 @@ export const changedSet = (val: any=null) => {
 }
 
 export const executeGraphqlBase = async (query: string, variables, url: string, headers: any=null): Promise<GraphqlOutput> => {
-    const vari = variables ? { variables: variables } : {};
     return (await axios({
         method: 'post',
         url,
         data: {
-            ...vari,
+            ...(variables ? { variables } : null),
             query: query
         },
         ...(headers?{headers}:null)

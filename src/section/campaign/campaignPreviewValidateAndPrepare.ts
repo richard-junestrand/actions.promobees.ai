@@ -5,6 +5,10 @@ import { IntlShape } from '@formatjs/intl';
 import { FacebookAdsApi, AdAccount } from 'facebook-nodejs-business-sdk';
 import { checkOrganizationId } from './util';
 import { customError } from '../../util/errorUtil';
+import { ConnectionQueryType, getConnection } from '../connection/query';
+import { ConnectionType } from '../connection';
+import { ErrorDatabase } from '../../util/stringUtil';
+import { Connection } from '../../db/generated';
 
 export type CampaignPreviewInput = OrganizationIdInput & {
   creative: any
@@ -18,9 +22,23 @@ const campaignPreviewValidateAndPrepare = async (intl: IntlShape<string>, isDev:
     return err;
   }
   //
-  const access_token = 'EAAEVNInZAIP8BOyjqbbmqm8xjNq4tEd60QXOa0I5RAo408HBiRq5XQSIfci6ZA4YwjZBUh6XjMavZBGsKxRjQ3EKUVEVr6S2neyS3GI5BlEvLLvZCXI7zbVFvsahRjJ3A2jvdWItPicqcbdzuaegQ0kJLs9vh4YHIZA5cEcMmJHLbIlQyKdr6Jlb0ZA8e8DuLkxsdIrRgFgZBwR7BEIw';
-  const id = 'act_101757620355129';
-  const pageId = '145818095467993';
+  const { errors, data: dataConnection } = await getConnection(ConnectionType.Meta, data.organization_id, ConnectionQueryType.Preview)
+  if (errors) {
+    isDev && console.log(errors[0]);
+    return await customError(intl, 0, section, [intl.formatMessage({ id: ErrorDatabase })]);
+  }
+  if(dataConnection.data.length===0) {
+    return await customError(intl, 100090, section, ['meta'])
+  }
+  const dbConnection: Connection=dataConnection.data[0]
+  const access_token = dbConnection.credentials?.longAccessToken?.access_token || '';
+  if(!!!access_token) {
+    return await customError(intl, 100100, section)
+  }
+  const adAccounts = dbConnection.credentials?.adAccounts?.data || [];
+  if(adAccounts.length===0){
+    return await customError(intl, 100110, section)
+  }
   const api = FacebookAdsApi.init(access_token);
   if (isDev) {
     api.setDebug(true);
@@ -32,7 +50,7 @@ const campaignPreviewValidateAndPrepare = async (intl: IntlShape<string>, isDev:
     'creative': data.creative,
     'ad_format': 'DESKTOP_FEED_STANDARD',
   };
-  const account=new AdAccount(id);
+  const account = new AdAccount(adAccounts[0].id);
   return await account.getGeneratePreviews(
     fields,
     params
@@ -41,7 +59,7 @@ const campaignPreviewValidateAndPrepare = async (intl: IntlShape<string>, isDev:
       data: r
     })
   }).catch(async r => {
-    return await customError(intl, 100080, section,[r?.response?.error_user_msg || r?.response?.error_user_title || r?.message || r]);
+    return await customError(intl, 100080, section, [r?.response?.error_user_msg || r?.response?.error_user_title || r?.message || r]);
   });
 };
 export default campaignPreviewValidateAndPrepare;

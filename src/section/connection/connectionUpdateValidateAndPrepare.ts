@@ -4,11 +4,12 @@ import { HasuraSession } from "../../handler/session"
 import { customError } from "../../util/errorUtil"
 import { Role, hasUserRole } from "../../util/roleUtil"
 import { IntlShape } from '@formatjs/intl';
-import { checkId } from "./util"
+import { checkCredentials, checkId } from "./util"
 import { ConnectionInput } from "."
 import { UserInput } from "../user"
 import { Connection } from "../../db/generated"
 import { changedSet } from "../../db/util"
+import { ConnectionQueryType } from "./query"
 
 export type ConnectionUpdateInput = ConnectionInput & UpdateInput<Connection> & {
   user?: RelInput<UserInput>
@@ -19,7 +20,7 @@ const connectionUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev
   def: MutationDefinition, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
   const section = "connectionUpdate"
   //
-  const errOrData = await checkId(intl, isDev, section, data);
+  const errOrData = await checkId(intl, isDev, section, data, ConnectionQueryType.Update);
   if (errOrData.error) {
     return errOrData.error;
   }
@@ -32,13 +33,17 @@ const connectionUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev
   const organization = errOrOrg.data;
   //
   if (!hasUserRole(organization.role_ids, [Role.OrganizationAdministration])) {
-    return await customError(intl,1, section)
+    return await customError(intl, 1, section)
   }
   //
   const updateCall = await def.newCall();
   let updateSet = changedSet();
   //
   if (data.hasOwnProperty('credentials')) {
+    const err = await checkCredentials(intl, isDev, section, data, data.db.connection_type_id)
+    if (err) {
+      return err
+    }
     updateSet = { ...updateSet, credentials: data.credentials };
   }
   //
