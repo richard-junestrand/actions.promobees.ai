@@ -44,6 +44,7 @@ const data={
     "message.error-170090": "Failed to exchange meta token.",
     "message.error-170100": "Failed to get meta user information.",
     "message.error-170110": "Failed to get meta user ad accounts.",
+    "message.error-170120": "Failed to get meta user accounts.",
 }
 
 export default data;

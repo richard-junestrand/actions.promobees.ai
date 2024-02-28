@@ -92,6 +92,7 @@ errors.set(170080, {id: "message.error-invalid-value", params: ["connection_type
 errors.set(170090, {id: "message.error-170090" });
 errors.set(170100, {id: "message.error-170100" });
 errors.set(170110, {id: "message.error-170110" });
+errors.set(170120, {id: "message.error-170120" });
 
 export const customError = async (intl: IntlShape, id: number, section: string, params = null, extra = null): Promise<ActionOutputError> => {
     const err = errors.get(id) || {

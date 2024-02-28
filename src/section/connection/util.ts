@@ -67,6 +67,19 @@ export const checkCredentials = async (intl, isDev: boolean, section: string, da
                     return await customError(intl, 170110, section)
                 }))
             }
+            if(!data.credentials.accounts){
+                tasks.push(axios.get('https://graph.facebook.com/v19.0/me/accounts', {
+                    params:
+                    {
+                        access_token: data.credentials.accessToken
+                    }
+                }).then(r => {
+                    data.credentials.accounts = r.data
+                    return null
+                }).catch(async err => {
+                    return await customError(intl, 170120, section)
+                }))
+            }
             if (!data.credentials.longAccessToken) {
                 //Get a Long-Lived User Access Token
                 tasks.push(axios.get('https://graph.facebook.com/v19.0/oauth/access_token', {

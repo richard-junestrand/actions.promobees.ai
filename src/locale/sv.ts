@@ -43,7 +43,8 @@ const data = {
     "message.error-130130": "Det gick inte att skapa användaren Auth0: {p0}.",
     "message.error-170090": "Misslyckades med att utbyta meta-token.",
     "message.error-170100": "Misslyckades med att få metaanvändarinformation.",
-    "message.error-170110": "Misslyckades med att få metaanvändarens annonskonton."
+    "message.error-170110": "Misslyckades med att få metaanvändarens annonskonton.",
+    "message.error-170120": "Det gick inte att hämta metaanvändarkonton."
 }
 
 export default data;
