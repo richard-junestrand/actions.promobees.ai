@@ -146,3 +146,15 @@ export const checkRelList = async <T>(intl, section: string, data: RelListInput<
     }
     return checkList(intl, section, data.data, funcValidate, err)
 }
+
+export function isDeepEqual(a, b) {
+    try {
+        assert.deepStrictEqual(a, b);
+    } catch (error) {
+        if (error.name === "AssertionError") {
+            return false;
+        }
+        throw error;
+    }
+    return true;
+}

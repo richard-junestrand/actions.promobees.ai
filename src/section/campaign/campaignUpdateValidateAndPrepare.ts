@@ -1,14 +1,15 @@
-import { ActionOutputError, Nullable, RelListInput, UpdateInput } from '../../handler';
+import { ActionOutputError, Nullable, RelListInput, UpdateInput, WithId } from '../../handler';
 import { CampaignInput } from '.';
 import { HasuraSession } from '../../handler/session';
 import { MutationDefinition } from '../../db';
-import { checkName, checkCampaignType, checkId, checkActive } from './util';
+import { checkName, checkCampaignType, checkId, checkActive, checkData } from './util';
 import { IntlShape } from '@formatjs/intl';
 import { Campaign } from '../../db/generated';
 import { changedSet } from '../../db/util';
 import campaignTemplateCrossUpdateValidateAndPrepare, { CampaignTemplateCrossUpdateInput } from '../campaignTemplateCross/campaignTemplateCrossUpdateValidateAndPrepare';
 import campaignTemplateCrossInsertValidateAndPrepare, { CampaignTemplateCrossInsertInput } from '../campaignTemplateCross/campaignTemplateCrossInsertValidateAndPrepare';
 import { checkList } from '../../util/dataUtil';
+import { CampaignQueryType } from './query';
 
 export type CampaignUpdateInput = CampaignInput & UpdateInput<Campaign> & {
   campaign_template_crosses: RelListInput<CampaignTemplateCrossUpdateInput | CampaignTemplateCrossInsertInput>
@@ -17,7 +18,7 @@ export type CampaignUpdateInput = CampaignInput & UpdateInput<Campaign> & {
 const campaignUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: CampaignUpdateInput, def: MutationDefinition, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
   const section = "campaignUpdate";
   //
-  const err = await checkId(intl, isDev, section, data, session);
+  const err = await checkId(intl, isDev, section, data, session, CampaignQueryType.Update);
   if (err) {
     return err;
   }
@@ -53,7 +54,11 @@ const campaignUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
     updateSet = { ...updateSet, source: data.source };
   }
   if (data.hasOwnProperty('data')) {
-    updateSet = { ...updateSet, data: data.data };
+    const updated = checkData(data, data.db.data);
+    if (updated) {
+      await logUpdate(def, data)
+      updateSet = { ...updateSet, data: data.data };
+    }    
   }
   if (data.hasOwnProperty('specification')) {
     updateSet = { ...updateSet, specification: data.specification };
@@ -103,3 +108,18 @@ const campaignUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
   return null;
 };
 export default campaignUpdateValidateAndPrepare;
+
+const logUpdate = async (def: MutationDefinition, data: WithId) => {
+  const call = await def.newCall();
+  call.parameter = `$p_${call.idx}: campaign_log_insert_input!`;
+  call.command = `
+      data_${call.idx}: insert_campaign_log_one(object: $p_${call.idx}) {
+        id
+      }`;
+  const variable = {};
+  variable[`p_${call.idx}`] = {
+    campaign_id: data.id,
+    log_type: 1
+  };
+  call.variable = variable;
+}

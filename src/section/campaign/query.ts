@@ -11,11 +11,25 @@ export const getCampaignTypeById = async (id: number) => {
   });
 }
 
-export const getCampaignById = async (id: number) => {
+export enum CampaignQueryType {
+  Default,
+  Update
+}
+
+export const getCampaignById = async (id: number, type=CampaignQueryType.Default) => {
+  let fields='';
+  switch(type){
+    case CampaignQueryType.Update:
+      fields=`
+      data
+      `;
+      break
+  }
   return await executeGraphql(`query ($id: Int!) {
     data:campaign_by_pk(id: $id){
       id
       organization_id
+      ${fields}
     }
   }`, {
     id
