@@ -34,9 +34,6 @@ const data={
     "message.error-invalid-sweden-zip-code": "Invalid zip code for Sweden (5 digits).",
     "message.error-no-permission": "You have no permission.",
     "message.error-100080": "Failed to generate previews: {p0}.",
-    "message.error-100090": "Connection {p0} not found.",
-    "message.error-100100": "Access token not found.",
-    "message.error-100110": "Ad accounts not found.",
     "message.error-130090": "Failed to get Auth0 token: {p0}.",
     "message.error-130100": "Failed to update Auth0 user password: {p0}.",
     "message.error-130120": "Failed to get Auth0 user: {p0}.",
@@ -45,6 +42,9 @@ const data={
     "message.error-170100": "Failed to get meta user information.",
     "message.error-170110": "Failed to get meta user ad accounts.",
     "message.error-170120": "Failed to get meta user accounts.",
+    "message.error-170130": "Connection {p0} not found.",
+    "message.error-170140": "Access token not found.",
+    "message.error-170150": "Ad accounts not found."
 }
 
 export default data;

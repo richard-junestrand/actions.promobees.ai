@@ -5,13 +5,11 @@ import { IntlShape } from '@formatjs/intl';
 import { FacebookAdsApi, AdAccount } from 'facebook-nodejs-business-sdk';
 import { checkOrganizationId } from './util';
 import { customError } from '../../util/errorUtil';
-import { ConnectionQueryType, getConnection } from '../connection/query';
-import { ConnectionType } from '../connection';
-import { ErrorDatabase } from '../../util/stringUtil';
-import { Connection } from '../../db/generated';
+import { ConnectionQueryType } from '../connection/query';
+import { checkOrganizationConnection } from '../connection/util';
 
 export type CampaignPreviewInput = OrganizationIdInput & {
-  creative: any
+  data: any
 }
 
 const campaignPreviewValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: CampaignPreviewInput, def: MutationDefinition, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
@@ -22,37 +20,33 @@ const campaignPreviewValidateAndPrepare = async (intl: IntlShape<string>, isDev:
     return err;
   }
   //
-  const { errors, data: dataConnection } = await getConnection(ConnectionType.Meta, data.organization_id, ConnectionQueryType.Preview)
-  if (errors) {
-    isDev && console.log(errors[0]);
-    return await customError(intl, 0, section, [intl.formatMessage({ id: ErrorDatabase })]);
+  const errOrConnection = await checkOrganizationConnection(intl, isDev, section, data, ConnectionQueryType.Preview)
+  if (errOrConnection.error) {
+    return errOrConnection.error;
   }
-  if(dataConnection.data.length===0) {
-    return await customError(intl, 100090, section, ['meta'])
-  }
-  const dbConnection: Connection=dataConnection.data[0]
-  const access_token = dbConnection.credentials?.longAccessToken?.access_token || '';
-  if(!!!access_token) {
-    return await customError(intl, 100100, section)
-  }
-  const adAccounts = dbConnection.credentials?.adAccounts?.data || [];
-  if(adAccounts.length===0){
-    return await customError(intl, 100110, section)
-  }
-  const api = FacebookAdsApi.init(access_token);
-  if (isDev) {
-    api.setDebug(true);
-  }
-
-  const fields = [
-  ];
+  const api = FacebookAdsApi.init(errOrConnection.data.credentials.longAccessToken.access_token);
+  isDev && api.setDebug(true);
+  //
   const params = {
-    'creative': data.creative,
+    'creative': {
+      object_story_spec: {
+        link_data: {
+          child_attachments: data.data.data.filter(r => !r.dont_use).slice(0,10).map(r => ({
+            description: r.data.description,
+            image_url: imageVal(r.data),
+            link: r.data.link,
+            name: r.data.name,
+          })),
+          link: data.data?.extra?.link_more || ''
+        },
+        page_id: data.data?.extra?.page_id || ''
+      }
+    },
     'ad_format': 'DESKTOP_FEED_STANDARD',
   };
-  const account = new AdAccount(adAccounts[0].id);
+  const account = new AdAccount(errOrConnection.data.credentials.adAccounts.data[0].id);
   return await account.getGeneratePreviews(
-    fields,
+    [],
     params
   ).then(r => {
     return returnValue(def, {
@@ -63,3 +57,11 @@ const campaignPreviewValidateAndPrepare = async (intl: IntlShape<string>, isDev:
   });
 };
 export default campaignPreviewValidateAndPrepare;
+
+function imageVal(r: any) {
+  const val=r.image_list || r.image
+  if(Array.isArray(val) && val.length>0){
+      return val[0]
+  }
+  return val
+}

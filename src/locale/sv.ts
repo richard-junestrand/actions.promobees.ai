@@ -34,9 +34,6 @@ const data = {
     "message.error-invalid-sweden-zip-code": "Ogiltigt postnummer för Sverige (5 siffror).",
     "message.error-no-permission": "Du har ingen behörighet.",
     "message.error-100080": "Generering av förhandsvisningar misslyckades: {p0}.",
-    "message.error-100090": "{p0} hittades inte.",
-    "message.error-100100": "Access token hittades inte.",
-    "message.error-100110": "Annonser hittades inte.",
     "message.error-130090": "Misslyckades med att få Auth0 token: {p0}.",
     "message.error-130100": "Uppdatering av Auth0-användarlösenordet misslyckades: {p0}.",
     "message.error-130120": "Det gick inte att få Auth0-användaren: {p0}.",
@@ -44,7 +41,10 @@ const data = {
     "message.error-170090": "Misslyckades med att utbyta meta-token.",
     "message.error-170100": "Misslyckades med att få metaanvändarinformation.",
     "message.error-170110": "Misslyckades med att få metaanvändarens annonskonton.",
-    "message.error-170120": "Det gick inte att hämta metaanvändarkonton."
+    "message.error-170120": "Det gick inte att hämta metaanvändarkonton.",
+    "message.error-170130": "{p0} hittades inte.",
+    "message.error-170140": "Access token hittades inte.",
+    "message.error-170150": "Annonser hittades inte.",
 }
 
 export default data;

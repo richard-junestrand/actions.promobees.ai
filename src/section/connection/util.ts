@@ -1,13 +1,14 @@
 import axios from "axios";
 import { ConnectionInput, ConnectionType } from ".";
 import { Connection } from "../../db/generated";
-import { ActionOutputError, ActionOutputErrorOrData, Nullable, UpdateInput } from "../../handler";
+import { ActionOutputError, ActionOutputErrorOrData, Nullable, OrganizationIdInput, UpdateInput } from "../../handler";
 import { HasuraSession } from "../../handler/session";
 import { checkDataBase, checkDataExistBase } from "../../util/dataUtil";
 import { customError } from "../../util/errorUtil";
 import { checkOrganizationDataBase, checkOrganizationIdBase } from "../organization/util";
 import { ConnectionInsertInput } from "./connectionInsertValidateAndPrepare";
 import { ConnectionQueryType, getConnection, getConnectionById, getConnectionTypeById } from "./query";
+import { ErrorDatabase } from "../../util/stringUtil";
 
 export const checkConnectionBase = async (intl, isDev: boolean, section: string, val: number, errs: number[], type = ConnectionQueryType.Default, options?: any): Promise<ActionOutputErrorOrData<Connection>> => {
     return checkOrganizationDataBase(intl, isDev, section, val, errs, v => getConnectionById(v, type))
@@ -40,8 +41,8 @@ export const checkType = async (intl, isDev: boolean, section: string, data: Con
 export const checkCredentials = async (intl, isDev: boolean, section: string, data: ConnectionInput, type: number): Promise<Nullable<ActionOutputError>> => {
     if (type === ConnectionType.Meta) {
         if (!!data.credentials.accessToken) {
-            var tasks=[]
-            if(!data.credentials.me){
+            var tasks = []
+            if (!data.credentials.me) {
                 tasks.push(axios.get('https://graph.facebook.com/v19.0/me', {
                     params:
                     {
@@ -54,7 +55,7 @@ export const checkCredentials = async (intl, isDev: boolean, section: string, da
                     return await customError(intl, 170100, section)
                 }))
             }
-            if(!data.credentials.adAccounts){
+            if (!data.credentials.adAccounts) {
                 tasks.push(axios.get('https://graph.facebook.com/v19.0/me/adaccounts', {
                     params:
                     {
@@ -67,7 +68,7 @@ export const checkCredentials = async (intl, isDev: boolean, section: string, da
                     return await customError(intl, 170110, section)
                 }))
             }
-            if(!data.credentials.accounts){
+            if (!data.credentials.accounts) {
                 tasks.push(axios.get('https://graph.facebook.com/v19.0/me/accounts', {
                     params:
                     {
@@ -104,4 +105,24 @@ export const checkCredentials = async (intl, isDev: boolean, section: string, da
         }
     }
     return null
+}
+
+export const checkOrganizationConnection = async (intl, isDev: boolean, section: string, data: OrganizationIdInput,
+    type = ConnectionQueryType.Default): Promise<ActionOutputErrorOrData<Connection>> => {
+    const { errors, data: dataConnection } = await getConnection(ConnectionType.Meta, data.organization_id, type)
+    if (errors) {
+        isDev && console.log(errors[0]);
+        return {error:await customError(intl, 0, section, [intl.formatMessage({ id: ErrorDatabase })])};
+    }
+    if (dataConnection.data.length === 0) {
+        return {error:await customError(intl, 170130, section, ['meta'])}
+    }
+    const dbConnection: Connection = dataConnection.data[0]
+    if (!!!(dbConnection.credentials?.longAccessToken?.access_token)) {
+        return {error:await customError(intl, 170140, section)}
+    }
+    if ((dbConnection.credentials?.adAccounts?.data || []).length === 0) {
+        return {error:await customError(intl, 170150, section)}
+    }
+    return {data:dbConnection}
 }
