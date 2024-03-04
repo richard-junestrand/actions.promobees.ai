@@ -58,13 +58,13 @@ export const checkData = (data: CampaignInput, oldVal: CampaignDataInput): boole
         if (!isDeepEqual(dataVal(m), dataVal(r))) {
           return {
             ...m,
-            data: r,
+            ...r,
             changed_at: current
           }
         }
         return m
       }
-      return { data: r, changed_at: current };
+      return { ...r, changed_at: current };
     })
   };
   let updated = false
