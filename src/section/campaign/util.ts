@@ -48,9 +48,11 @@ const dataVal = (r:ChangedData<any>) => {
 export const checkData = (data: CampaignInput, oldVal: CampaignDataInput): boolean => {
   const current = moment.utc()
   const oldData = oldVal || { data: [], changed_at: current }
+  const thedata=dataVal(data.data)
   const newData = {
     ...oldData,
-    data: data.data.data.map((r: any) => {
+    ...thedata,
+    data: thedata.data.map((r: any) => {
       const m = oldData.data.find((x: any) => x.data.id === r.data.id)
       if (m) {
         if (!isDeepEqual(dataVal(m), dataVal(r))) {
@@ -66,7 +68,7 @@ export const checkData = (data: CampaignInput, oldVal: CampaignDataInput): boole
     })
   };
   let updated = false
-  if (!isDeepEqual(oldData.data, newData.data)) {
+  if (!isDeepEqual(dataVal(oldData), dataVal(newData))) {
     newData.changed_at = current
     updated = true
   }
