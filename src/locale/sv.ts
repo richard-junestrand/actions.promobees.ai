@@ -34,6 +34,7 @@ const data = {
     "message.error-invalid-sweden-zip-code": "Ogiltigt postnummer för Sverige (5 siffror).",
     "message.error-no-permission": "Du har ingen behörighet.",
     "message.error-100080": "Generering av förhandsvisningar misslyckades: {p0}.",
+    "message.error-120080": "Det gick inte att ladda upp förhandsgranskning av bild till blob.",
     "message.error-130090": "Misslyckades med att få Auth0 token: {p0}.",
     "message.error-130100": "Uppdatering av Auth0-användarlösenordet misslyckades: {p0}.",
     "message.error-130120": "Det gick inte att få Auth0-användaren: {p0}.",
@@ -45,6 +46,9 @@ const data = {
     "message.error-170130": "{p0} hittades inte.",
     "message.error-170140": "Access token hittades inte.",
     "message.error-170150": "Annonser hittades inte.",
+    "message.error-500000": "Ogiltig storlek på mallbild.",
+    "message.error-500010": "Misslyckades med att skapa bild.",
+    "message.error-500020": "Det gick inte att lägga till elementet {p0} till bilden.",
 }
 
 export default data;

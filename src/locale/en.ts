@@ -34,6 +34,7 @@ const data={
     "message.error-invalid-sweden-zip-code": "Invalid zip code for Sweden (5 digits).",
     "message.error-no-permission": "You have no permission.",
     "message.error-100080": "Failed to generate previews: {p0}.",
+    "message.error-120080": "Failed to upload image preview to blob.",
     "message.error-130090": "Failed to get Auth0 token: {p0}.",
     "message.error-130100": "Failed to update Auth0 user password: {p0}.",
     "message.error-130120": "Failed to get Auth0 user: {p0}.",
@@ -44,7 +45,10 @@ const data={
     "message.error-170120": "Failed to get meta user accounts.",
     "message.error-170130": "Connection {p0} not found.",
     "message.error-170140": "Access token not found.",
-    "message.error-170150": "Ad accounts not found."
+    "message.error-170150": "Ad accounts not found.",
+    "message.error-500000": "Invalid template image size.",
+    "message.error-500010": "Failed to create image.",
+    "message.error-500020": "Failed to add element {p0} to image.",
 }
 
 export default data;

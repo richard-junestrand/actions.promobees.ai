@@ -2,17 +2,19 @@ import { ActionOutputError, Nullable, UpdateInput } from '../../handler';
 import { TemplateInput } from '.';
 import { HasuraSession } from '../../handler/session';
 import { MutationDefinition } from '../../db';
-import { checkName, checkTemplateType, checkId } from './util';
+import { checkName, checkTemplateType, checkId, checkImagePreview } from './util';
 import { IntlShape } from '@formatjs/intl';
 import { Template } from '../../db/generated';
 import { changedSet } from '../../db/util';
+import { isDeepEqual } from '../../util/dataUtil';
+import { TemplateQueryType } from './query';
 
 export type TemplateUpdateInput = TemplateInput & UpdateInput<Template>
 
 const templateUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: TemplateUpdateInput, def: MutationDefinition, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
   const section = "templateUpdate";
   //
-  const err = await checkId(intl, isDev, section, data, session);
+  const err = await checkId(intl, isDev, section, data, session, TemplateQueryType.Update);
   if (err) {
     return err;
   }
@@ -38,6 +40,13 @@ const templateUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
   //
   if (data.hasOwnProperty('specification')) {
     updateSet = { ...updateSet, specification: data.specification };
+    if (!isDeepEqual(data.specification, data.db.specification)) {
+      const errOrUrl = await checkImagePreview(intl, section, data, data.db.template_preview);
+      if (errOrUrl.error) {
+        return errOrUrl.error
+      }
+      updateSet = { ...updateSet, template_preview: errOrUrl.data };
+    }
   }
   //
   updateCall.parameter = `$id: Int!, $p_${updateCall.idx}: template_set_input`;

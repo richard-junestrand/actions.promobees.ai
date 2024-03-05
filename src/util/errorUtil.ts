@@ -33,7 +33,7 @@ errors.set(120040, {id: "message.error-invalid-value", params: ["template_type_i
 errors.set(120050, {id: "message.error-invalid-int", params: ["template_id"] });
 errors.set(120060, {id: "message.error-invalid-value-for-organization", params: ["template_id"] });
 errors.set(120070, {id: "message.error-data-used", params: ["campaign_template_cross"]});
-
+errors.set(120080, {id: "message.error-120080" });
 // user
 errors.set(130000, {id: "message.error-invalid-int", params: ["id"] });
 errors.set(130010, {id: "message.error-invalid-value", params: ["id"] });
@@ -93,6 +93,10 @@ errors.set(170120, {id: "message.error-170120" });
 errors.set(170130, {id: "message.error-170130" });
 errors.set(170140, {id: "message.error-170140" });
 errors.set(170150, {id: "message.error-170150" });
+//
+errors.set(500000, {id: "message.error-500000" });
+errors.set(500010, {id: "message.error-500010" });
+errors.set(500020, {id: "message.error-500020" });
 
 export const customError = async (intl: IntlShape, id: number, section: string, params = null, extra = null): Promise<ActionOutputError> => {
     const err = errors.get(id) || {

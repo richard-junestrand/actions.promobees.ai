@@ -45,6 +45,4 @@ export const blobUrl = (container: string, blobName: string) => {
     return `${process.env.STORAGE_URL}/${container}/${blobName}`;
 }
 
-export const ContainerAttachment = 'attachment'
-export const ContainerDocument = 'document'
-export const ContainerBackup = 'backup'
+export const ContainerTemplate = 'template'

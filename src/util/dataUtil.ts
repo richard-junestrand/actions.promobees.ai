@@ -159,3 +159,11 @@ export function isDeepEqual(a, b) {
     }
     return true;
 }
+
+export const urlVal = (val: any) => {
+    const ret = val?.uri || val
+    if (ret && ret.startsWith('//')) {
+        return `https:${ret}`
+    }
+    return ret
+}

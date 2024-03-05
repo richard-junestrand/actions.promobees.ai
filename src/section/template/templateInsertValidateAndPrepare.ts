@@ -2,10 +2,12 @@ import { ActionOutputError, Nullable, OrganizationIdInput } from '../../handler'
 import { TemplateInput } from '.';
 import { HasuraSession } from '../../handler/session';
 import { MutationDefinition } from '../../db';
-import { checkName, checkTemplateType, checkOrganizationId } from './util';
+import { checkName, checkTemplateType, checkOrganizationId, checkImagePreview } from './util';
 import { IntlShape } from '@formatjs/intl';
 
-export type TemplateInsertInput = TemplateInput & OrganizationIdInput
+export type TemplateInsertInput = TemplateInput & OrganizationIdInput & {
+  template_preview?: string
+}
 
 const templateInsertValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: TemplateInsertInput, def: MutationDefinition, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
   const section = "templateInsert";
@@ -24,6 +26,12 @@ const templateInsertValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
   if (err) {
     return err;
   }
+  //generate preview
+  const errOrUrl = await checkImagePreview(intl, section, data);
+  if (errOrUrl.error) {
+    return errOrUrl.error
+  }
+  data.template_preview= errOrUrl.data;
   //
   const call = await def.newCall();
   call.parameter = `$p_${call.idx}: template_insert_input!`;

@@ -13,16 +13,16 @@ export const checkName = async (intl, section: string, data: CampaignInput): Pro
 }
 
 export const checkCampaignType = async (intl, isDev: boolean, section: string, data: CampaignInput): Promise<Nullable<ActionOutputError>> => {
-  return (await checkDataBase(intl, isDev, section, data.campaign_type_id, [100030,100040], getCampaignTypeById)).error
+  return (await checkDataBase(intl, isDev, section, data.campaign_type_id, [100030, 100040], getCampaignTypeById)).error
 }
 
 export const checkCampaignBase = async (intl, isDev: boolean, section: string, val: number, errs: number[],
   session: HasuraSession, type?: CampaignQueryType, orgId?: number): Promise<ActionOutputErrorOrData<Campaign>> => {
-    return checkOrganizationDataBase(intl, isDev, section, val, errs, v=>getCampaignById(v,type), session, orgId);
+  return checkOrganizationDataBase(intl, isDev, section, val, errs, v => getCampaignById(v, type), session, orgId);
 }
 
 export const checkId = async (intl, isDev: boolean, section: string, data: UpdateInput<Campaign>,
-  session: HasuraSession, type=CampaignQueryType.Default): Promise<Nullable<ActionOutputError>> => {
+  session: HasuraSession, type = CampaignQueryType.Default): Promise<Nullable<ActionOutputError>> => {
   const errOrData = await checkCampaignBase(intl, isDev, section, data.id, [100050, 100060], session, type);
   if (errOrData.error) {
     return errOrData.error
@@ -40,22 +40,22 @@ export const checkOrganizationId = async (intl, section: string, data: Organizat
   return checkOrganizationIdBase(intl, section, data.organization_id, [100000, 100010], session);
 }
 
-const dataVal = (r:ChangedData<any>) => {
-  const {changed_at,...others}=r;
+const baseDataVal = (r: ChangedData<any>) => {
+  const { changed_at, ...others } = r;
   return others
 }
 
 export const checkData = (data: CampaignInput, oldVal: CampaignDataInput): boolean => {
   const current = moment.utc()
   const oldData = oldVal || { data: [], changed_at: current }
-  const thedata=dataVal(data.data)
+  const thedata = baseDataVal(data.data)
   const newData = {
     ...oldData,
     ...thedata,
     data: thedata.data.map((r: any) => {
       const m = oldData.data.find((x: any) => x.data.id === r.data.id)
       if (m) {
-        if (!isDeepEqual(dataVal(m), dataVal(r))) {
+        if (!isDeepEqual(baseDataVal(m), baseDataVal(r))) {
           return {
             ...m,
             ...r,
@@ -68,10 +68,22 @@ export const checkData = (data: CampaignInput, oldVal: CampaignDataInput): boole
     })
   };
   let updated = false
-  if (!isDeepEqual(dataVal(oldData), dataVal(newData))) {
+  if (!isDeepEqual(baseDataVal(oldData), baseDataVal(newData))) {
     newData.changed_at = current
     updated = true
   }
-  data.data=newData
+  data.data = newData
   return updated
+}
+
+export const dataHolderVal = (key: string) => {
+  const arr = key.split(':');
+  let val = arr[0]
+  if (arr.length > 1) {
+    switch (arr[1]) {
+      case "upper":
+        return val?.toUpperCase()
+    }
+  }
+  return val
 }
