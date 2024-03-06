@@ -41,49 +41,10 @@ export const checkType = async (intl, isDev: boolean, section: string, data: Con
 export const checkCredentials = async (intl, isDev: boolean, section: string, data: ConnectionInput, type: number): Promise<Nullable<ActionOutputError>> => {
     if (type === ConnectionType.Meta) {
         if (!!data.credentials.accessToken) {
-            var tasks = []
-            if (!data.credentials.me) {
-                tasks.push(axios.get('https://graph.facebook.com/v19.0/me', {
-                    params:
-                    {
-                        access_token: data.credentials.accessToken
-                    }
-                }).then(r => {
-                    data.credentials.me = r.data
-                    return null
-                }).catch(async err => {
-                    return await customError(intl, 170100, section)
-                }))
-            }
-            if (!data.credentials.adAccounts) {
-                tasks.push(axios.get('https://graph.facebook.com/v19.0/me/adaccounts', {
-                    params:
-                    {
-                        access_token: data.credentials.accessToken
-                    }
-                }).then(r => {
-                    data.credentials.adAccounts = r.data
-                    return null
-                }).catch(async err => {
-                    return await customError(intl, 170110, section)
-                }))
-            }
-            if (!data.credentials.accounts) {
-                tasks.push(axios.get('https://graph.facebook.com/v19.0/me/accounts', {
-                    params:
-                    {
-                        access_token: data.credentials.accessToken
-                    }
-                }).then(r => {
-                    data.credentials.accounts = r.data
-                    return null
-                }).catch(async err => {
-                    return await customError(intl, 170120, section)
-                }))
-            }
+            let err
             if (!data.credentials.longAccessToken) {
                 //Get a Long-Lived User Access Token
-                tasks.push(axios.get('https://graph.facebook.com/v19.0/oauth/access_token', {
+                err = axios.get('https://graph.facebook.com/v19.0/oauth/access_token', {
                     params:
                     {
                         grant_type: 'fb_exchange_token',
@@ -96,12 +57,66 @@ export const checkCredentials = async (intl, isDev: boolean, section: string, da
                     return null
                 }).catch(async err => {
                     return await customError(intl, 170090, section)
+                })
+                if (err) {
+                    return err
+                }
+            }
+            //
+            var tasks = []
+            if (!data.credentials.me) {
+                tasks.push(axios.get('https://graph.facebook.com/v19.0/me', {
+                    params:
+                    {
+                        access_token: data.credentials.longAccessToken.access_token
+                    }
+                }).then(r => {
+                    data.credentials.me = r.data
+                    return null
+                }).catch(async err => {
+                    return await customError(intl, 170100, section)
                 }))
             }
-            return await Promise.all(tasks)
+            if (!data.credentials.adAccounts) {
+                tasks.push(axios.get('https://graph.facebook.com/v19.0/me/adaccounts', {
+                    params:
+                    {
+                        access_token: data.credentials.longAccessToken.access_token,
+                        fields: 'name'
+                    }
+                }).then(r => {
+                    data.credentials.adAccounts = r.data
+                    return null
+                }).catch(async err => {
+                    return await customError(intl, 170110, section)
+                }))
+            }
+            if (!data.credentials.accounts) {
+                tasks.push(axios.get('https://graph.facebook.com/v19.0/me/accounts', {
+                    params:
+                    {
+                        access_token: data.credentials.longAccessToken.access_token
+                    }
+                }).then(r => {
+                    data.credentials.accounts = r.data
+                    return null
+                }).catch(async err => {
+                    return await customError(intl, 170120, section)
+                }))
+            }
+            err = await Promise.all(tasks)
                 .then(r => {
                     return r.find(rr => rr) || null
                 })
+            if (err) {
+                return err
+            }
+            if (data.credentials.ad_account_id) {
+                const m = data.credentials.adAccounts.data.find(r => r.id === data.credentials.ad_account_id)
+                if (!m) {
+                    return await customError(intl, 170160, section)
+                }
+            }
         }
     }
     return null
@@ -112,17 +127,17 @@ export const checkOrganizationConnection = async (intl, isDev: boolean, section:
     const { errors, data: dataConnection } = await getConnection(ConnectionType.Meta, data.organization_id, type)
     if (errors) {
         isDev && console.log(errors[0]);
-        return {error:await customError(intl, 0, section, [intl.formatMessage({ id: ErrorDatabase })])};
+        return { error: await customError(intl, 0, section, [intl.formatMessage({ id: ErrorDatabase })]) };
     }
     if (dataConnection.data.length === 0) {
-        return {error:await customError(intl, 170130, section, ['meta'])}
+        return { error: await customError(intl, 170130, section, ['meta']) }
     }
     const dbConnection: Connection = dataConnection.data[0]
     if (!!!(dbConnection.credentials?.longAccessToken?.access_token)) {
-        return {error:await customError(intl, 170140, section)}
+        return { error: await customError(intl, 170140, section) }
     }
     if ((dbConnection.credentials?.adAccounts?.data || []).length === 0) {
-        return {error:await customError(intl, 170150, section)}
+        return { error: await customError(intl, 170150, section) }
     }
-    return {data:dbConnection}
+    return { data: dbConnection }
 }

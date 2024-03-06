@@ -93,6 +93,7 @@ errors.set(170120, {id: "message.error-170120" });
 errors.set(170130, {id: "message.error-170130" });
 errors.set(170140, {id: "message.error-170140" });
 errors.set(170150, {id: "message.error-170150" });
+errors.set(170160, {id: "message.error-invalid-value", params: ["credentials.ad_account_id"] });
 //
 errors.set(500000, {id: "message.error-500000" });
 errors.set(500010, {id: "message.error-500010" });
