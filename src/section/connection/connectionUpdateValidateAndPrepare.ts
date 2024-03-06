@@ -4,7 +4,7 @@ import { HasuraSession } from "../../handler/session"
 import { customError } from "../../util/errorUtil"
 import { Role, hasUserRole } from "../../util/roleUtil"
 import { IntlShape } from '@formatjs/intl';
-import { checkCredentials, checkId } from "./util"
+import { checkAdAccountId, checkCredentials, checkId } from "./util"
 import { ConnectionInput } from "."
 import { UserInput } from "../user"
 import { Connection } from "../../db/generated"
@@ -40,11 +40,21 @@ const connectionUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev
   let updateSet = changedSet();
   //
   if (data.hasOwnProperty('credentials')) {
-    const err = await checkCredentials(intl, isDev, section, data, data.db.connection_type_id)
+    const err = await checkCredentials(intl, section, data, data.db.connection_type_id)
     if (err) {
       return err
     }
     updateSet = { ...updateSet, credentials: data.credentials };
+  } else {
+    data.credentials=data.db.credentials
+  }
+  //
+  if (data.hasOwnProperty('ad_account_id')) {
+    const err = await checkAdAccountId(intl, section, data, data.db.connection_type_id)
+    if (err) {
+      return err
+    }
+    updateSet = { ...updateSet, ad_account_id: data.ad_account_id };
   }
   //
   updateCall.parameter = `$id_${updateCall.idx}: Int!, $p_${updateCall.idx}: connection_set_input`;

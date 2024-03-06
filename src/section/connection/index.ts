@@ -1,5 +1,6 @@
 export type ConnectionInput = {
   credentials: any
+  ad_account_id: string
 }
 
 export enum ConnectionType {

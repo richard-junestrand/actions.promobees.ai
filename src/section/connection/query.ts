@@ -33,6 +33,7 @@ export const getConnectionById = async (id: number, type = ConnectionQueryType.D
     case ConnectionQueryType.Update:
       fields = `
         connection_type_id
+        credentials
         `
       break
   }

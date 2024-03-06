@@ -38,13 +38,12 @@ export const checkType = async (intl, isDev: boolean, section: string, data: Con
     return null
 }
 
-export const checkCredentials = async (intl, isDev: boolean, section: string, data: ConnectionInput, type: number): Promise<Nullable<ActionOutputError>> => {
+export const checkCredentials = async (intl, section: string, data: ConnectionInput, type: number): Promise<Nullable<ActionOutputError>> => {
     if (type === ConnectionType.Meta) {
         if (!!data.credentials.accessToken) {
-            let err
             if (!data.credentials.longAccessToken) {
                 //Get a Long-Lived User Access Token
-                err = axios.get('https://graph.facebook.com/v19.0/oauth/access_token', {
+                const err = axios.get('https://graph.facebook.com/v19.0/oauth/access_token', {
                     params:
                     {
                         grant_type: 'fb_exchange_token',
@@ -104,18 +103,21 @@ export const checkCredentials = async (intl, isDev: boolean, section: string, da
                     return await customError(intl, 170120, section)
                 }))
             }
-            err = await Promise.all(tasks)
+            return await Promise.all(tasks)
                 .then(r => {
                     return r.find(rr => rr) || null
                 })
-            if (err) {
-                return err
-            }
-            if (data.credentials.ad_account_id) {
-                const m = data.credentials.adAccounts.data.find(r => r.id === data.credentials.ad_account_id)
-                if (!m) {
-                    return await customError(intl, 170160, section)
-                }
+        }
+    }
+    return null
+}
+
+export const checkAdAccountId = async (intl, section: string, data: ConnectionInput, type: number): Promise<Nullable<ActionOutputError>> => {
+    if (type === ConnectionType.Meta) {
+        if (data.ad_account_id) {
+            const m = (data?.credentials?.adAccounts?.data || []).find(r => r?.id === data.ad_account_id)
+            if (!m) {
+                return await customError(intl, 170160, section)
             }
         }
     }

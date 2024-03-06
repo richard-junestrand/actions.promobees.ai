@@ -4,7 +4,7 @@ import { HasuraSession } from "../../handler/session"
 import { customError } from "../../util/errorUtil"
 import { Role, hasUserRole } from "../../util/roleUtil"
 import { IntlShape } from '@formatjs/intl';
-import { checkCredentials, checkOrganizationId, checkType } from "./util"
+import { checkAdAccountId, checkCredentials, checkOrganizationId, checkType } from "./util"
 import { ConnectionInput } from "."
 
 export type ConnectionInsertInput = ConnectionInput & OrganizationIdInput & {
@@ -35,7 +35,12 @@ const connectionInsertValidateAndPrepare = async (intl: IntlShape<string>, isDev
     return err
   }
   //
-  err = await checkCredentials(intl, isDev, section, data, data.connection_type_id)
+  err = await checkCredentials(intl, section, data, data.connection_type_id)
+  if (err) {
+    return err
+  }
+  //
+  err = await checkAdAccountId(intl, section, data, data.connection_type_id)
   if (err) {
     return err
   }
