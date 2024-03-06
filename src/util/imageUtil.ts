@@ -4,12 +4,12 @@ import jimp from 'jimp';
 import { urlVal } from "./dataUtil";
 import { intVal } from "./numUtil";
 import { customError } from "./errorUtil";
-import { ActionOutputErrorOrData } from "../handler";
+import { ActionOutputError, ActionOutputErrorOrData, Nullable } from "../handler";
 import { eleHolderVal } from "../section/template/util";
 
 const imageHolderVal = (w: any, h: any) => `https://placehold.co/${intVal(w, 0)}x${intVal(h, 0)}.png`
 
-const addImage = async (intl: any, section: string, image: any, ele: any) => {
+const generateImage = async (intl: any, section: string, ele: any, parent?: any): Promise<ActionOutputErrorOrData<any>> => {
   const val=ele.source === ElementSource.Fixed ? ele.value : imageHolderVal(ele.width, ele.height)
   const url = urlVal(val)
   if (!!url) {
@@ -17,18 +17,13 @@ const addImage = async (intl: any, section: string, image: any, ele: any) => {
       .then(async r => {
         const buffer = Buffer.from(r.data, "utf-8");
         const img = await jimp.read(buffer);
-        const imgw = intVal(ele.width) || 0;
-        const imgh = intVal(ele.height) || 0;
-        if (imgw > 0 && imgh > 0) {
-          img.resize(imgw, imgh)
-        }
-        image.composite(img, ele.x, ele.y);
-      }).catch(async er => {console.log(url)
-        console.log(er)
-        return await customError(intl, 500020, section, [ele.name])
+        parent && parent.composite(img, ele.x, ele.y);
+        return { data: img }
+      }).catch(async er => {
+        return { error: await customError(intl, 500010, section, [ele.name]) }
       })
   }
-  return null
+  return { data: null }
 }
 
 const fontVal = (val: any) => {
@@ -63,36 +58,36 @@ const fontVal = (val: any) => {
   return null
 }
 
-const addText = async (intl: any, section: any, image: any, ele: any) => {
+const generateText = async (intl: any, section: any, ele: any, parent?: any): Promise<Nullable<ActionOutputError>> => {
   try {
     const val = eleHolderVal(ele)
     if (!!val) {
       const font = fontVal(ele.font)
-      if (font) {
-        image.print(await jimp.loadFont(font), intVal(ele.x) || 0, intVal(ele.y) || 0, val);
+      if (font && parent) {
+        parent.print(await jimp.loadFont(font), intVal(ele.x) || 0, intVal(ele.y) || 0, val);
       }
     }
     return null
   } catch (err) {
-    return await customError(intl, 500020, section, [ele.name])
+    return await customError(intl, 500010, section, [ele.name])
   }
 
 }
 
-const addShape = async (intl: any, section: any, image: any, ele: any) => {
+const generateCanvas = async (intl: any, section: any, ele: any, parent?: any): Promise<ActionOutputErrorOrData<any>> => {
   return await new Promise((resolve, reject) => {
-    new jimp(intVal(ele.width) || 0, intVal(ele.height) || 0, ele.background_color, (err, shape) => {
+    new jimp(intVal(ele.width) || 0, intVal(ele.height) || 0, ele?.background_color || '#000000ff', (err, shape) => {
       if (err) {
         reject(err)
       } else {
         resolve(shape)
       }
     })
-  }).then(shape => {
-    image.composite(shape, intVal(ele.x) || 0, intVal(ele.y) || 0);
-    return null
+  }).then(canvas => {
+    parent && parent.composite(canvas, intVal(ele.x) || 0, intVal(ele.y) || 0);
+    return { data: canvas }
   }).catch(async err => {
-    return await customError(intl, 500020, section, [ele.name])
+    return { error: await customError(intl, 500010, section, [ele.name]) }
   })
 }
 
@@ -103,37 +98,28 @@ export async function generateImagePreview(intl, section, spec: any): Promise<Ac
     return { error: await customError(intl, 500000, section) }
   }
   //
-  const errOrImage: any = await new Promise((resolve, reject) => {
-    new jimp(w, h, spec.background_color, (err, image) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve({ data: image })
-      }
-    })
-  }).catch(async err => ({ error: await customError(intl, 500010, section) }))
+  const errOrImage = await generateCanvas(intl, section, { ...spec, name: 'main' })
   if (errOrImage.error) {
     return errOrImage
   }
   //
   const image = errOrImage.data;
-  let err
   for (const ele of spec.elements) {
     switch (ele.type) {
       case ElementType.Image:
-        err = await addImage(intl, section, image, ele)
-        if (err) {
-          return { error: err }
+        const errOrImage = await generateImage(intl, section, ele, image)
+        if (errOrImage.error) {
+          return errOrImage
         }
         break
-      case ElementType.Shape:
-        err = await addShape(intl, section, image, ele)
-        if (err) {
-          return { error: err }
+      case ElementType.Canvas:
+        const errOrCanvas = await generateCanvas(intl, section, ele, image)
+        if (errOrCanvas.error) {
+          return errOrCanvas
         }
         break
       case ElementType.Text:
-        err = await addText(intl, section, image, ele)
+        const err = await generateText(intl, section, ele, image)
         if (err) {
           return { error: err }
         }

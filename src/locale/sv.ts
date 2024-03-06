@@ -47,8 +47,7 @@ const data = {
     "message.error-170140": "Access token hittades inte.",
     "message.error-170150": "Annonser hittades inte.",
     "message.error-500000": "Ogiltig storlek på mallbild.",
-    "message.error-500010": "Misslyckades med att skapa bild.",
-    "message.error-500020": "Det gick inte att lägga till elementet {p0} till bilden.",
+    "message.error-500010": "Misslyckades med att generera elementet {p0}."
 }
 
 export default data;

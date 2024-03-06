@@ -96,7 +96,6 @@ errors.set(170150, {id: "message.error-170150" });
 //
 errors.set(500000, {id: "message.error-500000" });
 errors.set(500010, {id: "message.error-500010" });
-errors.set(500020, {id: "message.error-500020" });
 
 export const customError = async (intl: IntlShape, id: number, section: string, params = null, extra = null): Promise<ActionOutputError> => {
     const err = errors.get(id) || {

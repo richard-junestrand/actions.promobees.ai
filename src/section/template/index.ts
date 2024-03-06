@@ -7,7 +7,7 @@ export type TemplateInput = {
 export enum ElementType {
     Text = 1,
     Image = 2,
-    Shape = 3
+    Canvas = 3
 }
 
 export enum ElementFont {
