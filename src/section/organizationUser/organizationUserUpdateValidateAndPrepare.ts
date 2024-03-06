@@ -35,7 +35,7 @@ const organizationUserUpdateValidateAndPrepare = async (intl: IntlShape<string>,
   }
   const organization = errOrOrg.data;
   //
-  if (!hasUserRole(organization.role_ids, [Role.OrganizationAdministration])) {
+  if (!hasUserRole(organization.role_ids, [Role.OrganizationAdmin])) {
     return await customError(intl,1, section)
   }
   //
@@ -49,7 +49,7 @@ const organizationUserUpdateValidateAndPrepare = async (intl: IntlShape<string>,
     const deleteOrganizationUserRolesCall = await def.newCall();
     //
     const err = await checkList(intl, section, organizationUserRoles, (r, i) => {
-      if (!dbRoleIds.includes(r.role_id)) {
+      if (!dbRoleIds.includes(r.role_id) && r.role_id!==Role.SystemAdmin) {
         r.organization_user_id = data.id;
         return organizationUserRoleInsertValidateAndPrepare(intl, isDev, r, def, session, {
           not_return_data: true

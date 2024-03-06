@@ -32,7 +32,7 @@ const connectionUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev
   }
   const organization = errOrOrg.data;
   //
-  if (!hasUserRole(organization.role_ids, [Role.OrganizationAdministration])) {
+  if (!hasUserRole(organization.role_ids, [Role.OrganizationAdmin])) {
     return await customError(intl, 1, section)
   }
   //

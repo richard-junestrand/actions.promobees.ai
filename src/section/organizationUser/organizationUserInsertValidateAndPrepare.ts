@@ -33,7 +33,7 @@ const organizationUserInsertValidateAndPrepare = async (intl: IntlShape<string>,
   }
   const organization = errOrOrgSession.data;
   //
-  if (!hasUserRole(organization.role_ids, [Role.OrganizationAdministration])) {
+  if (!hasUserRole(organization.role_ids, [Role.OrganizationAdmin])) {
     return await customError(intl, 1, section)
   }
   //
@@ -83,6 +83,7 @@ const organizationUserInsertValidateAndPrepare = async (intl: IntlShape<string>,
     }
   }
   //
+  data.organization_user_roles.data=(data.organization_user_roles.data || []).filter(r => r.role_id!==Role.SystemAdmin)
   err = await checkRelList(intl, section, data.organization_user_roles, (r, i) =>
     organizationUserRoleInsertValidateAndPrepare(intl, isDev, r, null, session))
   if (err) {

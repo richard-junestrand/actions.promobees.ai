@@ -26,7 +26,7 @@ const connectionInsertValidateAndPrepare = async (intl: IntlShape<string>, isDev
   }
   const organization = errOrOrgSession.data;
   //
-  if (!hasUserRole(organization.role_ids, [Role.OrganizationAdministration])) {
+  if (!hasUserRole(organization.role_ids, [Role.OrganizationAdmin])) {
     return await customError(intl, 1, section)
   }
   //

@@ -1,6 +1,6 @@
 export enum Role {    
-    OrganizationAdministration = 100,
-    User = 200,
+    SystemAdmin=10,
+    OrganizationAdmin = 100
 }
 
 export const hasUserRole = (userRoleIds: number[] | undefined, roles: Role[]) => {

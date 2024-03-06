@@ -76,7 +76,7 @@ const organizationInsertValidateAndPrepare = async (intl: IntlShape<string>,isDe
       data: [{
         user_id: session.userId,
         organization_user_roles: {
-          data: [{role_id: Role.OrganizationAdministration}]
+          data: [{role_id: Role.OrganizationAdmin}]
         }
       }]
     }
