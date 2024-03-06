@@ -8,12 +8,12 @@ import { customError } from "../../util/errorUtil";
 import { UserInsertInput } from "./userInsertValidateAndPrepare";
 import { createAuth0User, getAuth0Token, getAuth0UserByEmail } from "../../util/auth0Util";
 
-export const checkUserBase = async (intl, isDev: boolean, section: string, val: number, errs: number[], type: UserQueryType=UserQueryType.Default): Promise<ActionOutputErrorOrData<User>> => {
-  return checkDataBase(intl, isDev, section, val, errs, v=>getUserById(v,type))
+export const checkUserBase = async (intl, isDev: boolean, section: string, val: number, errs: number[], type: UserQueryType = UserQueryType.Default): Promise<ActionOutputErrorOrData<User>> => {
+  return checkDataBase(intl, isDev, section, val, errs, v => getUserById(v, type))
 }
 
-export const checkId = async (intl, isDev: boolean, section: string, data: UpdateInput<User>, type: UserQueryType=UserQueryType.Default): Promise<ActionOutputErrorOrData<User>> => {
-  return await checkUserBase(intl, isDev, section, data.id, [130000, 130010],type);
+export const checkId = async (intl, isDev: boolean, section: string, data: UpdateInput<User>, type: UserQueryType = UserQueryType.Default): Promise<ActionOutputErrorOrData<User>> => {
+  return await checkUserBase(intl, isDev, section, data.id, [130000, 130010], type);
 }
 
 export const checkFirstName = async (intl, section: string, data: UserInput): Promise<Nullable<ActionOutputError>> => {
@@ -43,7 +43,7 @@ export const checkConfirmPassword = async (intl, section: string, data: Password
   return null;
 }
 
-export const checkUserEmail = async (intl, isDev: boolean, section: string, data: UserInsertInput, throwErrorIfExist=true): Promise<ActionOutputErrorOrData<User>> => {
+export const checkUserEmail = async (intl, isDev: boolean, section: string, data: UserInsertInput, throwErrorIfExist = true): Promise<ActionOutputErrorOrData<User>> => {
   if (!await isValidString(data.user_email, true, 256)) {
     return { error: await customError(intl, 130020, section) }
   }
@@ -55,13 +55,12 @@ export const checkUserEmail = async (intl, isDev: boolean, section: string, data
   }
   const notExist = await isEmptyArray(dataDb.data);
   if (!notExist && throwErrorIfExist) {
-    return {error:await customError(intl, 130110, section, [data.user_email])}
+    return { error: await customError(intl, 130110, section, [data.user_email]) }
   }
   return { data: notExist ? null : dataDb.data[0] }
 }
 
-export const createAuth0UserIfNotExist = async (intl, section: string, data: Auth0UserInput): Promise<ActionOutputErrorOrData<string>> => {
-
+export const createAuth0UserIfNotExist = async (intl, section: string, data: Auth0UserInput): Promise<ActionOutputErrorOrData<any>> => {
   //create Auth0 user
   const errOrToken = await getAuth0Token(intl, section);
   if (errOrToken.error) {
@@ -79,8 +78,13 @@ export const createAuth0UserIfNotExist = async (intl, section: string, data: Aut
     if (errOrAuth0User.error) {
       return errOrAuth0User;
     }
-    return { data: errOrAuth0User.data.user_id };
+    return {
+      data: {
+        id: errOrAuth0User.data.user_id,
+        message: intl.formatMessage({ id: "message.user-default-password" }, { p0: data.password })
+      }
+    };
   } else {
-    return { data: auth0Users[0].user_id };
+    return { data: { id: auth0Users[0].user_id } };
   }
 }

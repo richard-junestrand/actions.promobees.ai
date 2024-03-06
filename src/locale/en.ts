@@ -47,8 +47,8 @@ const data={
     "message.error-170140": "Access token not found.",
     "message.error-170150": "Ad accounts not found.",
     "message.error-500000": "Invalid template image size.",
-    "message.error-500010": "Failed to create image.",
-    "message.error-500020": "Failed to add element {p0} to image.",
+    "message.error-500010": "Failed to generate element {p0}.",
+    "message.user-default-password": "Auth0 user is created. Default password is {p0}."
 }
 
 export default data;

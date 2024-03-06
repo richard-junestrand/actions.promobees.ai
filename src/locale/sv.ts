@@ -47,7 +47,8 @@ const data = {
     "message.error-170140": "Access token hittades inte.",
     "message.error-170150": "Annonser hittades inte.",
     "message.error-500000": "Ogiltig storlek på mallbild.",
-    "message.error-500010": "Misslyckades med att generera elementet {p0}."
+    "message.error-500010": "Misslyckades med att generera elementet {p0}.",
+    "message.user-default-password": "Användaren Auth0 har skapats. Standardlösenordet är {p0}."
 }
 
 export default data;

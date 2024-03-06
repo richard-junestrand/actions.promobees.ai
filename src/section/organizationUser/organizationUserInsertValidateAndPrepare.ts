@@ -1,10 +1,9 @@
 import { MutationDefinition } from "../../db"
 import { ActionOutputError, Nullable, OrganizationIdInput, RelInput, UpdateInput, returnValue } from "../../handler"
 import { HasuraSession } from "../../handler/session"
-import { checkDataExistBase, checkList, checkRelList, isEmptyArray } from "../../util/dataUtil"
+import { checkDataExistBase, checkRelList } from "../../util/dataUtil"
 import { customError } from "../../util/errorUtil"
 import { Role, hasUserRole } from "../../util/roleUtil"
-import organizationUserRoleInsertIfNotExistValidateAndPrepare from "../organizationUserRole/organizationUserRoleInsertValidateAndPrepare"
 import userInsertValidateAndPrepare, { UserInsertInput } from "../user/userInsertValidateAndPrepare"
 import { IntlShape } from '@formatjs/intl';
 import { checkOrganizationId } from "./util"
@@ -41,6 +40,7 @@ const organizationUserInsertValidateAndPrepare = async (intl: IntlShape<string>,
 
   data.user = data.user || { data: { user_email: null } }
   //
+  let message;
   const errOrUser = await checkUserEmail(intl, isDev, section, data.user.data, false)
   if (errOrUser.error) {
     return errOrUser.error
@@ -55,26 +55,26 @@ const organizationUserInsertValidateAndPrepare = async (intl: IntlShape<string>,
       if (errOrAuth0UserId.error) {
         return errOrAuth0UserId.error
       }
+      message=errOrAuth0UserId.data.message
       err = await userUpdateValidateAndPrepare(intl, isDev, {
         id: data.user_id,
-        external_user_id: errOrAuth0UserId.data
+        external_user_id: errOrAuth0UserId.data.id
       }, def, session, true, {
         not_return_data: true
       })
     }
   }
   else {
-    err = await userInsertValidateAndPrepare(intl, isDev, {
-      ...data.user.data,
-      password: process.env.AUTH0_DEFAULT_PASSWORD
-    }, null, session)
+    data.user.data.password = process.env.AUTH0_DEFAULT_PASSWORD;
+    err = await userInsertValidateAndPrepare(intl, isDev, data.user.data, null, session)
     if (err) {
       return err
     }
+    message=data.user.data.message
   }
   //
   if (data.user_id) {
-    const errOrExist=await checkDataExistBase(intl, isDev, section, () => getOrganizationUser(data.user_id, data.organization_id));
+    const errOrExist = await checkDataExistBase(intl, isDev, section, () => getOrganizationUser(data.user_id, data.organization_id));
     if (errOrExist.error) {
       return errOrExist.error
     }
@@ -100,9 +100,14 @@ const organizationUserInsertValidateAndPrepare = async (intl: IntlShape<string>,
   const variable = {}
   variable[`p_${call.idx}`] = {
     ...others,
-    ...user_id ? { user_id } : { user }
+    ...user_id ? { user_id } : { user: { data: user.data.param } }
   }
   call.variable = variable
+  //
+  def.returnFieldCallback = (d) => ({
+    id: d.id,
+    message
+  })
   return null
 }
 

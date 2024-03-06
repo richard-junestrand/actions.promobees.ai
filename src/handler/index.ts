@@ -33,6 +33,9 @@ export type ChangedByUserIdInput = {
 export type ParamInput<T> = {
     param?: T
 }
+export type MessageInput={
+    message?: string
+}
 
 export type TableOrganizationIdInput = {
     table_organization_id: number
