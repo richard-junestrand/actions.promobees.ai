@@ -5,13 +5,14 @@ import { checkId } from './util';
 import { IntlShape } from '@formatjs/intl';
 import { Connection } from '../../db/generated';
 import { customError } from '../../util/errorUtil';
+import { ConnectionQueryType } from './query';
 
 export type ConnectionDeleteInput = UpdateInput<Connection>
 
 const connectionDeleteValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: ConnectionDeleteInput, def: MutationDefinition, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
   const section = "connectionDelete";
   //
-  const errOrData = await checkId(intl, isDev, section, data);
+  const errOrData = await checkId(intl, isDev, section, data, ConnectionQueryType.Delete, session);
   if (errOrData.error) {
     return errOrData.error;
   }

@@ -3,7 +3,8 @@ import { executeGraphql } from "../../db/util"
 export enum ConnectionQueryType {
   Default,
   Update,
-  Preview
+  Preview,
+  Delete
 }
 export const getConnection = async (typeId: number, orgId: number, type = ConnectionQueryType.Default) => {
   let fields = ''
@@ -35,6 +36,15 @@ export const getConnectionById = async (id: number, type = ConnectionQueryType.D
         connection_type_id
         credentials
         `
+      break
+    case ConnectionQueryType.Delete:
+      fields = `
+      campaigns_aggregate {
+        aggregate {
+          count
+        }
+      }
+      `
       break
   }
   return await executeGraphql(`
