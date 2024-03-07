@@ -10,13 +10,15 @@ import { ConnectionInsertInput } from "./connectionInsertValidateAndPrepare";
 import { ConnectionQueryType, getConnection, getConnectionById, getConnectionTypeById } from "./query";
 import { ErrorDatabase } from "../../util/stringUtil";
 
-export const checkConnectionBase = async (intl, isDev: boolean, section: string, val: number, errs: number[], type = ConnectionQueryType.Default, options?: any): Promise<ActionOutputErrorOrData<Connection>> => {
-    return checkOrganizationDataBase(intl, isDev, section, val, errs, v => getConnectionById(v, type))
+export const checkConnectionBase = async (intl, isDev: boolean, section: string, val: number, errs: number[], type = ConnectionQueryType.Default, 
+    session?: HasuraSession, organizationId?: number,
+    required = true): Promise<ActionOutputErrorOrData<Connection>> => {
+    return checkOrganizationDataBase(intl, isDev, section, val, errs, v => getConnectionById(v, type), session, organizationId, required)
 }
 
 export const checkId = async (intl, isDev: boolean, section: string, data: UpdateInput<Connection>,
-    type = ConnectionQueryType.Default): Promise<ActionOutputErrorOrData<Connection>> => {
-    return await checkConnectionBase(intl, isDev, section, data.id, [170000, 170010], type);
+    type = ConnectionQueryType.Default, session: HasuraSession): Promise<ActionOutputErrorOrData<Connection>> => {
+    return await checkConnectionBase(intl, isDev, section, data.id, [170000, 170010], type, session);
 }
 
 export const checkOrganizationId = async (intl, section: string, data: ConnectionInsertInput, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {

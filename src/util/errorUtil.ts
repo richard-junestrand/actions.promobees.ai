@@ -15,6 +15,8 @@ errors.set(100050, {id: "message.error-invalid-int", params: ["campaign_id"] });
 errors.set(100060, {id: "message.error-invalid-value-for-organization", params: ["campaign_id"] });
 errors.set(100070, {id: "message.error-invalid-boolean", params: ["is_active"] });
 errors.set(100080, {id: "message.error-100080" });
+errors.set(100090, {id: "message.error-invalid-int", params: ["connection_id"] });
+errors.set(100100, {id: "message.error-invalid-value-for-organization", params: ["id"] });
 
 // campaign_template_cross
 errors.set(110000, {id: "message.error-invalid-int", params: ["template_id"] });
@@ -34,6 +36,7 @@ errors.set(120050, {id: "message.error-invalid-int", params: ["template_id"] });
 errors.set(120060, {id: "message.error-invalid-value-for-organization", params: ["template_id"] });
 errors.set(120070, {id: "message.error-data-used", params: ["campaign_template_cross"]});
 errors.set(120080, {id: "message.error-120080" });
+
 // user
 errors.set(130000, {id: "message.error-invalid-int", params: ["id"] });
 errors.set(130010, {id: "message.error-invalid-value", params: ["id"] });
@@ -80,7 +83,7 @@ errors.set(160010, {id: "message.error-invalid-value", params: ["role_id"] });
 
 // connection
 errors.set(170000, {id: "message.error-invalid-int", params: ["id"] });
-errors.set(170010, {id: "message.error-invalid-value", params: ["id"] });
+errors.set(170010, {id: "message.error-invalid-value-for-organization", params: ["id"] });
 errors.set(170020, {id: "message.error-invalid-int", params: ["organization_id"] });
 errors.set(170030, {id: "message.error-organization-session" });
 errors.set(170040, {id: "message.error-duplicated-value2", params: ["connection_type_id", "organization_id"] });
@@ -94,6 +97,7 @@ errors.set(170130, {id: "message.error-170130" });
 errors.set(170140, {id: "message.error-170140" });
 errors.set(170150, {id: "message.error-170150" });
 errors.set(170160, {id: "message.error-invalid-value", params: ["credentials.ad_account_id"] });
+errors.set(170170, {id: "message.error-data-used", params: ["campaign"]});
 //
 errors.set(500000, {id: "message.error-500000" });
 errors.set(500010, {id: "message.error-500010" });

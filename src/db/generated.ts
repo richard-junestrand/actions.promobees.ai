@@ -55,6 +55,7 @@ export type CampaignInsertInput = {
   campaign_name?: Maybe<Scalars['String']>;
   campaign_template_crosses: CampaignInsertCtcsRelInsertInput;
   campaign_type_id?: Maybe<Scalars['Int']>;
+  connection_id?: Maybe<Scalars['Int']>;
   data?: Maybe<Scalars['jsonb']>;
   is_active?: Maybe<Scalars['Boolean']>;
   locale?: Maybe<Scalars['String']>;
@@ -106,6 +107,7 @@ export type CampaignUpdateInput = {
   campaign_name?: Maybe<Scalars['String']>;
   campaign_template_crosses?: Maybe<CampaignUpdateCtcsRelUpdateInput>;
   campaign_type_id?: Maybe<Scalars['Int']>;
+  connection_id?: Maybe<Scalars['Int']>;
   data?: Maybe<Scalars['jsonb']>;
   id?: Maybe<Scalars['Int']>;
   is_active?: Maybe<Scalars['Boolean']>;
@@ -130,6 +132,7 @@ export type ConnectionDeleteOutput = {
 };
 
 export type ConnectionInsertInput = {
+  ad_account_id?: Maybe<Scalars['String']>;
   connection_type_id?: Maybe<Scalars['Int']>;
   credentials?: Maybe<Scalars['jsonb']>;
   locale?: Maybe<Scalars['String']>;
@@ -142,6 +145,7 @@ export type ConnectionInsertOutput = {
 };
 
 export type ConnectionUpdateInput = {
+  ad_account_id?: Maybe<Scalars['String']>;
   credentials?: Maybe<Scalars['jsonb']>;
   id?: Maybe<Scalars['Int']>;
   locale?: Maybe<Scalars['String']>;
@@ -224,6 +228,7 @@ export type OrganizationUserInsertInput = {
 export type OrganizationUserInsertOutput = {
   __typename?: 'OrganizationUserInsertOutput';
   id?: Maybe<Scalars['Int']>;
+  message?: Maybe<Scalars['String']>;
 };
 
 export type OrganizationUserInsertRoleInsertInput = {
@@ -393,6 +398,7 @@ export type Campaign = {
   campaign_template_crosses_aggregate: Campaign_Template_Cross_Aggregate;
   campaign_type_id: Scalars['Int'];
   changed_at?: Maybe<Scalars['timestamptz']>;
+  connection_id?: Maybe<Scalars['Int']>;
   data?: Maybe<Scalars['jsonb']>;
   id: Scalars['Int'];
   is_active: Scalars['Boolean'];
@@ -475,6 +481,21 @@ export type Campaign_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
+/** order by aggregate values of table "campaign" */
+export type Campaign_Aggregate_Order_By = {
+  avg?: Maybe<Campaign_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Campaign_Max_Order_By>;
+  min?: Maybe<Campaign_Min_Order_By>;
+  stddev?: Maybe<Campaign_Stddev_Order_By>;
+  stddev_pop?: Maybe<Campaign_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Campaign_Stddev_Samp_Order_By>;
+  sum?: Maybe<Campaign_Sum_Order_By>;
+  var_pop?: Maybe<Campaign_Var_Pop_Order_By>;
+  var_samp?: Maybe<Campaign_Var_Samp_Order_By>;
+  variance?: Maybe<Campaign_Variance_Order_By>;
+};
+
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Campaign_Append_Input = {
   budget?: Maybe<Scalars['jsonb']>;
@@ -483,12 +504,28 @@ export type Campaign_Append_Input = {
   specification?: Maybe<Scalars['jsonb']>;
 };
 
+/** input type for inserting array relation for remote table "campaign" */
+export type Campaign_Arr_Rel_Insert_Input = {
+  data: Array<Campaign_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: Maybe<Campaign_On_Conflict>;
+};
+
 /** aggregate avg on columns */
 export type Campaign_Avg_Fields = {
   __typename?: 'campaign_avg_fields';
   campaign_type_id?: Maybe<Scalars['Float']>;
+  connection_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   organization_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "campaign" */
+export type Campaign_Avg_Order_By = {
+  campaign_type_id?: Maybe<Order_By>;
+  connection_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "campaign". All fields are combined with a logical 'AND'. */
@@ -501,6 +538,7 @@ export type Campaign_Bool_Exp = {
   campaign_template_crosses?: Maybe<Campaign_Template_Cross_Bool_Exp>;
   campaign_type_id?: Maybe<Int_Comparison_Exp>;
   changed_at?: Maybe<Timestamptz_Comparison_Exp>;
+  connection_id?: Maybe<Int_Comparison_Exp>;
   data?: Maybe<Jsonb_Comparison_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
   is_active?: Maybe<Boolean_Comparison_Exp>;
@@ -542,6 +580,7 @@ export type Campaign_Delete_Key_Input = {
 /** input type for incrementing numeric columns in table "campaign" */
 export type Campaign_Inc_Input = {
   campaign_type_id?: Maybe<Scalars['Int']>;
+  connection_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   organization_id?: Maybe<Scalars['Int']>;
 };
@@ -553,6 +592,7 @@ export type Campaign_Insert_Input = {
   campaign_template_crosses?: Maybe<Campaign_Template_Cross_Arr_Rel_Insert_Input>;
   campaign_type_id?: Maybe<Scalars['Int']>;
   changed_at?: Maybe<Scalars['timestamptz']>;
+  connection_id?: Maybe<Scalars['Int']>;
   data?: Maybe<Scalars['jsonb']>;
   id?: Maybe<Scalars['Int']>;
   is_active?: Maybe<Scalars['Boolean']>;
@@ -795,8 +835,19 @@ export type Campaign_Max_Fields = {
   campaign_name?: Maybe<Scalars['String']>;
   campaign_type_id?: Maybe<Scalars['Int']>;
   changed_at?: Maybe<Scalars['timestamptz']>;
+  connection_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   organization_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "campaign" */
+export type Campaign_Max_Order_By = {
+  campaign_name?: Maybe<Order_By>;
+  campaign_type_id?: Maybe<Order_By>;
+  changed_at?: Maybe<Order_By>;
+  connection_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
 };
 
 /** aggregate min on columns */
@@ -805,8 +856,19 @@ export type Campaign_Min_Fields = {
   campaign_name?: Maybe<Scalars['String']>;
   campaign_type_id?: Maybe<Scalars['Int']>;
   changed_at?: Maybe<Scalars['timestamptz']>;
+  connection_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   organization_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "campaign" */
+export type Campaign_Min_Order_By = {
+  campaign_name?: Maybe<Order_By>;
+  campaign_type_id?: Maybe<Order_By>;
+  changed_at?: Maybe<Order_By>;
+  connection_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
 };
 
 /** response of any mutation on the table "campaign" */
@@ -839,6 +901,7 @@ export type Campaign_Order_By = {
   campaign_template_crosses_aggregate?: Maybe<Campaign_Template_Cross_Aggregate_Order_By>;
   campaign_type_id?: Maybe<Order_By>;
   changed_at?: Maybe<Order_By>;
+  connection_id?: Maybe<Order_By>;
   data?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   is_active?: Maybe<Order_By>;
@@ -875,6 +938,8 @@ export enum Campaign_Select_Column {
   /** column name */
   ChangedAt = 'changed_at',
   /** column name */
+  ConnectionId = 'connection_id',
+  /** column name */
   Data = 'data',
   /** column name */
   Id = 'id',
@@ -894,6 +959,7 @@ export type Campaign_Set_Input = {
   campaign_name?: Maybe<Scalars['String']>;
   campaign_type_id?: Maybe<Scalars['Int']>;
   changed_at?: Maybe<Scalars['timestamptz']>;
+  connection_id?: Maybe<Scalars['Int']>;
   data?: Maybe<Scalars['jsonb']>;
   id?: Maybe<Scalars['Int']>;
   is_active?: Maybe<Scalars['Boolean']>;
@@ -906,32 +972,68 @@ export type Campaign_Set_Input = {
 export type Campaign_Stddev_Fields = {
   __typename?: 'campaign_stddev_fields';
   campaign_type_id?: Maybe<Scalars['Float']>;
+  connection_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   organization_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "campaign" */
+export type Campaign_Stddev_Order_By = {
+  campaign_type_id?: Maybe<Order_By>;
+  connection_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Campaign_Stddev_Pop_Fields = {
   __typename?: 'campaign_stddev_pop_fields';
   campaign_type_id?: Maybe<Scalars['Float']>;
+  connection_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   organization_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "campaign" */
+export type Campaign_Stddev_Pop_Order_By = {
+  campaign_type_id?: Maybe<Order_By>;
+  connection_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Campaign_Stddev_Samp_Fields = {
   __typename?: 'campaign_stddev_samp_fields';
   campaign_type_id?: Maybe<Scalars['Float']>;
+  connection_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   organization_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "campaign" */
+export type Campaign_Stddev_Samp_Order_By = {
+  campaign_type_id?: Maybe<Order_By>;
+  connection_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
 };
 
 /** aggregate sum on columns */
 export type Campaign_Sum_Fields = {
   __typename?: 'campaign_sum_fields';
   campaign_type_id?: Maybe<Scalars['Int']>;
+  connection_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   organization_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "campaign" */
+export type Campaign_Sum_Order_By = {
+  campaign_type_id?: Maybe<Order_By>;
+  connection_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
 };
 
 /** columns and relationships of "campaign_template_cross" */
@@ -1527,6 +1629,8 @@ export enum Campaign_Update_Column {
   /** column name */
   ChangedAt = 'changed_at',
   /** column name */
+  ConnectionId = 'connection_id',
+  /** column name */
   Data = 'data',
   /** column name */
   Id = 'id',
@@ -1544,30 +1648,64 @@ export enum Campaign_Update_Column {
 export type Campaign_Var_Pop_Fields = {
   __typename?: 'campaign_var_pop_fields';
   campaign_type_id?: Maybe<Scalars['Float']>;
+  connection_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   organization_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "campaign" */
+export type Campaign_Var_Pop_Order_By = {
+  campaign_type_id?: Maybe<Order_By>;
+  connection_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Campaign_Var_Samp_Fields = {
   __typename?: 'campaign_var_samp_fields';
   campaign_type_id?: Maybe<Scalars['Float']>;
+  connection_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   organization_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "campaign" */
+export type Campaign_Var_Samp_Order_By = {
+  campaign_type_id?: Maybe<Order_By>;
+  connection_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Campaign_Variance_Fields = {
   __typename?: 'campaign_variance_fields';
   campaign_type_id?: Maybe<Scalars['Float']>;
+  connection_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
   organization_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "campaign" */
+export type Campaign_Variance_Order_By = {
+  campaign_type_id?: Maybe<Order_By>;
+  connection_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  organization_id?: Maybe<Order_By>;
 };
 
 /** columns and relationships of "connection" */
 export type Connection = {
   __typename?: 'connection';
+  ad_account_id?: Maybe<Scalars['String']>;
+  /** An array relationship */
+  campaigns: Array<Campaign>;
+  /** An aggregate relationship */
+  campaigns_aggregate: Campaign_Aggregate;
   changed_at?: Maybe<Scalars['timestamptz']>;
+  /** A computed field, executes function "connection_ad_accounts" */
+  connection_ad_accounts?: Maybe<Scalars['jsonb']>;
   /** A computed field, executes function "connection_info" */
   connection_info?: Maybe<Scalars['jsonb']>;
   /** A computed field, executes function "connection_pages" */
@@ -1578,6 +1716,32 @@ export type Connection = {
   credentials?: Maybe<Scalars['jsonb']>;
   id: Scalars['Int'];
   organization_id: Scalars['Int'];
+};
+
+
+/** columns and relationships of "connection" */
+export type ConnectionCampaignsArgs = {
+  distinct_on?: Maybe<Array<Campaign_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Campaign_Order_By>>;
+  where?: Maybe<Campaign_Bool_Exp>;
+};
+
+
+/** columns and relationships of "connection" */
+export type ConnectionCampaigns_AggregateArgs = {
+  distinct_on?: Maybe<Array<Campaign_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Campaign_Order_By>>;
+  where?: Maybe<Campaign_Bool_Exp>;
+};
+
+
+/** columns and relationships of "connection" */
+export type ConnectionConnection_Ad_AccountsArgs = {
+  path?: Maybe<Scalars['String']>;
 };
 
 
@@ -1646,7 +1810,10 @@ export type Connection_Bool_Exp = {
   _and?: Maybe<Array<Connection_Bool_Exp>>;
   _not?: Maybe<Connection_Bool_Exp>;
   _or?: Maybe<Array<Connection_Bool_Exp>>;
+  ad_account_id?: Maybe<String_Comparison_Exp>;
+  campaigns?: Maybe<Campaign_Bool_Exp>;
   changed_at?: Maybe<Timestamptz_Comparison_Exp>;
+  connection_ad_accounts?: Maybe<Jsonb_Comparison_Exp>;
   connection_info?: Maybe<Jsonb_Comparison_Exp>;
   connection_pages?: Maybe<Jsonb_Comparison_Exp>;
   connection_type?: Maybe<Connection_Type_Bool_Exp>;
@@ -1688,6 +1855,8 @@ export type Connection_Inc_Input = {
 
 /** input type for inserting data into table "connection" */
 export type Connection_Insert_Input = {
+  ad_account_id?: Maybe<Scalars['String']>;
+  campaigns?: Maybe<Campaign_Arr_Rel_Insert_Input>;
   changed_at?: Maybe<Scalars['timestamptz']>;
   connection_type?: Maybe<Connection_Type_Obj_Rel_Insert_Input>;
   connection_type_id?: Maybe<Scalars['Int']>;
@@ -1699,6 +1868,7 @@ export type Connection_Insert_Input = {
 /** aggregate max on columns */
 export type Connection_Max_Fields = {
   __typename?: 'connection_max_fields';
+  ad_account_id?: Maybe<Scalars['String']>;
   changed_at?: Maybe<Scalars['timestamptz']>;
   connection_type_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
@@ -1708,6 +1878,7 @@ export type Connection_Max_Fields = {
 /** aggregate min on columns */
 export type Connection_Min_Fields = {
   __typename?: 'connection_min_fields';
+  ad_account_id?: Maybe<Scalars['String']>;
   changed_at?: Maybe<Scalars['timestamptz']>;
   connection_type_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
@@ -1732,7 +1903,10 @@ export type Connection_On_Conflict = {
 
 /** Ordering options when selecting data from "connection". */
 export type Connection_Order_By = {
+  ad_account_id?: Maybe<Order_By>;
+  campaigns_aggregate?: Maybe<Campaign_Aggregate_Order_By>;
   changed_at?: Maybe<Order_By>;
+  connection_ad_accounts?: Maybe<Order_By>;
   connection_info?: Maybe<Order_By>;
   connection_pages?: Maybe<Order_By>;
   connection_type?: Maybe<Connection_Type_Order_By>;
@@ -1755,6 +1929,8 @@ export type Connection_Prepend_Input = {
 /** select columns of table "connection" */
 export enum Connection_Select_Column {
   /** column name */
+  AdAccountId = 'ad_account_id',
+  /** column name */
   ChangedAt = 'changed_at',
   /** column name */
   ConnectionTypeId = 'connection_type_id',
@@ -1768,6 +1944,7 @@ export enum Connection_Select_Column {
 
 /** input type for updating data in table "connection" */
 export type Connection_Set_Input = {
+  ad_account_id?: Maybe<Scalars['String']>;
   changed_at?: Maybe<Scalars['timestamptz']>;
   connection_type_id?: Maybe<Scalars['Int']>;
   credentials?: Maybe<Scalars['jsonb']>;
@@ -2083,6 +2260,8 @@ export type Connection_Type_Variance_Fields = {
 
 /** update columns of table "connection" */
 export enum Connection_Update_Column {
+  /** column name */
+  AdAccountId = 'ad_account_id',
   /** column name */
   ChangedAt = 'changed_at',
   /** column name */
@@ -5584,6 +5763,8 @@ export type Template = {
   specification?: Maybe<Scalars['jsonb']>;
   template_name?: Maybe<Scalars['String']>;
   template_preview?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  template_type: Template_Type;
   template_type_id: Scalars['Int'];
 };
 
@@ -5668,6 +5849,7 @@ export type Template_Bool_Exp = {
   specification?: Maybe<Jsonb_Comparison_Exp>;
   template_name?: Maybe<String_Comparison_Exp>;
   template_preview?: Maybe<String_Comparison_Exp>;
+  template_type?: Maybe<Template_Type_Bool_Exp>;
   template_type_id?: Maybe<Int_Comparison_Exp>;
 };
 
@@ -5708,6 +5890,7 @@ export type Template_Insert_Input = {
   specification?: Maybe<Scalars['jsonb']>;
   template_name?: Maybe<Scalars['String']>;
   template_preview?: Maybe<Scalars['String']>;
+  template_type?: Maybe<Template_Type_Obj_Rel_Insert_Input>;
   template_type_id?: Maybe<Scalars['Int']>;
 };
 
@@ -5765,6 +5948,7 @@ export type Template_Order_By = {
   specification?: Maybe<Order_By>;
   template_name?: Maybe<Order_By>;
   template_preview?: Maybe<Order_By>;
+  template_type?: Maybe<Template_Type_Order_By>;
   template_type_id?: Maybe<Order_By>;
 };
 
@@ -5987,6 +6171,13 @@ export type Template_Type_Mutation_Response = {
   affected_rows: Scalars['Int'];
   /** data from the rows affected by the mutation */
   returning: Array<Template_Type>;
+};
+
+/** input type for inserting object relation for remote table "template_type" */
+export type Template_Type_Obj_Rel_Insert_Input = {
+  data: Template_Type_Insert_Input;
+  /** upsert condition */
+  on_conflict?: Maybe<Template_Type_On_Conflict>;
 };
 
 /** on_conflict condition type for table "template_type" */

@@ -12,4 +12,5 @@ export type CampaignInput = {
     specification: any
     budget: any
     is_active: boolean
+    connection_id: number
 }

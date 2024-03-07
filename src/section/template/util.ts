@@ -13,7 +13,7 @@ import { checkOrganizationDataBase, checkOrganizationIdBase } from "../organizat
 import { TemplateQueryType, getTemplateById, getTemplateTypeById } from "./query";
 
 export const checkTemplateBase = async (intl, isDev: boolean, section: string, val: number,
-    errs: number[], session: HasuraSession, orgId?: number, type = TemplateQueryType.Default): Promise<ActionOutputErrorOrData<Template>> => {
+    errs: number[], type = TemplateQueryType.Default, session: HasuraSession, orgId?: number): Promise<ActionOutputErrorOrData<Template>> => {
     return checkOrganizationDataBase(intl, isDev, section, val, errs, v => getTemplateById(v, type), session, orgId)
 }
 
@@ -27,7 +27,7 @@ export const checkTemplateType = async (intl, isDev: boolean, section: string, d
 
 export const checkId = async (intl, isDev: boolean, section: string, data: UpdateInput<Template>,
     session: HasuraSession, type = TemplateQueryType.Default): Promise<Nullable<ActionOutputError>> => {
-    const errOrData = await checkTemplateBase(intl, isDev, section, data.id, [120050, 120060], session, undefined, type);
+    const errOrData = await checkTemplateBase(intl, isDev, section, data.id, [120050, 120060], type, session);
     if (errOrData.error) {
         return errOrData.error
     }

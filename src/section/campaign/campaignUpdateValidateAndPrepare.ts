@@ -2,7 +2,7 @@ import { ActionOutputError, Nullable, RelListInput, UpdateInput, WithId } from '
 import { CampaignInput } from '.';
 import { HasuraSession } from '../../handler/session';
 import { MutationDefinition } from '../../db';
-import { checkName, checkCampaignType, checkId, checkActive, checkData } from './util';
+import { checkName, checkCampaignType, checkId, checkActive, checkData, checkConnection } from './util';
 import { IntlShape } from '@formatjs/intl';
 import { Campaign } from '../../db/generated';
 import { changedSet } from '../../db/util';
@@ -58,13 +58,20 @@ const campaignUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
     if (updated) {
       await logUpdate(def, data)
       updateSet = { ...updateSet, data: data.data };
-    }    
+    }
   }
   if (data.hasOwnProperty('specification')) {
     updateSet = { ...updateSet, specification: data.specification };
   }
   if (data.hasOwnProperty('budget')) {
     updateSet = { ...updateSet, budget: data.budget };
+  }
+  if (data.hasOwnProperty('connection_id')) {
+    const err = await checkConnection(intl, isDev, section, data, data.db.organization_id);
+    if (err) {
+      return err;
+    }
+    updateSet = { ...updateSet, connection_id: data.connection_id };
   }
   if (data.hasOwnProperty('campaign_template_crosses')) {
     const rows = data.campaign_template_crosses.data;

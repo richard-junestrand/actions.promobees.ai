@@ -5,13 +5,14 @@ import { checkOrganizationDataBase, checkOrganizationIdBase } from "../organizat
 import { OrganizationUserInsertInput } from "./organizationUserInsertValidateAndPrepare";
 import { OrganizationUserQueryType, getOrganizationUserById } from "./query";
 
-export const checkOrganizationUserBase = async (intl, isDev: boolean, section: string, val: number, errs: number[], type = OrganizationUserQueryType.Default, options?: any): Promise<ActionOutputErrorOrData<Organization_User>> => {
-    return checkOrganizationDataBase(intl, isDev, section, val, errs, v => getOrganizationUserById(v, type))
+export const checkOrganizationUserBase = async (intl, isDev: boolean, section: string, val: number, errs: number[], type = OrganizationUserQueryType.Default, 
+    session: HasuraSession): Promise<ActionOutputErrorOrData<Organization_User>> => {
+    return checkOrganizationDataBase(intl, isDev, section, val, errs, v => getOrganizationUserById(v, type), session)
 }
 
 export const checkId = async (intl, isDev: boolean, section: string, data: UpdateInput<Organization_User>,
-    type = OrganizationUserQueryType.Default): Promise<ActionOutputErrorOrData<Organization_User>> => {
-    return await checkOrganizationUserBase(intl, isDev, section, data.id, [150000, 150010], type);
+    type = OrganizationUserQueryType.Default, session: HasuraSession): Promise<ActionOutputErrorOrData<Organization_User>> => {
+    return await checkOrganizationUserBase(intl, isDev, section, data.id, [150000, 150010], type, session);
 }
 
 export const checkOrganizationId = async (intl, section: string, data: OrganizationUserInsertInput, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {

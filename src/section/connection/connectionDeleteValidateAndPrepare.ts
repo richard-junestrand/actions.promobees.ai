@@ -4,6 +4,7 @@ import { MutationDefinition } from '../../db';
 import { checkId } from './util';
 import { IntlShape } from '@formatjs/intl';
 import { Connection } from '../../db/generated';
+import { customError } from '../../util/errorUtil';
 
 export type ConnectionDeleteInput = UpdateInput<Connection>
 
@@ -13,6 +14,10 @@ const connectionDeleteValidateAndPrepare = async (intl: IntlShape<string>, isDev
   const errOrData = await checkId(intl, isDev, section, data);
   if (errOrData.error) {
     return errOrData.error;
+  }
+  //
+  if (data.db.campaigns_aggregate.aggregate.count > 0) {
+    return await customError(intl,170170, section)
   }
   //
   const deleteCall = await def.newCall();
