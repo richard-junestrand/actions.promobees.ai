@@ -11,3 +11,16 @@ export const getCampaignTemplateCrossById = async (id: number) => {
     id
   });
 }
+
+export const getCampaignTemplateCross = async (campaignId: number, templateId: number) => {
+  return await executeGraphql(`
+    query ($campaignId: Int!, $templateId: Int!) {
+      data: campaign_template_cross(where: {campaign_id: {_eq: $campaignId}, template_id: {_eq: $templateId}}) {
+        id
+      }
+    }
+  `, {
+    campaignId,
+    templateId
+  })
+}

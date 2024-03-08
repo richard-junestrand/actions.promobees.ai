@@ -4,6 +4,9 @@ import { checkTemplate, checkOrderBy } from './util';
 import { MutationDefinition } from '../../db';
 import { ActionOutputError, Nullable } from '../../handler';
 import { IntlShape } from "@formatjs/intl";
+import { checkDataExistBase } from '../../util/dataUtil';
+import { getCampaignTemplateCross } from './query';
+import { customError } from '../../util/errorUtil';
 
 export type CampaignTemplateCrossInsertInput = CampaignTemplateCrossInput;
 
@@ -13,6 +16,14 @@ const campaignTemplateCrossInsertValidateAndPrepare = async (intl: IntlShape<str
   const errOrData = await checkTemplate(intl, isDev, section, data, organizationId);
   if (errOrData.error) {
     return errOrData.error;
+  }
+  //
+  const errOrExist = await checkDataExistBase(intl, isDev, section, () => getCampaignTemplateCross(data.campaign_id, data.template_id));
+  if (errOrExist.error) {
+    return errOrExist.error
+  }
+  if (errOrExist.data) {
+    return await customError(intl, 110060, section, [data.campaign_id, data.template_id])
   }
   //
   const err = await checkOrderBy(intl, section, data);

@@ -25,6 +25,7 @@ errors.set(110020, {id: "message.error-invalid-int", params: ["order_by"] });
 errors.set(110030, {id: "message.error-invalid-int", params: ["campaign_template_cross_id"] });
 errors.set(110040, {id: "message.error-invalid-value", params: ["campaign_template_cross_id"] });
 errors.set(110050, {id: "message.error-not-match-parent", params: ["campaign_template_cross", "campaign_id"] });
+errors.set(110060, {id: "message.error-duplicated-value2", params: ["campaign_id", "template_id"] });
 
 // template
 errors.set(120000, {id: "message.error-invalid-int", params: ["organization_id"] });
