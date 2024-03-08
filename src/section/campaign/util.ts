@@ -1,6 +1,6 @@
 import moment from "moment";
 import { CampaignDataInput, CampaignInput, ChangedData } from ".";
-import { Campaign } from "../../db/generated";
+import { Campaign, Connection } from "../../db/generated";
 import { ActionOutputError, ActionOutputErrorOrData, Nullable, OrganizationIdInput, UpdateInput } from "../../handler";
 import { HasuraSession } from "../../handler/session";
 import { checkBoolean, checkDataBase, isDeepEqual } from "../../util/dataUtil";
@@ -9,6 +9,7 @@ import { checkOrganizationDataBase, checkOrganizationIdBase } from "../organizat
 import { CampaignQueryType, getCampaignById, getCampaignTypeById } from "./query";
 import { checkConnectionBase } from "../connection/util";
 import { ConnectionQueryType } from "../connection/query";
+import { ConnectionIdInput } from "../connection";
 
 export const checkName = async (intl, section: string, data: CampaignInput): Promise<Nullable<ActionOutputError>> => {
   return checkString(intl, section, data.campaign_name, 100020, false, 256);
@@ -18,8 +19,9 @@ export const checkCampaignType = async (intl, isDev: boolean, section: string, d
   return (await checkDataBase(intl, isDev, section, data.campaign_type_id, [100030, 100040], getCampaignTypeById)).error
 }
 
-export const checkConnection = async (intl, isDev: boolean, section: string, data: CampaignInput, orgId: number): Promise<Nullable<ActionOutputError>> => {
-  return (await checkConnectionBase(intl, isDev, section, data.connection_id, [100090, 100100], ConnectionQueryType.Default, null, orgId, false)).error;
+export const checkConnection = async (intl, isDev: boolean, section: string, data: ConnectionIdInput, type: ConnectionQueryType,
+  session: HasuraSession, orgId: number, required: boolean): Promise<ActionOutputErrorOrData<Connection>> => {
+  return await checkConnectionBase(intl, isDev, section, data.connection_id, [100090, 100100], type, session, orgId, required);
 }
 
 export const checkCampaignBase = async (intl, isDev: boolean, section: string, val: number, errs: number[],

@@ -10,6 +10,7 @@ import campaignTemplateCrossUpdateValidateAndPrepare, { CampaignTemplateCrossUpd
 import campaignTemplateCrossInsertValidateAndPrepare, { CampaignTemplateCrossInsertInput } from '../campaignTemplateCross/campaignTemplateCrossInsertValidateAndPrepare';
 import { checkList } from '../../util/dataUtil';
 import { CampaignQueryType } from './query';
+import { ConnectionQueryType } from '../connection/query';
 
 export type CampaignUpdateInput = CampaignInput & UpdateInput<Campaign> & {
   campaign_template_crosses: RelListInput<CampaignTemplateCrossUpdateInput | CampaignTemplateCrossInsertInput>
@@ -67,9 +68,9 @@ const campaignUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
     updateSet = { ...updateSet, budget: data.budget };
   }
   if (data.hasOwnProperty('connection_id')) {
-    const err = await checkConnection(intl, isDev, section, data, data.db.organization_id);
-    if (err) {
-      return err;
+    const errOrConnection = await checkConnection(intl, isDev, section, data, ConnectionQueryType.Default, undefined, data.db.organization_id, false);
+    if (errOrConnection.error) {
+      return errOrConnection.error;
     }
     updateSet = { ...updateSet, connection_id: data.connection_id };
   }

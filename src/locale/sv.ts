@@ -43,7 +43,6 @@ const data = {
     "message.error-170100": "Misslyckades med att få metaanvändarinformation.",
     "message.error-170110": "Misslyckades med att få metaanvändarens annonskonton.",
     "message.error-170120": "Det gick inte att hämta metaanvändarkonton.",
-    "message.error-170130": "{p0} hittades inte.",
     "message.error-170140": "Access token hittades inte.",
     "message.error-170150": "Annonser hittades inte.",
     "message.error-500000": "Ogiltig storlek på mallbild.",

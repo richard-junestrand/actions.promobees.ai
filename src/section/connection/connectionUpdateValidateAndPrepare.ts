@@ -20,7 +20,7 @@ const connectionUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev
   def: MutationDefinition, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
   const section = "connectionUpdate"
   //
-  const errOrData = await checkId(intl, isDev, section, data, ConnectionQueryType.Update);
+  const errOrData = await checkId(intl, isDev, section, data, ConnectionQueryType.Update, session);
   if (errOrData.error) {
     return errOrData.error;
   }

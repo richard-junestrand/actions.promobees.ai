@@ -6,6 +6,7 @@ import { checkName, checkCampaignType, checkActive, checkOrganizationId, checkCo
 import { IntlShape } from '@formatjs/intl';
 import campaignTemplateCrossInsertValidateAndPrepare, { CampaignTemplateCrossInsertInput } from '../campaignTemplateCross/campaignTemplateCrossInsertValidateAndPrepare';
 import { checkRelList } from '../../util/dataUtil';
+import { ConnectionQueryType } from '../connection/query';
 
 export type CampaignInsertInput = CampaignInput & OrganizationIdInput & {
   campaign_template_crosses: RelListInput<CampaignTemplateCrossInsertInput>
@@ -34,9 +35,9 @@ const campaignInsertValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
     return err;
   }
   //
-  err = await checkConnection(intl, isDev, section, data, data.organization_id);
-  if (err) {
-    return err;
+  const errOrConnection = await checkConnection(intl, isDev, section, data, ConnectionQueryType.Default, undefined, data.organization_id, false);
+  if (errOrConnection.error) {
+    return errOrConnection.error;
   }
   // Validate the children
   err = await checkRelList(intl, section, data.campaign_template_crosses, 

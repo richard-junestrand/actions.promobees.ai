@@ -7,19 +7,10 @@ export enum ConnectionQueryType {
   Delete
 }
 export const getConnection = async (typeId: number, orgId: number, type = ConnectionQueryType.Default) => {
-  let fields = ''
-  switch (type) {
-    case ConnectionQueryType.Preview:
-      fields = `
-        credentials
-        `
-      break
-  }
   return await executeGraphql(`
     query ($typeId: Int!, $orgId: Int!) {
       data: connection(where: {organization_id: {_eq: $orgId}, connection_type_id: {_eq: $typeId}}) {
         id
-        ${fields}
       }
     }
   `, {
@@ -31,6 +22,13 @@ export const getConnection = async (typeId: number, orgId: number, type = Connec
 export const getConnectionById = async (id: number, type = ConnectionQueryType.Default) => {
   let fields = ''
   switch (type) {
+    case ConnectionQueryType.Preview:
+      fields = `
+        credentials
+        ad_account_id
+        connection_type_id
+        `
+      break
     case ConnectionQueryType.Update:
       fields = `
         connection_type_id
