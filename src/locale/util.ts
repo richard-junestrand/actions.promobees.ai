@@ -18,7 +18,5 @@ export const checkTranslated = async (intl, section: string, val: any, err: numb
       if(er){
           return Promise.reject(er)
       }
-  })).then(r => null).catch(er => {
-      return er;
-  })
+  })).then(r => null).catch(r => r)
 }

@@ -2,9 +2,9 @@ import { executeGraphql } from "../../db/util"
 
 export enum ConnectionQueryType {
   Default,
-  Update,
-  Preview,
-  Delete
+  Update,  
+  Delete,
+  Credentials,
 }
 export const getConnection = async (typeId: number, orgId: number, type = ConnectionQueryType.Default) => {
   return await executeGraphql(`
@@ -22,7 +22,7 @@ export const getConnection = async (typeId: number, orgId: number, type = Connec
 export const getConnectionById = async (id: number, type = ConnectionQueryType.Default) => {
   let fields = ''
   switch (type) {
-    case ConnectionQueryType.Preview:
+    case ConnectionQueryType.Credentials:
       fields = `
         credentials
         ad_account_id

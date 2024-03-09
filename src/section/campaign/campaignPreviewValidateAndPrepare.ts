@@ -10,6 +10,7 @@ import { ConnectionType } from '../connection';
 import { customError } from '../../util/errorUtil';
 import { Connection } from '../../db/generated';
 import { CampaignType } from '.';
+import { initFbApi } from '../connection/util';
 
 export type CampaignPreviewInput = {
   campaign_type_id: number
@@ -25,7 +26,7 @@ const campaignPreviewValidateAndPrepare = async (intl: IntlShape<string>, isDev:
     return errOrType.error;
   }
   //
-  const errOrConnection = await checkConnection(intl, isDev, section, data, ConnectionQueryType.Preview, session);
+  const errOrConnection = await checkConnection(intl, isDev, section, data, ConnectionQueryType.Credentials, session);
   if (errOrConnection.error) {
     return errOrConnection.error
   }
@@ -33,7 +34,7 @@ const campaignPreviewValidateAndPrepare = async (intl: IntlShape<string>, isDev:
     return await customError(intl, 100110, section)
   }
   //
-  const errOrAdAccount = await initApi(intl, isDev, section, errOrConnection.data)
+  const errOrAdAccount = await initFbApi(intl, isDev, section, errOrConnection.data)
   if (errOrAdAccount.error) {
     return errOrAdAccount.error
   }
@@ -71,24 +72,3 @@ const campaignPreviewValidateAndPrepare = async (intl: IntlShape<string>, isDev:
   })
 };
 export default campaignPreviewValidateAndPrepare;
-
-const initApi = async (intl, isDev: boolean, section: string, c: Connection): Promise<ActionOutputErrorOrData<AdAccount>> => {
-
-  switch (c.connection_type_id) {
-    case ConnectionType.Meta:
-      if (!!!(c.credentials?.longAccessToken?.access_token)) {
-        return { error: await customError(intl, 170140, section) }
-      }
-      if ((c.credentials?.adAccounts?.data || []).length === 0) {
-        return { error: await customError(intl, 170150, section) }
-      }
-      if (!c.ad_account_id) {
-        return { error: await customError(intl, 170130, section) }
-      }
-      const api = FacebookAdsApi.init(c.credentials.longAccessToken.access_token);
-      isDev && api.setDebug(true);
-      return { data: new AdAccount(c.ad_account_id) }
-  }
-  return { data: null }
-
-}

@@ -92,17 +92,20 @@ errors.set(170040, {id: "message.error-duplicated-value2", params: ["connection_
 errors.set(170050, {id: "message.error-invalid-int", params: ["connection_type_id"] });
 errors.set(170080, {id: "message.error-invalid-value", params: ["connection_type_id"] });
 errors.set(170090, {id: "message.error-170090" });
-errors.set(170100, {id: "message.error-170100" });
-errors.set(170110, {id: "message.error-170110" });
+errors.set(170100, {id: "message.error-invalid-value", params: ["credentials.ad_account_id"] });
+errors.set(170110, {id: "message.error-data-used", params: ["campaign"]});
 errors.set(170120, {id: "message.error-170120" });
 errors.set(170130, {id: "message.error-invalid-value", params: ["ad_account_id"] });
-errors.set(170140, {id: "message.error-170140" });
-errors.set(170150, {id: "message.error-170150" });
-errors.set(170160, {id: "message.error-invalid-value", params: ["credentials.ad_account_id"] });
-errors.set(170170, {id: "message.error-data-used", params: ["campaign"]});
 //
 errors.set(500000, {id: "message.error-500000" });
 errors.set(500010, {id: "message.error-500010" });
+//
+errors.set(600050, {id: "message.error-600050" });
+errors.set(600060, {id: "message.error-600060" });
+errors.set(600070, {id: "message.error-600070" });
+errors.set(600080, {id: "message.error-600080" });
+errors.set(600090, {id: "message.error-600090" });
+errors.set(600100, {id: "message.error-600100" });
 
 export const customError = async (intl: IntlShape, id: number, section: string, params = null, extra = null): Promise<ActionOutputError> => {
     const err = errors.get(id) || {
