@@ -3,13 +3,16 @@ import { HasuraSession } from '../../handler/session';
 import { MutationDefinition } from '../../db';
 import { IntlShape } from '@formatjs/intl';
 import { FacebookAdsApi, AdAccount } from 'facebook-nodejs-business-sdk';
-import { checkConnection } from './util';
+import { checkCampaignType, checkConnection } from './util';
 import { ConnectionQueryType } from '../connection/query';
 import { generatePreview } from '../../util/fbUtil';
-import { ConnectionIdInput, ConnectionType } from '../connection';
+import { ConnectionType } from '../connection';
 import { customError } from '../../util/errorUtil';
+import { Connection } from '../../db/generated';
+import { CampaignType } from '.';
 
 export type CampaignPreviewInput = {
+  campaign_type_id: number
   connection_id: number
   data: any
 }
@@ -17,7 +20,20 @@ export type CampaignPreviewInput = {
 const campaignPreviewValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: CampaignPreviewInput, def: MutationDefinition, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
   const section = "campaignPreview";
   //
-  const errOrAdAccount = await initApi(intl, isDev, section, data, session)
+  const errOrType = await checkCampaignType(intl, isDev, section, data);
+  if (errOrType.error) {
+    return errOrType.error;
+  }
+  //
+  const errOrConnection = await checkConnection(intl, isDev, section, data, ConnectionQueryType.Preview, session);
+  if (errOrConnection.error) {
+    return errOrConnection.error
+  }
+  if (errOrConnection.data.connection_type_id !== errOrType.data.connection_type_id) {
+    return await customError(intl, 100110, section)
+  }
+  //
+  const errOrAdAccount = await initApi(intl, isDev, section, errOrConnection.data)
   if (errOrAdAccount.error) {
     return errOrAdAccount.error
   }
@@ -25,26 +41,30 @@ const campaignPreviewValidateAndPrepare = async (intl: IntlShape<string>, isDev:
   if (errOrAdAccount.data) {
     const adAccount = errOrAdAccount.data
     //
-    const errOrData = await generatePreview(intl, section, adAccount, {
-      creative: {
-        object_story_spec: {
-          link_data: {
-            child_attachments: data.data.data.filter(r => !r.dont_use).slice(0, 10).map(r => ({
-              description: r.data.description,
-              link: r.data.link,
-              name: r.data.name,
-            })),
-            link: data.data?.extra?.link || ''
+    switch (data.campaign_type_id) {
+      case CampaignType.MetaCarousel:
+        const errOrData = await generatePreview(intl, section, adAccount, {
+          creative: {
+            object_story_spec: {
+              link_data: {
+                child_attachments: data.data.data.filter(r => !r.dont_use).slice(0, 10).map(r => ({
+                  description: r.data.description,
+                  link: r.data.link,
+                  name: r.data.name,
+                })),
+                link: data.data?.extra?.link || ''
+              },
+              page_id: data.data?.extra?.page_id || ''
+            }
           },
-          page_id: data.data?.extra?.page_id || ''
+          ad_format: 'DESKTOP_FEED_STANDARD',
+        });
+        if (errOrData.error) {
+          return errOrData.error
         }
-      },
-      ad_format: 'DESKTOP_FEED_STANDARD',
-    });
-    if (errOrData.error) {
-      return errOrData.error
+        ret = errOrData.data;
+        break
     }
-    ret = errOrData.data;
   }
   return returnValue(def, {
     data: ret
@@ -52,25 +72,22 @@ const campaignPreviewValidateAndPrepare = async (intl: IntlShape<string>, isDev:
 };
 export default campaignPreviewValidateAndPrepare;
 
-const initApi = async (intl, isDev: boolean, section: string, data: ConnectionIdInput, session: HasuraSession): Promise<ActionOutputErrorOrData<AdAccount>> => {
-  const errOrConnection = await checkConnection(intl, isDev, section, data, ConnectionQueryType.Preview, session, undefined, true);
-  if (errOrConnection.error) {
-    return { error: errOrConnection.error };
-  }
-  switch (errOrConnection.data.connection_type_id) {
+const initApi = async (intl, isDev: boolean, section: string, c: Connection): Promise<ActionOutputErrorOrData<AdAccount>> => {
+
+  switch (c.connection_type_id) {
     case ConnectionType.Meta:
-      if (!!!(errOrConnection.data.credentials?.longAccessToken?.access_token)) {
+      if (!!!(c.credentials?.longAccessToken?.access_token)) {
         return { error: await customError(intl, 170140, section) }
       }
-      if ((errOrConnection.data.credentials?.adAccounts?.data || []).length === 0) {
+      if ((c.credentials?.adAccounts?.data || []).length === 0) {
         return { error: await customError(intl, 170150, section) }
       }
-      if (!errOrConnection.data.ad_account_id) {
+      if (!c.ad_account_id) {
         return { error: await customError(intl, 170130, section) }
       }
-      const api = FacebookAdsApi.init(errOrConnection.data.credentials.longAccessToken.access_token);
+      const api = FacebookAdsApi.init(c.credentials.longAccessToken.access_token);
       isDev && api.setDebug(true);
-      return { data: new AdAccount(errOrConnection.data.ad_account_id) }
+      return { data: new AdAccount(c.ad_account_id) }
   }
   return { data: null }
 

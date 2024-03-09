@@ -14,3 +14,7 @@ export type CampaignInput = {
     is_active: boolean
     connection_id: number
 }
+
+export enum CampaignType {
+    MetaCarousel=10
+}

@@ -5,6 +5,7 @@ export const getCampaignTypeById = async (id: number) => {
     query ($id: Int!) {
       data:campaign_type_by_pk(id: $id) {
         id
+        connection_type_id
       }
     }`, {
     id
@@ -22,6 +23,12 @@ export const getCampaignById = async (id: number, type=CampaignQueryType.Default
     case CampaignQueryType.Update:
       fields=`
       data
+      campaign_type {
+        connection_type_id
+      }
+      connection {
+        connection_type_id
+      }
       `;
       break
   }

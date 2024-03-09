@@ -11,6 +11,7 @@ import campaignTemplateCrossInsertValidateAndPrepare, { CampaignTemplateCrossIns
 import { checkList } from '../../util/dataUtil';
 import { CampaignQueryType } from './query';
 import { ConnectionQueryType } from '../connection/query';
+import { customError } from '../../util/errorUtil';
 
 export type CampaignUpdateInput = CampaignInput & UpdateInput<Campaign> & {
   campaign_template_crosses: RelListInput<CampaignTemplateCrossUpdateInput | CampaignTemplateCrossInsertInput>
@@ -26,6 +27,8 @@ const campaignUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
   //
   const updateCall = await def.newCall();
   let updateSet = changedSet();
+  let connectionType1=data.db.connection.connection_type_id;
+  let connectionType2=data.db.campaign_type.connection_type_id;
   //
   if (data.hasOwnProperty('campaign_name')) {
     const err = await checkName(intl, section, data);
@@ -36,10 +39,11 @@ const campaignUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
   }
   //
   if (data.hasOwnProperty('campaign_type_id')) {
-    const err = await checkCampaignType(intl, isDev, section, data);
-    if (err) {
-      return err;
+    const errOrType = await checkCampaignType(intl, isDev, section, data);
+    if (errOrType.error) {
+      return errOrType.error;
     }
+    connectionType2=errOrType.data.connection_type_id
     updateSet = { ...updateSet, campaign_type_id: data.campaign_type_id };
   }
   //
@@ -68,12 +72,18 @@ const campaignUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
     updateSet = { ...updateSet, budget: data.budget };
   }
   if (data.hasOwnProperty('connection_id')) {
-    const errOrConnection = await checkConnection(intl, isDev, section, data, ConnectionQueryType.Default, undefined, data.db.organization_id, false);
+    const errOrConnection = await checkConnection(intl, isDev, section, data, ConnectionQueryType.Default, undefined, data.db.organization_id);
     if (errOrConnection.error) {
       return errOrConnection.error;
     }
+    connectionType1=errOrConnection.data.connection_type_id
     updateSet = { ...updateSet, connection_id: data.connection_id };
   }
+  //
+  if(connectionType1 !== connectionType2){
+    return await customError(intl,100110,section)
+  }
+  //
   if (data.hasOwnProperty('campaign_template_crosses')) {
     const rows = data.campaign_template_crosses.data;
     //

@@ -1,6 +1,6 @@
 import moment from "moment";
 import { CampaignDataInput, CampaignInput, ChangedData } from ".";
-import { Campaign, Connection } from "../../db/generated";
+import { Campaign, Campaign_Type, Connection } from "../../db/generated";
 import { ActionOutputError, ActionOutputErrorOrData, Nullable, OrganizationIdInput, UpdateInput } from "../../handler";
 import { HasuraSession } from "../../handler/session";
 import { checkBoolean, checkDataBase, isDeepEqual } from "../../util/dataUtil";
@@ -15,13 +15,15 @@ export const checkName = async (intl, section: string, data: CampaignInput): Pro
   return checkString(intl, section, data.campaign_name, 100020, false, 256);
 }
 
-export const checkCampaignType = async (intl, isDev: boolean, section: string, data: CampaignInput): Promise<Nullable<ActionOutputError>> => {
-  return (await checkDataBase(intl, isDev, section, data.campaign_type_id, [100030, 100040], getCampaignTypeById)).error
+export const checkCampaignType = async (intl, isDev: boolean, section: string, data: {
+  campaign_type_id: number
+}): Promise<ActionOutputErrorOrData<Campaign_Type>> => {
+  return await checkDataBase(intl, isDev, section, data.campaign_type_id, [100030, 100040], getCampaignTypeById)
 }
 
 export const checkConnection = async (intl, isDev: boolean, section: string, data: ConnectionIdInput, type: ConnectionQueryType,
-  session: HasuraSession, orgId: number, required: boolean): Promise<ActionOutputErrorOrData<Connection>> => {
-  return await checkConnectionBase(intl, isDev, section, data.connection_id, [100090, 100100], type, session, orgId, required);
+  session: HasuraSession, orgId?: number): Promise<ActionOutputErrorOrData<Connection>> => {
+  return await checkConnectionBase(intl, isDev, section, data.connection_id, [100090, 100100], type, session, orgId);
 }
 
 export const checkCampaignBase = async (intl, isDev: boolean, section: string, val: number, errs: number[],

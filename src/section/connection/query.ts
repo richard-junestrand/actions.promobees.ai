@@ -26,12 +26,10 @@ export const getConnectionById = async (id: number, type = ConnectionQueryType.D
       fields = `
         credentials
         ad_account_id
-        connection_type_id
         `
       break
     case ConnectionQueryType.Update:
       fields = `
-        connection_type_id
         credentials
         `
       break
@@ -50,6 +48,7 @@ export const getConnectionById = async (id: number, type = ConnectionQueryType.D
       data:connection_by_pk(id: $id) {
         id
         organization_id
+        connection_type_id
         ${fields}
       }
     }`, {
