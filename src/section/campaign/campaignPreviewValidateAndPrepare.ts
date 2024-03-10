@@ -1,14 +1,11 @@
-import { ActionOutputError, ActionOutputErrorOrData, Nullable, returnValue } from '../../handler';
+import { ActionOutputError, Nullable, returnValue } from '../../handler';
 import { HasuraSession } from '../../handler/session';
 import { MutationDefinition } from '../../db';
 import { IntlShape } from '@formatjs/intl';
-import { FacebookAdsApi, AdAccount } from 'facebook-nodejs-business-sdk';
 import { checkCampaignType, checkConnection } from './util';
 import { ConnectionQueryType } from '../connection/query';
-import { generatePreview } from '../../util/fbUtil';
-import { ConnectionType } from '../connection';
+import { generatePreview } from '../../util/metaUtil';
 import { customError } from '../../util/errorUtil';
-import { Connection } from '../../db/generated';
 import { CampaignType } from '.';
 import { initFbApi } from '../connection/util';
 

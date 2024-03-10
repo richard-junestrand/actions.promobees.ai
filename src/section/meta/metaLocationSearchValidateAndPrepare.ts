@@ -1,16 +1,14 @@
 import { MutationDefinition } from "../../db"
-import { ActionOutputError, Nullable, returnValue } from "../../handler"
+import { ActionOutputError, Nullable, SearchInput, returnValue } from "../../handler"
 import { HasuraSession } from "../../handler/session"
 import { IntlShape } from '@formatjs/intl';
-import { getAppToken, searchLocations } from "../../util/fbUtil";
+import { getAppToken, searchLocations } from "../../util/metaUtil";
 
-export type LocationSearchInput = {
-  keyword: string
-};
+export type MetaLocationSearchInput = SearchInput
 
-const locationSearchValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: LocationSearchInput,
+const metaLocationSearchValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: MetaLocationSearchInput,
   def: MutationDefinition, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
-  const section = "locationSearch"
+  const section = "metaLocationSearch"
   //
   let ret=[]
   if(!!data.keyword) {
@@ -31,4 +29,4 @@ const locationSearchValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
   });
 }
 
-export default locationSearchValidateAndPrepare
+export default metaLocationSearchValidateAndPrepare

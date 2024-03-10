@@ -41,18 +41,35 @@ export async function getAppToken(intl: any, section: string): Promise<ActionOut
 }
 
 export async function searchLocations(intl: any, section: string, token: string, keyword: string): Promise<ActionOutputErrorOrData<any>> {
+  const type= 'adgeolocation'
   return axios.get('https://graph.facebook.com/v19.0/search', {
     params:
     {
       access_token: token,
-      type: 'adgeolocation',
+      type,
       location_types: ["city","country","country_group","region","zip"],
       q: keyword
     }
   }).then(r => {
     return { data: r.data }
   }).catch(async err => {
-    return { error: await customError(intl, 600090, section) }
+    return { error: await customError(intl, 600090, section, [type]) }
+  })
+}
+
+export async function searchInterests(intl: any, section: string, token: string, keyword: string): Promise<ActionOutputErrorOrData<any>> {
+  const type= 'adinterest'
+  return axios.get('https://graph.facebook.com/v19.0/search', {
+    params:
+    {
+      access_token: token,
+      type,
+      q: keyword
+    }
+  }).then(r => {
+    return { data: r.data }
+  }).catch(async err => {
+    return { error: await customError(intl, 600090, section, [type]) }
   })
 }
 

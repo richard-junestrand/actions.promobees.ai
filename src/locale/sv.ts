@@ -47,7 +47,7 @@ const data = {
     "message.error-600060": "Misslyckades med att få metaanvändarinformation.",
     "message.error-600070": "Misslyckades med att få metaanvändarens annonskonton.",
     "message.error-600080": "Det gick inte att hämta metaanvändarkonton.",
-    "message.error-600090": "Misslyckades med att söka meta adgeolocation.",
+    "message.error-600090": "Misslyckades med att söka meta {p0}.",
     "message.error-600100": "Det gick inte att hämta app-token.",
     "message.user-default-password": "Användaren Auth0 har skapats. Standardlösenordet är {p0}."
 }

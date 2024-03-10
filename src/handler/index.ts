@@ -163,3 +163,7 @@ export function returnIdValue(def: MutationDefinition, val) {
 export enum HasuraRole {
     HasuraAdmin = "admin"
 }
+
+export type SearchInput = {
+    keyword: string
+}

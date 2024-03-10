@@ -47,7 +47,7 @@ const data={
     "message.error-600060": "Failed to get meta user information.",
     "message.error-600070": "Failed to get meta user ad accounts.",
     "message.error-600080": "Failed to get meta user accounts.",    
-    "message.error-600090": "Failed to search meta adgeolocation.",
+    "message.error-600090": "Failed to search meta {p0}.",
     "message.error-600100": "Failed to get app token.",
     "message.user-default-password": "Auth0 user is created. Default password is {p0}."
 }

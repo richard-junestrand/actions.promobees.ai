@@ -8,7 +8,7 @@ import { checkOrganizationDataBase, checkOrganizationIdBase } from "../organizat
 import { ConnectionInsertInput } from "./connectionInsertValidateAndPrepare";
 import { ConnectionQueryType, getConnection, getConnectionById, getConnectionTypeById } from "./query";
 import { FacebookAdsApi, AdAccount } from 'facebook-nodejs-business-sdk';
-import { exchangeToken, getAccounts, getAdAccounts, getMe } from "../../util/fbUtil";
+import { exchangeToken, getAccounts, getAdAccounts, getMe } from "../../util/metaUtil";
 
 export const checkConnectionBase = async (intl, isDev: boolean, section: string, val: number, errs: number[], type = ConnectionQueryType.Default,
     session?: HasuraSession, organizationId?: number,
