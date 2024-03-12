@@ -40,11 +40,11 @@ const connectionUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev
   let updateSet = changedSet();
   //
   if (data.hasOwnProperty('credentials')) {
-    const err = await checkCredentials(intl, section, data, data.db.connection_type_id)
+    const err = await checkCredentials(intl, isDev, section, data, data.db.connection_type_id)
     if (err) {
       return err
     }
-    updateSet = { ...updateSet, credentials: data.credentials };
+    updateSet = { ...updateSet, credentials: data.credentials, info: data.info };
   } else {
     data.credentials=data.db.credentials
   }

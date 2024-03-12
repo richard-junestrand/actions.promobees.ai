@@ -9,6 +9,8 @@ import { ConnectionInsertInput } from "./connectionInsertValidateAndPrepare";
 import { ConnectionQueryType, getConnection, getConnectionById, getConnectionTypeById } from "./query";
 import { FacebookAdsApi, AdAccount } from 'facebook-nodejs-business-sdk';
 import { exchangeToken, getAccounts, getAdAccounts, getMe } from "../../util/metaUtil";
+import { executeGraphql } from "../../db/util";
+import { ErrorDatabase } from "../../util/stringUtil";
 
 export const checkConnectionBase = async (intl, isDev: boolean, section: string, val: number, errs: number[], type = ConnectionQueryType.Default,
     session?: HasuraSession, organizationId?: number,
@@ -40,9 +42,9 @@ export const checkType = async (intl, isDev: boolean, section: string, data: Con
     return null
 }
 
-export const checkCredentials = async (intl, section: string, data: ConnectionInput, type: number): Promise<Nullable<ActionOutputError>> => {
+export const checkCredentials = async (intl, isDev: boolean, section: string, data: ConnectionInput, type: number): Promise<Nullable<ActionOutputError>> => {
     if (type === ConnectionType.Meta) {
-        if (!!data.credentials.accessToken) {
+        if (data.credentials && !!data.credentials?.accessToken) {
             if (!data.credentials.longAccessToken) {
                 //Get a Long-Lived User Access Token
                 const errOrToken = await exchangeToken(intl, section, data.credentials.accessToken);
@@ -52,38 +54,52 @@ export const checkCredentials = async (intl, section: string, data: ConnectionIn
                 data.credentials.longAccessToken = errOrToken.data
             }
             //
-            var tasks = []
-            if (!data.credentials.me) {
-                tasks.push(getMe(intl, section, data.credentials.longAccessToken.access_token).then(r => {
-                    if(r.error){
-                        return r.error
-                    }
-                    data.credentials.me = r.data
-                    return null
-                }))
-            }
-            if (!data.credentials.adAccounts) {
-                tasks.push(getAdAccounts(intl, section, data.credentials.longAccessToken.access_token).then(r => {
-                    if(r.error){
-                        return r.error
-                    }
-                    data.credentials.adAccounts = r.data
-                    return null
-                }))
-            }
-            if (!data.credentials.accounts) {
-                tasks.push(getAccounts(intl, section, data.credentials.longAccessToken.access_token).then(r => {
-                    if(r.error){
-                        return r.error
-                    }
-                    data.credentials.accounts = r.data
-                    return null
-                }))
-            }
-            return await Promise.all(tasks)
+            data.info = {}
+            var tasks = [getMe(intl, section, data.credentials.longAccessToken.access_token).then(r => {
+                if (r.error) {
+                    return r.error
+                }
+                data.info.me = r.data
+                return null
+            }),
+            getAdAccounts(intl, section, data.credentials.longAccessToken.access_token).then(r => {
+                if (r.error) {
+                    return r.error
+                }
+                data.info.adAccounts = r.data.data
+                return null
+            }), getAccounts(intl, section, data.credentials.longAccessToken.access_token).then(r => {
+                if (r.error) {
+                    return r.error
+                }
+                data.info.accounts = r.data.data.map(r => {
+                    const { access_token, ...others } = r
+                    return others
+                })
+                return null
+            })]
+            const err = await Promise.all(tasks)
                 .then(r => {
                     return r.find(rr => rr) || null
                 })
+            if (err) {
+                return err
+            }
+            //
+            const { errors, data: dataE } = await executeGraphql(`
+                query ($data: jsonb) {
+                    data:encrypt_data(args: {_data: $data, _key: "connection"}){
+                        bytea_val
+                    }
+                }
+                `, {
+                data: data.credentials
+            });
+            if (errors) {
+                isDev && console.log(errors[0]);
+                return await customError(intl, 0, section, [intl.formatMessage({ id: ErrorDatabase })]);
+            }
+            data.credentials = dataE.data.bytea_val
         }
     }
     return null

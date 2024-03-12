@@ -35,7 +35,7 @@ const connectionInsertValidateAndPrepare = async (intl: IntlShape<string>, isDev
     return err
   }
   //
-  err = await checkCredentials(intl, section, data, data.connection_type_id)
+  err = await checkCredentials(intl, isDev, section, data, data.connection_type_id)
   if (err) {
     return err
   }

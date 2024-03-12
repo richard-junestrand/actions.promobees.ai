@@ -1,5 +1,6 @@
 export type ConnectionInput = {
   credentials: any
+  info?: any
   ad_account_id: string
 }
 
