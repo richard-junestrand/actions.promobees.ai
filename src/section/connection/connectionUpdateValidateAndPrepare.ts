@@ -46,7 +46,7 @@ const connectionUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev
     }
     updateSet = { ...updateSet, credentials: data.credentials, info: data.info };
   } else {
-    data.credentials=data.db.credentials
+    data.info=data.db.info
   }
   //
   if (data.hasOwnProperty('ad_account_id')) {

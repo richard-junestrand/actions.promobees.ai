@@ -108,7 +108,7 @@ export const checkCredentials = async (intl, isDev: boolean, section: string, da
 export const checkAdAccountId = async (intl, section: string, data: ConnectionInput, type: number): Promise<Nullable<ActionOutputError>> => {
     if (type === ConnectionType.Meta) {
         if (data.ad_account_id) {
-            const m = (data?.credentials?.adAccounts?.data || []).find(r => r?.id === data.ad_account_id)
+            const m = (data?.info?.adAccounts || []).find(r => r?.id === data.ad_account_id)
             if (!m) {
                 return await customError(intl, 170100, section)
             }
@@ -124,7 +124,7 @@ export const initFbApi = async (intl, isDev: boolean, section: string, c: Connec
                 return { error: await customError(intl, 170120, section) }
             }
             if (checkAdAccount) {
-                if ((c.credentials?.adAccounts?.data || []).length === 0) {
+                if ((c.info?.adAccounts || []).length === 0) {
                     return { error: await customError(intl, 170090, section) }
                 }
                 if (!c.ad_account_id) {

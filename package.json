@@ -4,7 +4,8 @@
   "description": "",
   "main": "build/app.js",
   "scripts": {
-    "start": "nodemon --exec ts-node src/app.ts"
+    "dev": "nodemon -r dotenv/config --exec ts-node src/app.ts",
+    "prod": "nodemon --exec ts-node src/app.ts"
   },
   "dependencies": {
     "@azure/storage-blob": "^12.12.0",
@@ -20,6 +21,7 @@
     "axios": "^1.6.3",
     "csv": "^6.2.8",
     "debug": "^2.2.0",
+    "dotenv": "^16.4.5",
     "express": "4.16.4",
     "facebook-nodejs-business-sdk": "^18.0.4",
     "form-data": "2.5.1",
@@ -49,22 +51,6 @@
     "esm": "^3.2.25",
     "mocha": "^9.0.2",
     "tsc-watch": "^4.2.9"
-  },
-  "nodemonConfig": {
-    "env": {
-      "PORT": 3003,
-      "API_URL": "https://api.promobees.ai/v1/graphql",
-      "API_ADMIN_SECRET": "k7dc3Q_@Ae",
-      "ACTION_SECRET": "7VAenYWe_k",
-      "STORAGE_CONNECTION": "DefaultEndpointsProtocol=https;AccountName=promobeesblob;AccountKey=ue+6y8iNKGzpaegEgCEm40Z7D0Q0zMC8vfwweMuZRKiWSPjRb2DLBIMEAubQGonLpZhi68ZSLLD1+AStUOoxBg==;EndpointSuffix=core.windows.net",
-      "STORAGE_URL": "//promobeesblob.blob.core.windows.net",
-      "AUTH0_URL": "https://promobees.eu.auth0.com",
-      "AUTH0_CLIENT_ID": "oBHjuH0KnHC5ZpgXm7aFzicRg3EaxyKL",
-      "AUTH0_CLIENT_SECRET": "sywlcNg-rrDwQeVtP4cLYodhNraKk0eX3zIavLezm-Mo6OZ-bCnpu9Tc7PxVkvL4",
-      "AUTH0_DEFAULT_PASSWORD": "Prom0bees!",
-      "META_APP_ID": "304790371901695",
-      "META_APP_SECRET": "383f4b84f349b5d6db94d80bcc04cf1e"
-    }
   },
   "keywords": []
 }

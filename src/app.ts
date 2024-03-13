@@ -13,6 +13,9 @@ function authorizationMiddleware(req, res, next) {
     next(err);
   }
 }
+app.get('/test', (req: express.Request, res: express.Response, next) => {
+    res.json({value: process.env})
+  });
 
 const isDev = app.get('env') === 'development';
 // Request Handler
@@ -48,6 +51,6 @@ app.use((err, req, res, next) => { // eslint-disable-line @typescript-eslint/no-
 });
 
 app.listen(process.env.PORT || 3003, async () => {
-  console.log('--up');
+  console.log(`--up`, process.env.PORT);
 });
 export default app;

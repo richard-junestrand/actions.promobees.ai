@@ -10,6 +10,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   bigint: any;
+  bytea: any;
   json: any;
   jsonb: any;
   smallint: any;
@@ -70,9 +71,10 @@ export type CampaignInsertOutput = {
 };
 
 export type CampaignPreviewInput = {
+  campaign_type_id?: Maybe<Scalars['Int']>;
+  connection_id?: Maybe<Scalars['Int']>;
   data?: Maybe<Scalars['jsonb']>;
   locale?: Maybe<Scalars['String']>;
-  organization_id?: Maybe<Scalars['Int']>;
 };
 
 export type CampaignPreviewOutput = {
@@ -167,6 +169,26 @@ export type Int_Comparison_Exp = {
   _lte?: Maybe<Scalars['Int']>;
   _neq?: Maybe<Scalars['Int']>;
   _nin?: Maybe<Array<Scalars['Int']>>;
+};
+
+export type MetaInterestSearchInput = {
+  keyword?: Maybe<Scalars['String']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+export type MetaInterestSearchOutput = {
+  __typename?: 'MetaInterestSearchOutput';
+  data?: Maybe<Scalars['jsonb']>;
+};
+
+export type MetaLocationSearchInput = {
+  keyword?: Maybe<Scalars['String']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+export type MetaLocationSearchOutput = {
+  __typename?: 'MetaLocationSearchOutput';
+  data?: Maybe<Scalars['jsonb']>;
 };
 
 export type OrganizationInsertInput = {
@@ -387,6 +409,20 @@ export type Bigint_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['bigint']>>;
 };
 
+
+/** Boolean expression to compare columns of type "bytea". All fields are combined with logical 'AND'. */
+export type Bytea_Comparison_Exp = {
+  _eq?: Maybe<Scalars['bytea']>;
+  _gt?: Maybe<Scalars['bytea']>;
+  _gte?: Maybe<Scalars['bytea']>;
+  _in?: Maybe<Array<Scalars['bytea']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['bytea']>;
+  _lte?: Maybe<Scalars['bytea']>;
+  _neq?: Maybe<Scalars['bytea']>;
+  _nin?: Maybe<Array<Scalars['bytea']>>;
+};
+
 /** columns and relationships of "campaign" */
 export type Campaign = {
   __typename?: 'campaign';
@@ -401,8 +437,8 @@ export type Campaign = {
   campaign_type_id: Scalars['Int'];
   changed_at?: Maybe<Scalars['timestamptz']>;
   /** An object relationship */
-  connection?: Maybe<Connection>;
-  connection_id?: Maybe<Scalars['Int']>;
+  connection: Connection;
+  connection_id: Scalars['Int'];
   data?: Maybe<Scalars['jsonb']>;
   id: Scalars['Int'];
   is_active: Scalars['Boolean'];
@@ -1741,17 +1777,14 @@ export type Connection = {
   /** An aggregate relationship */
   campaigns_aggregate: Campaign_Aggregate;
   changed_at?: Maybe<Scalars['timestamptz']>;
-  /** A computed field, executes function "connection_ad_accounts" */
-  connection_ad_accounts?: Maybe<Scalars['jsonb']>;
-  /** A computed field, executes function "connection_info" */
-  connection_info?: Maybe<Scalars['jsonb']>;
-  /** A computed field, executes function "connection_pages" */
-  connection_pages?: Maybe<Scalars['jsonb']>;
+  /** A computed field, executes function "connection_credentials" */
+  connection_credentials?: Maybe<Scalars['jsonb']>;
   /** An object relationship */
   connection_type: Connection_Type;
   connection_type_id: Scalars['Int'];
-  credentials?: Maybe<Scalars['jsonb']>;
+  credentials?: Maybe<Scalars['bytea']>;
   id: Scalars['Int'];
+  info?: Maybe<Scalars['jsonb']>;
   organization_id: Scalars['Int'];
 };
 
@@ -1777,25 +1810,14 @@ export type ConnectionCampaigns_AggregateArgs = {
 
 
 /** columns and relationships of "connection" */
-export type ConnectionConnection_Ad_AccountsArgs = {
+export type ConnectionConnection_CredentialsArgs = {
+  args: Connection_Credentials_Connection_Args;
   path?: Maybe<Scalars['String']>;
 };
 
 
 /** columns and relationships of "connection" */
-export type ConnectionConnection_InfoArgs = {
-  path?: Maybe<Scalars['String']>;
-};
-
-
-/** columns and relationships of "connection" */
-export type ConnectionConnection_PagesArgs = {
-  path?: Maybe<Scalars['String']>;
-};
-
-
-/** columns and relationships of "connection" */
-export type ConnectionCredentialsArgs = {
+export type ConnectionInfoArgs = {
   path?: Maybe<Scalars['String']>;
 };
 
@@ -1831,7 +1853,7 @@ export type Connection_Aggregate_FieldsCountArgs = {
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Connection_Append_Input = {
-  credentials?: Maybe<Scalars['jsonb']>;
+  info?: Maybe<Scalars['jsonb']>;
 };
 
 /** aggregate avg on columns */
@@ -1850,13 +1872,11 @@ export type Connection_Bool_Exp = {
   ad_account_id?: Maybe<String_Comparison_Exp>;
   campaigns?: Maybe<Campaign_Bool_Exp>;
   changed_at?: Maybe<Timestamptz_Comparison_Exp>;
-  connection_ad_accounts?: Maybe<Jsonb_Comparison_Exp>;
-  connection_info?: Maybe<Jsonb_Comparison_Exp>;
-  connection_pages?: Maybe<Jsonb_Comparison_Exp>;
   connection_type?: Maybe<Connection_Type_Bool_Exp>;
   connection_type_id?: Maybe<Int_Comparison_Exp>;
-  credentials?: Maybe<Jsonb_Comparison_Exp>;
+  credentials?: Maybe<Bytea_Comparison_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
+  info?: Maybe<Jsonb_Comparison_Exp>;
   organization_id?: Maybe<Int_Comparison_Exp>;
 };
 
@@ -1868,19 +1888,24 @@ export enum Connection_Constraint {
   IxConnectionOrganizationConnectionType = 'ix_connection_organization_connection_type'
 }
 
+export type Connection_Credentials_Connection_Args = {
+  _pwd?: Maybe<Scalars['String']>;
+  _secret_key?: Maybe<Scalars['String']>;
+};
+
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Connection_Delete_At_Path_Input = {
-  credentials?: Maybe<Array<Scalars['String']>>;
+  info?: Maybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type Connection_Delete_Elem_Input = {
-  credentials?: Maybe<Scalars['Int']>;
+  info?: Maybe<Scalars['Int']>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type Connection_Delete_Key_Input = {
-  credentials?: Maybe<Scalars['String']>;
+  info?: Maybe<Scalars['String']>;
 };
 
 /** input type for incrementing numeric columns in table "connection" */
@@ -1897,8 +1922,9 @@ export type Connection_Insert_Input = {
   changed_at?: Maybe<Scalars['timestamptz']>;
   connection_type?: Maybe<Connection_Type_Obj_Rel_Insert_Input>;
   connection_type_id?: Maybe<Scalars['Int']>;
-  credentials?: Maybe<Scalars['jsonb']>;
+  credentials?: Maybe<Scalars['bytea']>;
   id?: Maybe<Scalars['Int']>;
+  info?: Maybe<Scalars['jsonb']>;
   organization_id?: Maybe<Scalars['Int']>;
 };
 
@@ -1950,13 +1976,11 @@ export type Connection_Order_By = {
   ad_account_id?: Maybe<Order_By>;
   campaigns_aggregate?: Maybe<Campaign_Aggregate_Order_By>;
   changed_at?: Maybe<Order_By>;
-  connection_ad_accounts?: Maybe<Order_By>;
-  connection_info?: Maybe<Order_By>;
-  connection_pages?: Maybe<Order_By>;
   connection_type?: Maybe<Connection_Type_Order_By>;
   connection_type_id?: Maybe<Order_By>;
   credentials?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  info?: Maybe<Order_By>;
   organization_id?: Maybe<Order_By>;
 };
 
@@ -1967,7 +1991,7 @@ export type Connection_Pk_Columns_Input = {
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type Connection_Prepend_Input = {
-  credentials?: Maybe<Scalars['jsonb']>;
+  info?: Maybe<Scalars['jsonb']>;
 };
 
 /** select columns of table "connection" */
@@ -1983,6 +2007,8 @@ export enum Connection_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  Info = 'info',
+  /** column name */
   OrganizationId = 'organization_id'
 }
 
@@ -1991,8 +2017,9 @@ export type Connection_Set_Input = {
   ad_account_id?: Maybe<Scalars['String']>;
   changed_at?: Maybe<Scalars['timestamptz']>;
   connection_type_id?: Maybe<Scalars['Int']>;
-  credentials?: Maybe<Scalars['jsonb']>;
+  credentials?: Maybe<Scalars['bytea']>;
   id?: Maybe<Scalars['Int']>;
+  info?: Maybe<Scalars['jsonb']>;
   organization_id?: Maybe<Scalars['Int']>;
 };
 
@@ -2315,6 +2342,8 @@ export enum Connection_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  Info = 'info',
+  /** column name */
   OrganizationId = 'organization_id'
 }
 
@@ -2576,6 +2605,162 @@ export type Country_Variance_Fields = {
   id?: Maybe<Scalars['Float']>;
 };
 
+export type Encrypt_Data_Args = {
+  _data?: Maybe<Scalars['jsonb']>;
+  _key?: Maybe<Scalars['String']>;
+};
+
+/** columns and relationships of "func" */
+export type Func = {
+  __typename?: 'func';
+  bytea_val?: Maybe<Scalars['bytea']>;
+  id: Scalars['String'];
+  jsonb_val?: Maybe<Scalars['jsonb']>;
+};
+
+
+/** columns and relationships of "func" */
+export type FuncJsonb_ValArgs = {
+  path?: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "func" */
+export type Func_Aggregate = {
+  __typename?: 'func_aggregate';
+  aggregate?: Maybe<Func_Aggregate_Fields>;
+  nodes: Array<Func>;
+};
+
+/** aggregate fields of "func" */
+export type Func_Aggregate_Fields = {
+  __typename?: 'func_aggregate_fields';
+  count: Scalars['Int'];
+  max?: Maybe<Func_Max_Fields>;
+  min?: Maybe<Func_Min_Fields>;
+};
+
+
+/** aggregate fields of "func" */
+export type Func_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Func_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Func_Append_Input = {
+  jsonb_val?: Maybe<Scalars['jsonb']>;
+};
+
+/** Boolean expression to filter rows from the table "func". All fields are combined with a logical 'AND'. */
+export type Func_Bool_Exp = {
+  _and?: Maybe<Array<Func_Bool_Exp>>;
+  _not?: Maybe<Func_Bool_Exp>;
+  _or?: Maybe<Array<Func_Bool_Exp>>;
+  bytea_val?: Maybe<Bytea_Comparison_Exp>;
+  id?: Maybe<String_Comparison_Exp>;
+  jsonb_val?: Maybe<Jsonb_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "func" */
+export enum Func_Constraint {
+  /** unique or primary key constraint */
+  PkFunc = 'pk_func'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Func_Delete_At_Path_Input = {
+  jsonb_val?: Maybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Func_Delete_Elem_Input = {
+  jsonb_val?: Maybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Func_Delete_Key_Input = {
+  jsonb_val?: Maybe<Scalars['String']>;
+};
+
+/** input type for inserting data into table "func" */
+export type Func_Insert_Input = {
+  bytea_val?: Maybe<Scalars['bytea']>;
+  id?: Maybe<Scalars['String']>;
+  jsonb_val?: Maybe<Scalars['jsonb']>;
+};
+
+/** aggregate max on columns */
+export type Func_Max_Fields = {
+  __typename?: 'func_max_fields';
+  id?: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Func_Min_Fields = {
+  __typename?: 'func_min_fields';
+  id?: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "func" */
+export type Func_Mutation_Response = {
+  __typename?: 'func_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Func>;
+};
+
+/** on_conflict condition type for table "func" */
+export type Func_On_Conflict = {
+  constraint: Func_Constraint;
+  update_columns?: Array<Func_Update_Column>;
+  where?: Maybe<Func_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "func". */
+export type Func_Order_By = {
+  bytea_val?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  jsonb_val?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: func */
+export type Func_Pk_Columns_Input = {
+  id: Scalars['String'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Func_Prepend_Input = {
+  jsonb_val?: Maybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "func" */
+export enum Func_Select_Column {
+  /** column name */
+  ByteaVal = 'bytea_val',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  JsonbVal = 'jsonb_val'
+}
+
+/** input type for updating data in table "func" */
+export type Func_Set_Input = {
+  bytea_val?: Maybe<Scalars['bytea']>;
+  id?: Maybe<Scalars['String']>;
+  jsonb_val?: Maybe<Scalars['jsonb']>;
+};
+
+/** update columns of table "func" */
+export enum Func_Update_Column {
+  /** column name */
+  ByteaVal = 'bytea_val',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  JsonbVal = 'jsonb_val'
+}
+
 
 
 /** Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'. */
@@ -2612,6 +2797,8 @@ export type Mutation_Root = {
   ConnectionDelete?: Maybe<ConnectionDeleteOutput>;
   ConnectionInsert?: Maybe<ConnectionInsertOutput>;
   ConnectionUpdate?: Maybe<ConnectionUpdateOutput>;
+  MetaInterestSearch?: Maybe<MetaInterestSearchOutput>;
+  MetaLocationSearch?: Maybe<MetaLocationSearchOutput>;
   OrganizationInsert?: Maybe<OrganizationInsertOutput>;
   OrganizationUpdate?: Maybe<OrganizationUpdateOutput>;
   OrganizationUserDelete?: Maybe<OrganizationUserDeleteOutput>;
@@ -2650,6 +2837,10 @@ export type Mutation_Root = {
   delete_country?: Maybe<Country_Mutation_Response>;
   /** delete single row from the table: "country" */
   delete_country_by_pk?: Maybe<Country>;
+  /** delete data from the table: "func" */
+  delete_func?: Maybe<Func_Mutation_Response>;
+  /** delete single row from the table: "func" */
+  delete_func_by_pk?: Maybe<Func>;
   /** delete data from the table: "organization" */
   delete_organization?: Maybe<Organization_Mutation_Response>;
   /** delete single row from the table: "organization" */
@@ -2706,6 +2897,10 @@ export type Mutation_Root = {
   insert_country?: Maybe<Country_Mutation_Response>;
   /** insert a single row into the table: "country" */
   insert_country_one?: Maybe<Country>;
+  /** insert data into the table: "func" */
+  insert_func?: Maybe<Func_Mutation_Response>;
+  /** insert a single row into the table: "func" */
+  insert_func_one?: Maybe<Func>;
   /** insert data into the table: "organization" */
   insert_organization?: Maybe<Organization_Mutation_Response>;
   /** insert a single row into the table: "organization" */
@@ -2762,6 +2957,10 @@ export type Mutation_Root = {
   update_country?: Maybe<Country_Mutation_Response>;
   /** update single row of the table: "country" */
   update_country_by_pk?: Maybe<Country>;
+  /** update data of the table: "func" */
+  update_func?: Maybe<Func_Mutation_Response>;
+  /** update single row of the table: "func" */
+  update_func_by_pk?: Maybe<Func>;
   /** update data of the table: "organization" */
   update_organization?: Maybe<Organization_Mutation_Response>;
   /** update single row of the table: "organization" */
@@ -2838,6 +3037,18 @@ export type Mutation_RootConnectionInsertArgs = {
 /** mutation root */
 export type Mutation_RootConnectionUpdateArgs = {
   data: ConnectionUpdateInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootMetaInterestSearchArgs = {
+  data: MetaInterestSearchInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootMetaLocationSearchArgs = {
+  data: MetaLocationSearchInput;
 };
 
 
@@ -2982,6 +3193,18 @@ export type Mutation_RootDelete_CountryArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Country_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_FuncArgs = {
+  where: Func_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Func_By_PkArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -3164,6 +3387,20 @@ export type Mutation_RootInsert_CountryArgs = {
 export type Mutation_RootInsert_Country_OneArgs = {
   object: Country_Insert_Input;
   on_conflict?: Maybe<Country_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_FuncArgs = {
+  objects: Array<Func_Insert_Input>;
+  on_conflict?: Maybe<Func_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Func_OneArgs = {
+  object: Func_Insert_Input;
+  on_conflict?: Maybe<Func_On_Conflict>;
 };
 
 
@@ -3424,6 +3661,30 @@ export type Mutation_RootUpdate_Country_By_PkArgs = {
   _prepend?: Maybe<Country_Prepend_Input>;
   _set?: Maybe<Country_Set_Input>;
   pk_columns: Country_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_FuncArgs = {
+  _append?: Maybe<Func_Append_Input>;
+  _delete_at_path?: Maybe<Func_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Func_Delete_Elem_Input>;
+  _delete_key?: Maybe<Func_Delete_Key_Input>;
+  _prepend?: Maybe<Func_Prepend_Input>;
+  _set?: Maybe<Func_Set_Input>;
+  where: Func_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Func_By_PkArgs = {
+  _append?: Maybe<Func_Append_Input>;
+  _delete_at_path?: Maybe<Func_Delete_At_Path_Input>;
+  _delete_elem?: Maybe<Func_Delete_Elem_Input>;
+  _delete_key?: Maybe<Func_Delete_Key_Input>;
+  _prepend?: Maybe<Func_Prepend_Input>;
+  _set?: Maybe<Func_Set_Input>;
+  pk_columns: Func_Pk_Columns_Input;
 };
 
 
@@ -4705,6 +4966,16 @@ export type Query_Root = {
   country_aggregate: Country_Aggregate;
   /** fetch data from the table: "country" using primary key columns */
   country_by_pk?: Maybe<Country>;
+  /** execute function "encrypt_data" which returns "func" */
+  encrypt_data?: Maybe<Func>;
+  /** execute function "encrypt_data" and query aggregates on result of table type "func" */
+  encrypt_data_aggregate: Func_Aggregate;
+  /** fetch data from the table: "func" */
+  func: Array<Func>;
+  /** fetch aggregated fields from the table: "func" */
+  func_aggregate: Func_Aggregate;
+  /** fetch data from the table: "func" using primary key columns */
+  func_by_pk?: Maybe<Func>;
   /** fetch data from the table: "organization" */
   organization: Array<Organization>;
   /** fetch aggregated fields from the table: "organization" */
@@ -4932,6 +5203,49 @@ export type Query_RootCountry_AggregateArgs = {
 
 export type Query_RootCountry_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Query_RootEncrypt_DataArgs = {
+  args: Encrypt_Data_Args;
+  distinct_on?: Maybe<Array<Func_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Func_Order_By>>;
+  where?: Maybe<Func_Bool_Exp>;
+};
+
+
+export type Query_RootEncrypt_Data_AggregateArgs = {
+  args: Encrypt_Data_Args;
+  distinct_on?: Maybe<Array<Func_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Func_Order_By>>;
+  where?: Maybe<Func_Bool_Exp>;
+};
+
+
+export type Query_RootFuncArgs = {
+  distinct_on?: Maybe<Array<Func_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Func_Order_By>>;
+  where?: Maybe<Func_Bool_Exp>;
+};
+
+
+export type Query_RootFunc_AggregateArgs = {
+  distinct_on?: Maybe<Array<Func_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Func_Order_By>>;
+  where?: Maybe<Func_Bool_Exp>;
+};
+
+
+export type Query_RootFunc_By_PkArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -5384,6 +5698,16 @@ export type Subscription_Root = {
   country_aggregate: Country_Aggregate;
   /** fetch data from the table: "country" using primary key columns */
   country_by_pk?: Maybe<Country>;
+  /** execute function "encrypt_data" which returns "func" */
+  encrypt_data?: Maybe<Func>;
+  /** execute function "encrypt_data" and query aggregates on result of table type "func" */
+  encrypt_data_aggregate: Func_Aggregate;
+  /** fetch data from the table: "func" */
+  func: Array<Func>;
+  /** fetch aggregated fields from the table: "func" */
+  func_aggregate: Func_Aggregate;
+  /** fetch data from the table: "func" using primary key columns */
+  func_by_pk?: Maybe<Func>;
   /** fetch data from the table: "organization" */
   organization: Array<Organization>;
   /** fetch aggregated fields from the table: "organization" */
@@ -5611,6 +5935,49 @@ export type Subscription_RootCountry_AggregateArgs = {
 
 export type Subscription_RootCountry_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootEncrypt_DataArgs = {
+  args: Encrypt_Data_Args;
+  distinct_on?: Maybe<Array<Func_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Func_Order_By>>;
+  where?: Maybe<Func_Bool_Exp>;
+};
+
+
+export type Subscription_RootEncrypt_Data_AggregateArgs = {
+  args: Encrypt_Data_Args;
+  distinct_on?: Maybe<Array<Func_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Func_Order_By>>;
+  where?: Maybe<Func_Bool_Exp>;
+};
+
+
+export type Subscription_RootFuncArgs = {
+  distinct_on?: Maybe<Array<Func_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Func_Order_By>>;
+  where?: Maybe<Func_Bool_Exp>;
+};
+
+
+export type Subscription_RootFunc_AggregateArgs = {
+  distinct_on?: Maybe<Array<Func_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Func_Order_By>>;
+  where?: Maybe<Func_Bool_Exp>;
+};
+
+
+export type Subscription_RootFunc_By_PkArgs = {
+  id: Scalars['String'];
 };
 
 
