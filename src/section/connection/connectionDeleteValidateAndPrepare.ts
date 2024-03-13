@@ -16,6 +16,7 @@ const connectionDeleteValidateAndPrepare = async (intl: IntlShape<string>, isDev
   if (errOrData.error) {
     return errOrData.error;
   }
+  data.db = errOrData.data;
   //
   if (data.db.campaigns_aggregate.aggregate.count > 0) {
     return await customError(intl,170110, section)

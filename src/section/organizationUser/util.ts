@@ -11,7 +11,7 @@ export const checkOrganizationUserBase = async (intl, isDev: boolean, section: s
 }
 
 export const checkId = async (intl, isDev: boolean, section: string, data: UpdateInput<Organization_User>,
-    type = OrganizationUserQueryType.Default, session: HasuraSession): Promise<ActionOutputErrorOrData<Organization_User>> => {
+    type = OrganizationUserQueryType.Default, session?: HasuraSession): Promise<ActionOutputErrorOrData<Organization_User>> => {
     return await checkOrganizationUserBase(intl, isDev, section, data.id, [150000, 150010], type, session);
 }
 

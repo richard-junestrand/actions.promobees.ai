@@ -17,7 +17,7 @@ export enum OrganizationUserQueryType {
   Default,
   Update
 }
-export const getOrganizationUserById = async (id: number, type=OrganizationUserQueryType.Default) => {
+export const getOrganizationUserById = async (id: number, type = OrganizationUserQueryType.Default) => {
   let fields = '';
   switch (type) {
     case OrganizationUserQueryType.Update:
