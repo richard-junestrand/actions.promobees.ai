@@ -21,16 +21,24 @@ export const getConnection = async (typeId: number, orgId: number, type = Connec
 
 export const getConnectionById = async (id: number, type = ConnectionQueryType.Default) => {
   let fields = ''
+  let params=''
+  let vars=null
   switch (type) {
     case ConnectionQueryType.Credentials:
+      params=',$pwd:String,$secret:String'
       fields = `
-        credentials
+        connection_credentials(args: {_pwd: $pwd, _secret_key: $secret})
+        info
         ad_account_id
         `
+      vars={
+        pwd: process.env.SECRET_HASH || '',
+        secret: process.env.SECRET_KEY || ''
+      }
       break
     case ConnectionQueryType.Update:
       fields = `
-        credentials
+        info
         `
       break
     case ConnectionQueryType.Delete:
@@ -44,7 +52,7 @@ export const getConnectionById = async (id: number, type = ConnectionQueryType.D
       break
   }
   return await executeGraphql(`
-    query ($id: Int!) {
+    query ($id: Int!${params}) {
       data:connection_by_pk(id: $id) {
         id
         organization_id
@@ -52,7 +60,8 @@ export const getConnectionById = async (id: number, type = ConnectionQueryType.D
         ${fields}
       }
     }`, {
-    id
+    id,
+    ...vars
   });
 }
 

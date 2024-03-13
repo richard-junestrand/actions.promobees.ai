@@ -120,7 +120,7 @@ export const checkAdAccountId = async (intl, section: string, data: ConnectionIn
 export const initFbApi = async (intl, isDev: boolean, section: string, c: Connection, checkAdAccount = true): Promise<ActionOutputErrorOrData<AdAccount>> => {
     switch (c.connection_type_id) {
         case ConnectionType.Meta:
-            if (!!!(c.credentials?.longAccessToken?.access_token)) {
+            if (!!!(c.connection_credentials?.longAccessToken?.access_token)) {
                 return { error: await customError(intl, 170120, section) }
             }
             if (checkAdAccount) {
@@ -130,7 +130,7 @@ export const initFbApi = async (intl, isDev: boolean, section: string, c: Connec
                 if (!c.ad_account_id) {
                     return { error: await customError(intl, 170130, section) }
                 }
-                const api = FacebookAdsApi.init(c.credentials.longAccessToken.access_token);
+                const api = FacebookAdsApi.init(c.connection_credentials.longAccessToken.access_token);
                 isDev && api.setDebug(true);
                 return { data: new AdAccount(c.ad_account_id) }
             }

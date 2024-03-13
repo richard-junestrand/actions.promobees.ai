@@ -13,9 +13,6 @@ function authorizationMiddleware(req, res, next) {
     next(err);
   }
 }
-app.get('/test', (req: express.Request, res: express.Response, next) => {
-    res.json({value: process.env})
-  });
 
 const isDev = app.get('env') === 'development';
 // Request Handler
