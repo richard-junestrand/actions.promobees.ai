@@ -2,7 +2,7 @@ import { ActionOutputError, Nullable, RelListInput, UpdateInput, WithId } from '
 import { CampaignInput } from '.';
 import { HasuraSession } from '../../handler/session';
 import { MutationDefinition } from '../../db';
-import { checkName, checkCampaignType, checkId, checkActive, checkData, checkConnection } from './util';
+import { checkName, checkCampaignType, checkId, checkActive, checkData, checkConnection, checkBudget } from './util';
 import { IntlShape } from '@formatjs/intl';
 import { Campaign } from '../../db/generated';
 import { changedSet } from '../../db/util';
@@ -58,19 +58,27 @@ const campaignUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
   if (data.hasOwnProperty('source')) {
     updateSet = { ...updateSet, source: data.source };
   }
+  let dataUpdated=false
   if (data.hasOwnProperty('data')) {
-    const updated = checkData(data, data.db.data);
-    if (updated) {
-      await logUpdate(def, data)
+    dataUpdated = checkData(data, data.db.data);
+    if (dataUpdated) {      
       updateSet = { ...updateSet, data: data.data };
     }
+  }
+  let budgetUpdated=false
+  if (data.hasOwnProperty('budget')) {
+    budgetUpdated = checkBudget(data, data.db.budget);
+    if (budgetUpdated) {      
+      updateSet = { ...updateSet, budget: data.budget };
+    }    
+  }
+  if(dataUpdated || budgetUpdated){
+    await logUpdate(def, data)
   }
   if (data.hasOwnProperty('specification')) {
     updateSet = { ...updateSet, specification: data.specification };
   }
-  if (data.hasOwnProperty('budget')) {
-    updateSet = { ...updateSet, budget: data.budget };
-  }
+  
   if (data.hasOwnProperty('connection_id')) {
     const errOrConnection = await checkConnection(intl, isDev, section, data, ConnectionQueryType.Default, undefined, data.db.organization_id);
     if (errOrConnection.error) {

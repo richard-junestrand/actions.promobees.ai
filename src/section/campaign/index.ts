@@ -1,7 +1,9 @@
-export type ChangedData<T>={
+export type ChangedInput<T>=T & {
     changed_at: any
-    data: T
 }
+export type ChangedData<T>=ChangedInput<{
+    data: T
+}>
 export type CampaignDataInput=ChangedData<ChangedData<any>[]>
 
 export type CampaignInput = {

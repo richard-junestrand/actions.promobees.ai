@@ -23,6 +23,7 @@ export const getCampaignById = async (id: number, type=CampaignQueryType.Default
     case CampaignQueryType.Update:
       fields=`
       data
+      budget
       campaign_type {
         connection_type_id
       }

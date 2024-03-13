@@ -1,5 +1,5 @@
 import moment from "moment";
-import { CampaignDataInput, CampaignInput, ChangedData } from ".";
+import { CampaignDataInput, CampaignInput, ChangedInput } from ".";
 import { Campaign, Campaign_Type, Connection } from "../../db/generated";
 import { ActionOutputError, ActionOutputErrorOrData, Nullable, OrganizationIdInput, UpdateInput } from "../../handler";
 import { HasuraSession } from "../../handler/session";
@@ -50,7 +50,7 @@ export const checkOrganizationId = async (intl, section: string, data: Organizat
   return checkOrganizationIdBase(intl, section, data.organization_id, [100000, 100010], session);
 }
 
-const baseDataVal = (r: ChangedData<any>) => {
+const baseDataVal = (r: ChangedInput<any>) => {
   const { changed_at, ...others } = r;
   return others
 }
@@ -84,6 +84,14 @@ export const checkData = (data: CampaignInput, oldVal: CampaignDataInput): boole
   }
   data.data = newData
   return updated
+}
+
+export const checkBudget = (data: CampaignInput, oldVal: ChangedInput<any>): boolean => {
+  if (!isDeepEqual(baseDataVal(oldVal || {}), baseDataVal(data.budget))) {
+    data.budget.changed_at = moment.utc()
+    return true
+  }
+  return false
 }
 
 export const dataHolderVal = (key: string) => {
