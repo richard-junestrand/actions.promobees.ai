@@ -79,18 +79,14 @@ export class HasuraSession {
 
 const FragmentOrganization = `
     id
-    organization_users(where: {user_id:{_eq:$user_id}}){
-        organization_user_roles(order_by:{role_id: asc}){
-            role_id
-        }
+    organization_user_roles(args: {_user_id: $user_id}){
+        id
     }
     `;
 
 const prepareOrganization = (val: Organization) => {
     return {
         ...val,
-        role_ids: val.organization_users.flatMap(r => {
-            return r.organization_user_roles.map(rr => rr.role_id);
-        })
+        role_ids: val.organization_user_roles.map(r => r.id)
     }
 }

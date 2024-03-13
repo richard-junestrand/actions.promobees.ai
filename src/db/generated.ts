@@ -443,6 +443,8 @@ export type Campaign = {
   id: Scalars['Int'];
   is_active: Scalars['Boolean'];
   organization_id: Scalars['Int'];
+  paused_at?: Maybe<Scalars['timestamptz']>;
+  published_at?: Maybe<Scalars['timestamptz']>;
   source?: Maybe<Scalars['jsonb']>;
   specification?: Maybe<Scalars['jsonb']>;
 };
@@ -585,6 +587,8 @@ export type Campaign_Bool_Exp = {
   id?: Maybe<Int_Comparison_Exp>;
   is_active?: Maybe<Boolean_Comparison_Exp>;
   organization_id?: Maybe<Int_Comparison_Exp>;
+  paused_at?: Maybe<Timestamptz_Comparison_Exp>;
+  published_at?: Maybe<Timestamptz_Comparison_Exp>;
   source?: Maybe<Jsonb_Comparison_Exp>;
   specification?: Maybe<Jsonb_Comparison_Exp>;
 };
@@ -641,6 +645,8 @@ export type Campaign_Insert_Input = {
   id?: Maybe<Scalars['Int']>;
   is_active?: Maybe<Scalars['Boolean']>;
   organization_id?: Maybe<Scalars['Int']>;
+  paused_at?: Maybe<Scalars['timestamptz']>;
+  published_at?: Maybe<Scalars['timestamptz']>;
   source?: Maybe<Scalars['jsonb']>;
   specification?: Maybe<Scalars['jsonb']>;
 };
@@ -882,6 +888,8 @@ export type Campaign_Max_Fields = {
   connection_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   organization_id?: Maybe<Scalars['Int']>;
+  paused_at?: Maybe<Scalars['timestamptz']>;
+  published_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** order by max() on columns of table "campaign" */
@@ -892,6 +900,8 @@ export type Campaign_Max_Order_By = {
   connection_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   organization_id?: Maybe<Order_By>;
+  paused_at?: Maybe<Order_By>;
+  published_at?: Maybe<Order_By>;
 };
 
 /** aggregate min on columns */
@@ -903,6 +913,8 @@ export type Campaign_Min_Fields = {
   connection_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   organization_id?: Maybe<Scalars['Int']>;
+  paused_at?: Maybe<Scalars['timestamptz']>;
+  published_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** order by min() on columns of table "campaign" */
@@ -913,6 +925,8 @@ export type Campaign_Min_Order_By = {
   connection_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   organization_id?: Maybe<Order_By>;
+  paused_at?: Maybe<Order_By>;
+  published_at?: Maybe<Order_By>;
 };
 
 /** response of any mutation on the table "campaign" */
@@ -952,6 +966,8 @@ export type Campaign_Order_By = {
   id?: Maybe<Order_By>;
   is_active?: Maybe<Order_By>;
   organization_id?: Maybe<Order_By>;
+  paused_at?: Maybe<Order_By>;
+  published_at?: Maybe<Order_By>;
   source?: Maybe<Order_By>;
   specification?: Maybe<Order_By>;
 };
@@ -994,6 +1010,10 @@ export enum Campaign_Select_Column {
   /** column name */
   OrganizationId = 'organization_id',
   /** column name */
+  PausedAt = 'paused_at',
+  /** column name */
+  PublishedAt = 'published_at',
+  /** column name */
   Source = 'source',
   /** column name */
   Specification = 'specification'
@@ -1010,6 +1030,8 @@ export type Campaign_Set_Input = {
   id?: Maybe<Scalars['Int']>;
   is_active?: Maybe<Scalars['Boolean']>;
   organization_id?: Maybe<Scalars['Int']>;
+  paused_at?: Maybe<Scalars['timestamptz']>;
+  published_at?: Maybe<Scalars['timestamptz']>;
   source?: Maybe<Scalars['jsonb']>;
   specification?: Maybe<Scalars['jsonb']>;
 };
@@ -1711,6 +1733,10 @@ export enum Campaign_Update_Column {
   IsActive = 'is_active',
   /** column name */
   OrganizationId = 'organization_id',
+  /** column name */
+  PausedAt = 'paused_at',
+  /** column name */
+  PublishedAt = 'published_at',
   /** column name */
   Source = 'source',
   /** column name */
@@ -3844,8 +3870,11 @@ export type Organization = {
   id: Scalars['Int'];
   info_email?: Maybe<Scalars['String']>;
   invoice_email?: Maybe<Scalars['String']>;
+  is_system: Scalars['Boolean'];
   organization_name: Scalars['String'];
   organization_reg_nr?: Maybe<Scalars['String']>;
+  /** A computed field, executes function "organization_user_roles" */
+  organization_user_roles?: Maybe<Array<Role>>;
   /** An array relationship */
   organization_users: Array<Organization_User>;
   /** An aggregate relationship */
@@ -3854,6 +3883,17 @@ export type Organization = {
   street_address?: Maybe<Scalars['String']>;
   vat_nr?: Maybe<Scalars['String']>;
   zipcode?: Maybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "organization" */
+export type OrganizationOrganization_User_RolesArgs = {
+  args: Organization_User_Roles_Organization_Args;
+  distinct_on?: Maybe<Array<Role_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Role_Order_By>>;
+  where?: Maybe<Role_Bool_Exp>;
 };
 
 
@@ -3947,6 +3987,7 @@ export type Organization_Bool_Exp = {
   id?: Maybe<Int_Comparison_Exp>;
   info_email?: Maybe<String_Comparison_Exp>;
   invoice_email?: Maybe<String_Comparison_Exp>;
+  is_system?: Maybe<Boolean_Comparison_Exp>;
   organization_name?: Maybe<String_Comparison_Exp>;
   organization_reg_nr?: Maybe<String_Comparison_Exp>;
   organization_users?: Maybe<Organization_User_Bool_Exp>;
@@ -3977,6 +4018,7 @@ export type Organization_Insert_Input = {
   id?: Maybe<Scalars['Int']>;
   info_email?: Maybe<Scalars['String']>;
   invoice_email?: Maybe<Scalars['String']>;
+  is_system?: Maybe<Scalars['Boolean']>;
   organization_name?: Maybe<Scalars['String']>;
   organization_reg_nr?: Maybe<Scalars['String']>;
   organization_users?: Maybe<Organization_User_Arr_Rel_Insert_Input>;
@@ -4076,6 +4118,7 @@ export type Organization_Order_By = {
   id?: Maybe<Order_By>;
   info_email?: Maybe<Order_By>;
   invoice_email?: Maybe<Order_By>;
+  is_system?: Maybe<Order_By>;
   organization_name?: Maybe<Order_By>;
   organization_reg_nr?: Maybe<Order_By>;
   organization_users_aggregate?: Maybe<Organization_User_Aggregate_Order_By>;
@@ -4105,6 +4148,8 @@ export enum Organization_Select_Column {
   /** column name */
   InvoiceEmail = 'invoice_email',
   /** column name */
+  IsSystem = 'is_system',
+  /** column name */
   OrganizationName = 'organization_name',
   /** column name */
   OrganizationRegNr = 'organization_reg_nr',
@@ -4126,6 +4171,7 @@ export type Organization_Set_Input = {
   id?: Maybe<Scalars['Int']>;
   info_email?: Maybe<Scalars['String']>;
   invoice_email?: Maybe<Scalars['String']>;
+  is_system?: Maybe<Scalars['Boolean']>;
   organization_name?: Maybe<Scalars['String']>;
   organization_reg_nr?: Maybe<Scalars['String']>;
   payment_type_id?: Maybe<Scalars['Int']>;
@@ -4208,6 +4254,8 @@ export enum Organization_Update_Column {
   InfoEmail = 'info_email',
   /** column name */
   InvoiceEmail = 'invoice_email',
+  /** column name */
+  IsSystem = 'is_system',
   /** column name */
   OrganizationName = 'organization_name',
   /** column name */
@@ -4734,6 +4782,10 @@ export type Organization_User_Role_Variance_Order_By = {
   id?: Maybe<Order_By>;
   organization_user_id?: Maybe<Order_By>;
   role_id?: Maybe<Order_By>;
+};
+
+export type Organization_User_Roles_Organization_Args = {
+  _user_id?: Maybe<Scalars['Int']>;
 };
 
 /** select columns of table "organization_user" */
