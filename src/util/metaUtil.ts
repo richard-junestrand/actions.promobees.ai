@@ -20,7 +20,7 @@ export async function getAdPreview(intl: any, section: string, token: string, id
       ad_format: 'DESKTOP_FEED_STANDARD'
     }
   }).then(r => {
-    return { data: r.data }
+    return { data: r.data.data }
   }).catch(async err => {
     return { error: await customError(intl, 100080, section, [err?.response?.error_user_msg || err]) }
   })
