@@ -132,7 +132,10 @@ export const initFbApi = async (intl, isDev: boolean, section: string, c: Connec
                 }
                 const api = FacebookAdsApi.init(c.connection_credentials.longAccessToken.access_token);
                 isDev && api.setDebug(true);
-                return { data: new AdAccount(c.ad_account_id) }
+                return { data: {
+                    ad_account: new AdAccount(c.ad_account_id),
+                    access_token: c.connection_credentials?.longAccessToken?.access_token
+                } }
             }
             break
     }
