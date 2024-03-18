@@ -4,10 +4,14 @@ import { HasuraSession } from '../../handler/session';
 import { MutationDefinition } from '../../db';
 import { checkName, checkTemplateType, checkId, checkImagePreview } from './util';
 import { IntlShape } from '@formatjs/intl';
-import { Template } from '../../db/generated';
+import { Campaign_Template_Cross, Template } from '../../db/generated';
 import { changedSet } from '../../db/util';
 import { isDeepEqual } from '../../util/dataUtil';
-import { TemplateQueryType } from './query';
+import { TemplateQueryType, getTemplateCampaigns } from './query';
+import { customError } from '../../util/errorUtil';
+import { ErrorDatabase } from '../../util/stringUtil';
+import moment from 'moment';
+import campaignUpdateValidateAndPrepare from '../campaign/campaignUpdateValidateAndPrepare';
 
 export type TemplateUpdateInput = TemplateInput & UpdateInput<Template>
 
@@ -46,6 +50,46 @@ const templateUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
         return errOrUrl.error
       }
       updateSet = { ...updateSet, template_preview: errOrUrl.data };
+      //
+      const { errors, data: dataCampaigns } = await getTemplateCampaigns(data.id)
+      if (errors) {
+        isDev && console.log(errors[0]);
+        return await customError(intl, 0, section, [intl.formatMessage({ id: ErrorDatabase })]);
+      }
+      //
+      const err = await Promise.all(dataCampaigns.data.map(async (r: Campaign_Template_Cross) => {
+        const { data: campaignData, ...others } = r.campaign.data
+        if (campaignData.some(r => r.template_id === data.id)) {
+          //update campaign data
+          const now = moment.utc()
+          const newCampaignData = {
+            ...others,
+            data: campaignData.map(r => {
+              if (r.template_id === data.id) {
+                return {
+                  ...r,
+                  changed_at: now
+                }
+              }
+              return r
+            }),
+            changed_at: now
+          }
+          const err = await campaignUpdateValidateAndPrepare(intl, isDev, { id: r.campaign.id, data: newCampaignData }, def, session, true, {
+            not_return_data: true,
+            template_changed: true
+          });
+          if (err) {
+            return Promise.reject(err);
+          }
+        }
+      })).then(r => null)
+        .catch(error => {
+          return error
+        });
+      if (err) {
+        return err
+      }
     }
   }
   //

@@ -1,4 +1,4 @@
-import { ActionOutputError, Nullable, RelListInput, UpdateInput, WithId } from '../../handler';
+import { ActionOutputError, HandlerOptions, Nullable, RelListInput, UpdateInput, WithId } from '../../handler';
 import { CampaignInput } from '.';
 import { HasuraSession } from '../../handler/session';
 import { MutationDefinition } from '../../db';
@@ -14,21 +14,26 @@ import { ConnectionQueryType } from '../connection/query';
 import { customError } from '../../util/errorUtil';
 
 export type CampaignUpdateInput = CampaignInput & UpdateInput<Campaign> & {
-  campaign_template_crosses: RelListInput<CampaignTemplateCrossUpdateInput | CampaignTemplateCrossInsertInput>
+  campaign_template_crosses?: RelListInput<CampaignTemplateCrossUpdateInput | CampaignTemplateCrossInsertInput>
 }
 
-const campaignUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: CampaignUpdateInput, def: MutationDefinition, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
+const campaignUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: boolean, data: CampaignUpdateInput, def: MutationDefinition,
+  session: HasuraSession, validated=false, options?: HandlerOptions & {
+    template_changed: boolean
+  }): Promise<Nullable<ActionOutputError>> => {
   const section = "campaignUpdate";
   //
-  const err = await checkId(intl, isDev, section, data, session, CampaignQueryType.Update);
-  if (err) {
-    return err;
+  if(!validated) {
+    const err = await checkId(intl, isDev, section, data, session, CampaignQueryType.Update);
+    if (err) {
+      return err;
+    }
   }
   //
   const updateCall = await def.newCall();
   let updateSet = changedSet();
-  let connectionType1=data.db.connection.connection_type_id;
-  let connectionType2=data.db.campaign_type.connection_type_id;
+  let connectionType1 = data.db?.connection?.connection_type_id;
+  let connectionType2 = data.db?.campaign_type?.connection_type_id;
   //
   if (data.hasOwnProperty('campaign_name')) {
     const err = await checkName(intl, section, data);
@@ -39,11 +44,11 @@ const campaignUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
   }
   //
   if (data.hasOwnProperty('campaign_type_id')) {
-    const errOrType = await checkCampaignType(intl, isDev, section, data);
+    const errOrType = await checkCampaignType(intl, isDev, section, { campaign_type_id: data.campaign_type_id });
     if (errOrType.error) {
       return errOrType.error;
     }
-    connectionType2=errOrType.data.connection_type_id
+    connectionType2 = errOrType.data.connection_type_id
     updateSet = { ...updateSet, campaign_type_id: data.campaign_type_id };
   }
   //
@@ -58,38 +63,45 @@ const campaignUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
   if (data.hasOwnProperty('source')) {
     updateSet = { ...updateSet, source: data.source };
   }
-  let dataUpdated=false
+  let dataUpdated = false
   if (data.hasOwnProperty('data')) {
-    dataUpdated = checkData(data, data.db.data);
-    if (dataUpdated) {      
+    if (options?.template_changed) {
       updateSet = { ...updateSet, data: data.data };
+      await logUpdate(def, data, LogType.TemplateUpdate)
+    } else {
+      dataUpdated = checkData(data, data.db.data);
+      if (dataUpdated) {
+        updateSet = { ...updateSet, data: data.data };
+      }
     }
+
   }
-  let budgetUpdated=false
+  let budgetUpdated = false
   if (data.hasOwnProperty('budget')) {
     budgetUpdated = checkBudget(data, data.db.budget);
-    if (budgetUpdated) {      
+    if (budgetUpdated) {
       updateSet = { ...updateSet, budget: data.budget };
-    }    
+    }
   }
-  if(dataUpdated || budgetUpdated){
+  if (dataUpdated || budgetUpdated) {
     await logUpdate(def, data)
   }
   if (data.hasOwnProperty('specification')) {
     updateSet = { ...updateSet, specification: data.specification };
   }
-  
+
   if (data.hasOwnProperty('connection_id')) {
-    const errOrConnection = await checkConnection(intl, isDev, section, data, ConnectionQueryType.Default, undefined, data.db.organization_id);
+    const errOrConnection = await checkConnection(intl, isDev, section, { connection_id: data.connection_id },
+      ConnectionQueryType.Default, undefined, data.db.organization_id);
     if (errOrConnection.error) {
       return errOrConnection.error;
     }
-    connectionType1=errOrConnection.data.connection_type_id
+    connectionType1 = errOrConnection.data.connection_type_id
     updateSet = { ...updateSet, connection_id: data.connection_id };
   }
   //
-  if(connectionType1 !== connectionType2){
-    return await customError(intl,100110,section)
+  if (connectionType1 !== connectionType2) {
+    return await customError(intl, 100110, section)
   }
   //
   if (data.hasOwnProperty('campaign_template_crosses')) {
@@ -114,7 +126,7 @@ const campaignUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
 
     deleteRowsCall.parameter = `$ids_${deleteRowsCall.idx}: [Int!]`;
     deleteRowsCall.command = `
-        data_${deleteRowsCall.idx}: delete_campaign_template_cross(where: {campaign_id: {_eq: $id}, id: {_nin: $ids_${deleteRowsCall.idx}}}) {
+        data_${deleteRowsCall.idx}: delete_campaign_template_cross(where: {campaign_id: {_eq: $id_${updateCall.idx}}, id: {_nin: $ids_${deleteRowsCall.idx}}}) {
           affected_rows
         }`;
     const variable = {};
@@ -122,20 +134,25 @@ const campaignUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
     deleteRowsCall.variable = variable;
   }
   //
-  updateCall.parameter = `$id: Int!, $p_${updateCall.idx}: campaign_set_input`;
+  updateCall.parameter = `$id_${updateCall.idx}: Int!, $p_${updateCall.idx}: campaign_set_input`;
   updateCall.command = `
-    data: update_campaign_by_pk(pk_columns: {id: $id}, _set: $p_${updateCall.idx}) {
+    data${updateCall.dataLabel(options?.not_return_data || false)}: update_campaign_by_pk(pk_columns: {id: $id_${updateCall.idx}}, _set: $p_${updateCall.idx}) {
       id
     }`;
   const updateVariable = {};
-  updateVariable['id'] = data.id;
+  updateVariable[`id_${updateCall.idx}`] = data.id;
   updateVariable[`p_${updateCall.idx}`] = updateSet;
   updateCall.variable = updateVariable;
   return null;
 };
 export default campaignUpdateValidateAndPrepare;
 
-const logUpdate = async (def: MutationDefinition, data: WithId) => {
+enum LogType {
+  DataUpdate=1,
+  Publish=2,
+  TemplateUpdate=3
+}
+const logUpdate = async (def: MutationDefinition, data: WithId, type=LogType.DataUpdate) => {
   const call = await def.newCall();
   call.parameter = `$p_${call.idx}: campaign_log_insert_input!`;
   call.command = `
@@ -145,7 +162,7 @@ const logUpdate = async (def: MutationDefinition, data: WithId) => {
   const variable = {};
   variable[`p_${call.idx}`] = {
     campaign_id: data.id,
-    log_type: 1
+    log_type: type
   };
   call.variable = variable;
 }

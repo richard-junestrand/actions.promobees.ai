@@ -42,3 +42,17 @@ export const getTemplateTypeById = async (id: number) => {
     id
   });
 }
+
+export const getTemplateCampaigns = async (id: number) => {
+  return await executeGraphql(`
+    query ($id: Int!) {
+      data:campaign_template_cross(where:{template_id:{_eq: $id}}) {
+        campaign {
+          id
+          data
+        }
+      }
+    }`, {
+    id
+  });
+}
