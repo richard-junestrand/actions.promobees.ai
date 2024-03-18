@@ -51,6 +51,10 @@ export const getConnectionById = async (id: number, type = ConnectionQueryType.D
       `
       break
   }
+  console.log({
+    id,
+    ...vars
+  })
   return await executeGraphql(`
     query ($id: Int!${params}) {
       data:connection_by_pk(id: $id) {
