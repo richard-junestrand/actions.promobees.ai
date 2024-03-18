@@ -2,6 +2,19 @@ import express from 'express';
 
 const app = express();
 
+import { SecretClient } from "@azure/keyvault-secrets"
+import { DefaultAzureCredential } from "@azure/identity"
+
+async function getVaultValues(name="Secret") {
+  const credential = new DefaultAzureCredential();
+  const url = `https://promobees.vault.azure.net`;
+
+  const client = new SecretClient(url, credential);
+  // Read the secret we created
+  const secret = await client.getSecret(name);
+  process.env.SECRET_KEY=secret.value
+}
+
 function authorizationMiddleware(req, res, next) {
   const providedSecret = req.headers['ACTION_SECRET'] || req.headers['action_secret'];
   if (process.env.ACTION_SECRET == providedSecret) {
@@ -49,5 +62,8 @@ app.use((err, req, res, next) => { // eslint-disable-line @typescript-eslint/no-
 
 app.listen(process.env.PORT || 3003, async () => {
   console.log(`--up`, process.env.PORT);
+  getVaultValues().catch((error) => {
+    console.error("An error occurred:", error);
+  });
 });
 export default app;
