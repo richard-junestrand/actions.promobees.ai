@@ -34,6 +34,8 @@ const data={
     "message.error-invalid-sweden-zip-code": "Invalid zip code for Sweden (5 digits).",
     "message.error-no-permission": "You have no permission.",
     "message.error-100080": "Failed to generate previews: {p0}.",
+    "message.error-100120": "No campaign data.",
+    "message.error-100130": "Campaign data does not container property {p0}.",
     "message.error-120080": "Failed to upload image preview to blob.",
     "message.error-130090": "Failed to get Auth0 token: {p0}.",
     "message.error-130100": "Failed to update Auth0 user password: {p0}.",

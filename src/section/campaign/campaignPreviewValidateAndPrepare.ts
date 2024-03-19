@@ -50,11 +50,25 @@ const campaignPreviewValidateAndPrepare = async (intl: IntlShape<string>, isDev:
           ret = errOrData.data;
         } else {
           const adAccount = errOrFb.data.ad_account
+          const thedata=data.data.data.filter(r => !r.dont_use).slice(0, 10)
+          if(thedata.length===0){
+            return await customError(intl, 100120, section)
+          }
+          const firstItem=thedata[0]
+          if(firstItem.data.link===undefined){
+            return await customError(intl, 100130, section, ['link'])
+          }
+          if(firstItem.data.name===undefined){
+            return await customError(intl, 100130, section, ['name'])
+          }
+          if(firstItem.data.description===undefined){
+            return await customError(intl, 100130, section, ['description'])
+          }
           const errOrData = await generatePreview(intl, section, adAccount, {
             creative: {
               object_story_spec: {
                 link_data: {
-                  child_attachments: data.data.data.filter(r => !r.dont_use).slice(0, 10).map(r => ({
+                  child_attachments: thedata.map(r => ({
                     description: r.data.description,
                     link: r.data.link,
                     name: r.data.name,

@@ -18,6 +18,8 @@ errors.set(100080, {id: "message.error-100080" });
 errors.set(100090, {id: "message.error-invalid-int", params: ["connection_id"] });
 errors.set(100100, {id: "message.error-invalid-value-for-organization", params: ["connection_id"] });
 errors.set(100110, {id: "message.error-not-match", params: ["connection.connection_type_id","campaign_type.connection_type_id"] });
+errors.set(100120, {id: "message.error-100120" });
+errors.set(100130, {id: "message.error-100130" });
 
 // campaign_template_cross
 errors.set(110000, {id: "message.error-invalid-int", params: ["template_id"] });

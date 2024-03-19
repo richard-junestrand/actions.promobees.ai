@@ -65,9 +65,10 @@ app.use((err, req, res, next) => { // eslint-disable-line @typescript-eslint/no-
   });
 });
 
+const port = process.env.PORT || 3003;
 readKeyVault().then(r => {
-  app.listen(process.env.PORT || 3003, async () => {
-    console.log(`--up`, process.env.PORT);
+  app.listen(port, async () => {
+    console.log(`--up`, port);
   });
 }).catch((error) => {
   console.error("---Failed to read key vault:", error);

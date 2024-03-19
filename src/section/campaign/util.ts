@@ -16,7 +16,7 @@ export const checkName = async (intl, section: string, data: CampaignInput): Pro
 }
 
 export const checkCampaignType = async (intl, isDev: boolean, section: string, data: {
-  campaign_type_id: number
+  campaign_type_id?: number
 }): Promise<ActionOutputErrorOrData<Campaign_Type>> => {
   return await checkDataBase(intl, isDev, section, data.campaign_type_id, [100030, 100040], getCampaignTypeById)
 }

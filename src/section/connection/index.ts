@@ -10,5 +10,5 @@ export enum ConnectionType {
 }
 
 export type ConnectionIdInput={
-  connection_id: number
+  connection_id?: number
 }
