@@ -3,7 +3,7 @@ import { SecretClient } from "@azure/keyvault-secrets"
 import { DefaultAzureCredential } from "@azure/identity"
 
 async function readKeyVault() {
-  let others = process.env.OTHERS
+  let others:any = process.env.OTHERS
   if (process.env.READ_VAULT) {
     const credential = new DefaultAzureCredential();
     const url = `https://promobees.vault.azure.net`;
@@ -11,12 +11,10 @@ async function readKeyVault() {
     //
     process.env.SECRET_KEY = (await client.getSecret("Secret")).value
     //
-    others = (await client.getSecret("Others")).value;
-
+    others = JSON.parse((await client.getSecret("Others")).value);
   }
-  const obj = JSON.parse(others)
-  for (var key in obj) {
-    process.env[key] = obj[key]
+  for (var key in others) {
+    process.env[key] = others[key]
   }
   console.log('---end', process.env.API_ADMIN_SECRET)
 }
