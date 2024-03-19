@@ -1,7 +1,27 @@
 import express from 'express';
+import { SecretClient } from "@azure/keyvault-secrets"
+import { DefaultAzureCredential } from "@azure/identity"
+
+async function readKeyVault() {
+  let others = process.env.OTHERS
+  if (process.env.READ_VAULT) {
+    const credential = new DefaultAzureCredential();
+    const url = `https://promobees.vault.azure.net`;
+    const client = new SecretClient(url, credential);
+    //
+    process.env.SECRET_KEY = (await client.getSecret("Secret")).value
+    //
+    others = (await client.getSecret("Others")).value;
+
+  }
+  const obj = JSON.parse(others)
+  for (var key in obj) {
+    process.env[key] = obj[key]
+  }
+  console.log('---end', process.env.API_ADMIN_SECRET)
+}
 
 const app = express();
-
 function authorizationMiddleware(req, res, next) {
   const providedSecret = req.headers['ACTION_SECRET'] || req.headers['action_secret'];
   if (process.env.ACTION_SECRET == providedSecret) {
@@ -47,7 +67,12 @@ app.use((err, req, res, next) => { // eslint-disable-line @typescript-eslint/no-
   });
 });
 
-app.listen(process.env.PORT || 3003, async () => {
-  console.log(`--up`, process.env.PORT);
+readKeyVault().then(r => {
+  app.listen(process.env.PORT || 3003, async () => {
+    console.log(`--up`, process.env.PORT);
+  });
+}).catch((error) => {
+  console.error("---Failed to read key vault:", error);
 });
+
 export default app;
