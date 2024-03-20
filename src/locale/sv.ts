@@ -35,7 +35,7 @@ const data = {
     "message.error-no-permission": "Du har ingen behörighet.",
     "message.error-100080": "Generering av förhandsvisningar misslyckades: {p0}.",
     "message.error-100120": "Inga uppgifter om kampanjen.",
-    "message.error-100130": "Kampanjdata innehåller inte containeregendom {p0}.",
+    "message.error-100130": "Odefinierad egenskap {p0} för kampanjdata.",
     "message.error-120080": "Det gick inte att ladda upp förhandsgranskning av bild till blob.",
     "message.error-130090": "Misslyckades med att få Auth0 token: {p0}.",
     "message.error-130100": "Uppdatering av Auth0-användarlösenordet misslyckades: {p0}.",
