@@ -70,6 +70,7 @@ const campaignUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
       await logUpdate(def, data, LogType.TemplateUpdate)
     } else {
       dataUpdated = checkData(data, data.db.data);
+      isDev && console.log('--dataupdated=', dataUpdated)
       if (dataUpdated) {
         updateSet = { ...updateSet, data: data.data };
       }
