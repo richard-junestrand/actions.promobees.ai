@@ -53,6 +53,13 @@ export const checkBoolean = async (intl, section: string, val: boolean, err: num
     return null;
 }
 
+export const checkEnum = async (intl, section: string, val: any, err: number, enums: any): Promise<Nullable<ActionOutputError>> => {
+    if (!Object.values(enums).includes(val)) {
+        return await customError(intl, err, section);
+    }
+    return null;
+}
+
 export function parseObject(text) {
     try {
         return JSON.parse(text);

@@ -2,7 +2,7 @@ import { ActionOutputError, Nullable, OrganizationIdInput, RelListInput } from '
 import { CampaignInput } from '.';
 import { HasuraSession } from '../../handler/session';
 import { MutationDefinition } from '../../db';
-import { checkName, checkCampaignType, checkActive, checkOrganizationId, checkConnection } from './util';
+import { checkName, checkCampaignType, checkActive, checkOrganizationId, checkConnection, checkApply } from './util';
 import { IntlShape } from '@formatjs/intl';
 import campaignTemplateCrossInsertValidateAndPrepare, { CampaignTemplateCrossInsertInput } from '../campaignTemplateCross/campaignTemplateCrossInsertValidateAndPrepare';
 import { checkRelList } from '../../util/dataUtil';
@@ -32,6 +32,11 @@ const campaignInsertValidateAndPrepare = async (intl: IntlShape<string>, isDev: 
   }
   //
   err = await checkActive(intl, section, data);
+  if (err) {
+    return err;
+  }
+  //
+  err = await checkApply(intl, section, data);
   if (err) {
     return err;
   }

@@ -15,8 +15,14 @@ export type CampaignInput = {
     budget?: any
     is_active?: boolean
     connection_id?: number
+    apply_template?: number
 }
 
 export enum CampaignType {
     MetaCarousel=10
+}
+
+export enum CampaignApply {
+    InOrder = 1,
+    Randomly = 2
 }

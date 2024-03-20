@@ -1,9 +1,9 @@
 import moment from "moment";
-import { CampaignDataInput, CampaignInput, ChangedInput } from ".";
+import { CampaignApply, CampaignDataInput, CampaignInput, ChangedInput } from ".";
 import { Campaign, Campaign_Type, Connection } from "../../db/generated";
 import { ActionOutputError, ActionOutputErrorOrData, Nullable, OrganizationIdInput, UpdateInput } from "../../handler";
 import { HasuraSession } from "../../handler/session";
-import { checkBoolean, checkDataBase, isDeepEqual } from "../../util/dataUtil";
+import { checkBoolean, checkDataBase, checkEnum, isDeepEqual } from "../../util/dataUtil";
 import { checkString } from "../../util/stringUtil";
 import { checkOrganizationDataBase, checkOrganizationIdBase } from "../organization/util";
 import { CampaignQueryType, getCampaignById, getCampaignTypeById } from "./query";
@@ -44,6 +44,10 @@ export const checkId = async (intl, isDev: boolean, section: string, data: Updat
 
 export const checkActive = async (intl, section: string, data: CampaignInput): Promise<Nullable<ActionOutputError>> => {
   return checkBoolean(intl, section, data.is_active, 100070);
+}
+
+export const checkApply = async (intl, section: string, data: CampaignInput): Promise<Nullable<ActionOutputError>> => {
+  return checkEnum(intl, section, data.apply_template, 100140, CampaignApply);
 }
 
 export const checkOrganizationId = async (intl, section: string, data: OrganizationIdInput, session: HasuraSession): Promise<Nullable<ActionOutputError>> => {
