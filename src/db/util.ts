@@ -21,10 +21,6 @@ export const executeGraphql = async (query: string, variables = null): Promise<G
     return executeGraphqlBase(query, variables, process.env.API_URL, { 'x-hasura-admin-secret': process.env.API_ADMIN_SECRET })
 }
 
-export const executeGraphqlSokbat = async (query: string, variables = null): Promise<GraphqlOutput> => {
-    return executeGraphqlBase(query, variables, process.env.API_SOKBAT_URL)
-}
-
 export const dbStringArray = (val: string[]) => {
     return `{${val.join(',')}}`;
 }

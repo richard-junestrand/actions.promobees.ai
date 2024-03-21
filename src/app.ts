@@ -3,19 +3,19 @@ import { SecretClient } from "@azure/keyvault-secrets"
 import { DefaultAzureCredential } from "@azure/identity"
 
 async function readKeyVault() {
-  let others = process.env.OTHERS
   if (process.env.READ_VAULT) {
     const credential = new DefaultAzureCredential();
     const url = `https://promobees.vault.azure.net`;
     const client = new SecretClient(url, credential);
-    //
+    //    
+    process.env.ACTION_SECRET = (await client.getSecret("ActionSecret")).value
+    process.env.API_ADMIN_SECRET = (await client.getSecret("HasuraAdminSecret")).value
+    process.env.AUTH0_CLIENT_SECRET = (await client.getSecret("Auth0ClientSecret")).value
+    process.env.AUTH0_DEFAULT_PASSWORD = (await client.getSecret("Auth0DefaultPassword")).value
+    process.env.META_APP_SECRET = (await client.getSecret("MetaAppSecret")).value
+    process.env.SECRET_HASH = (await client.getSecret("SecretHash")).value
     process.env.SECRET_KEY = (await client.getSecret("Secret")).value
-    //
-    others = (await client.getSecret("Others")).value;
-  }
-  const obj=JSON.parse(others)
-  for (var key in obj) {
-    process.env[key] = obj[key]
+    process.env.STORAGE_CONNECTION = (await client.getSecret("StorageConnection")).value
   }
 }
 
