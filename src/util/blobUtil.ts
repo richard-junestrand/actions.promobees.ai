@@ -1,8 +1,6 @@
 import { BlobServiceClient, ContainerClient } from "@azure/storage-blob";
 import { streamToBuffer } from "./fileUtil";
 
-const blobService = BlobServiceClient.fromConnectionString(process.env.STORAGE_CONNECTION);
-
 export const uploadBlob = (stream, container: string, blobName: string) => {
     return blobContainer(container).then(containerClient => {
         return containerClient.getBlockBlobClient(blobName).uploadStream(stream).then(r => {
@@ -35,6 +33,7 @@ export async function downloadBlobBuffer(container: string, blobName: string) {
 }
 
 const blobContainer = (container: string): Promise<ContainerClient> => {
+    const blobService = BlobServiceClient.fromConnectionString(process.env.STORAGE_CONNECTION);
     const containerClient = blobService.getContainerClient(container);
     return containerClient.createIfNotExists().then(r => {
         return containerClient;
