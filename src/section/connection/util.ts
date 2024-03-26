@@ -145,12 +145,19 @@ export const checkCredentials = async (intl, isDev: boolean, section: string, da
 }
 
 export const checkAdAccountId = async (intl, section: string, data: ConnectionInput, type: number): Promise<Nullable<ActionOutputError>> => {
-    if (type === ConnectionType.Meta) {
-        if (data.ad_account_id) {
-            const m = (data?.info?.adAccounts || []).find(r => r?.id === data.ad_account_id)
-            if (!m) {
-                return await customError(intl, 170100, section)
-            }
+    if (data.ad_account_id) {
+        const l=data?.info?.adAccounts || []
+        switch (type) {
+            case ConnectionType.Meta:
+                if (!l.find(r => r?.id === data.ad_account_id)) {
+                    return await customError(intl, 170100, section)
+                }
+                break;
+            case ConnectionType.Google:
+                if (!l.find(r => r === data.ad_account_id)) {
+                    return await customError(intl, 170100, section)
+                }
+                break
         }
     }
     return null
