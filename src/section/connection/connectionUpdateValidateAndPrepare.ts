@@ -39,14 +39,13 @@ const connectionUpdateValidateAndPrepare = async (intl: IntlShape<string>, isDev
   const updateCall = await def.newCall();
   let updateSet = changedSet();
   //
+  data.info=data.db.info;
   if (data.hasOwnProperty('credentials')) {
     const err = await checkCredentials(intl, isDev, section, data, data.db.connection_type_id)
     if (err) {
       return err
     }
     updateSet = { ...updateSet, credentials: data.credentials, info: data.info };
-  } else {
-    data.info=data.db.info
   }
   //
   if (data.hasOwnProperty('ad_account_id')) {

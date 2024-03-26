@@ -51,6 +51,9 @@ const data = {
     "message.error-600080": "Det gick inte att hämta metaanvändarkonton.",
     "message.error-600090": "Misslyckades med att söka meta {p0}.",
     "message.error-600100": "Det gick inte att hämta app-token.",
+    "message.error-700000": "Misslyckades med att byta ut Google-kod mot token.",
+    "message.error-700010": "Misslyckades med att få Google-användarinformation.",
+    "message.error-700020": "Misslyckades med att hämta Google-användares annonskonton.",
     "message.user-default-password": "Användaren Auth0 har skapats. Standardlösenordet är {p0}."
 }
 

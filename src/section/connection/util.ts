@@ -8,9 +8,10 @@ import { checkOrganizationDataBase, checkOrganizationIdBase } from "../organizat
 import { ConnectionInsertInput } from "./connectionInsertValidateAndPrepare";
 import { ConnectionQueryType, getConnection, getConnectionById, getConnectionTypeById } from "./query";
 import { FacebookAdsApi, AdAccount } from 'facebook-nodejs-business-sdk';
-import { exchangeToken, getAccounts, getAdAccounts, getMe } from "../../util/metaUtil";
+import { exchangeToken, getAccounts, getMetaAdAccounts, getMetaMe } from "../../util/metaUtil";
 import { executeGraphql } from "../../db/util";
 import { ErrorDatabase } from "../../util/stringUtil";
+import { exchangeCode, getGoogleAdAccounts, getGoogleMe } from "../../util/googleUtil";
 
 export const checkConnectionBase = async (intl, isDev: boolean, section: string, val: number, errs: number[], type = ConnectionQueryType.Default,
     session?: HasuraSession, organizationId?: number,
@@ -42,65 +43,103 @@ export const checkType = async (intl, isDev: boolean, section: string, data: Con
     return null
 }
 
-export const checkCredentials = async (intl, isDev: boolean, section: string, data: ConnectionInput, type: number): Promise<Nullable<ActionOutputError>> => {
-    if (type === ConnectionType.Meta) {
-        if (data.credentials && !!data.credentials?.accessToken) {
-            if (!data.credentials.longAccessToken) {
-                //Get a Long-Lived User Access Token
-                const errOrToken = await exchangeToken(intl, section, data.credentials.accessToken);
-                if (errOrToken.error) {
-                    return errOrToken.error
-                }
-                data.credentials.longAccessToken = errOrToken.data
-            }
-            //
-            data.info = {}
-            var tasks = [getMe(intl, section, data.credentials.longAccessToken.access_token).then(r => {
-                if (r.error) {
-                    return r.error
-                }
-                data.info.me = r.data
-                return null
-            }),
-            getAdAccounts(intl, section, data.credentials.longAccessToken.access_token).then(r => {
-                if (r.error) {
-                    return r.error
-                }
-                data.info.adAccounts = r.data.data
-                return null
-            }), getAccounts(intl, section, data.credentials.longAccessToken.access_token).then(r => {
-                if (r.error) {
-                    return r.error
-                }
-                data.info.accounts = r.data.data.map(r => {
-                    const { access_token, ...others } = r
-                    return others
-                })
-                return null
-            })]
-            const err = await Promise.all(tasks)
-                .then(r => {
-                    return r.find(rr => rr) || null
-                })
-            if (err) {
-                return err
-            }
-            //
-            const { errors, data: dataE } = await executeGraphql(`
-                query ($data: jsonb) {
-                    data:encrypt_data(args: {_data: $data, _key: "connection"}){
-                        bytea_val
-                    }
-                }
-                `, {
-                data: data.credentials
-            });
-            if (errors) {
-                isDev && console.log(errors[0]);
-                return await customError(intl, 0, section, [intl.formatMessage({ id: ErrorDatabase })]);
-            }
-            data.credentials = dataE.data.bytea_val
+const runTasksAndEncrypt = async (intl, isDev: boolean, section: string, data: ConnectionInput, tasks: any[]): Promise<Nullable<ActionOutputError>> => {
+    if (tasks.length > 0) {
+        const err = await Promise.all(tasks)
+            .then(r => {
+                return r.find(rr => rr) || null
+            })
+        if (err) {
+            return err
         }
+    }
+    //
+    const { errors, data: dataE } = await executeGraphql(`
+    query ($data: jsonb) {
+        data:encrypt_data(args: {_data: $data, _key: "connection"}){
+            bytea_val
+        }
+    }
+    `, {
+        data: data.credentials
+    });
+    if (errors) {
+        isDev && console.log(errors[0]);
+        return await customError(intl, 0, section, [intl.formatMessage({ id: ErrorDatabase })]);
+    }
+    data.credentials = dataE.data.bytea_val
+    return null
+}
+
+export const checkCredentials = async (intl, isDev: boolean, section: string, data: ConnectionInput, type: number): Promise<Nullable<ActionOutputError>> => {
+    switch (type) {
+        case ConnectionType.Meta:
+            if (data.credentials && !!data.credentials?.accessToken) {
+                if (!data.credentials.longAccessToken) {
+                    //Get a Long-Lived User Access Token
+                    const errOrToken = await exchangeToken(intl, section, data.credentials.accessToken);
+                    if (errOrToken.error) {
+                        return errOrToken.error
+                    }
+                    data.credentials.longAccessToken = errOrToken.data
+                }
+                //
+                data.info = {}
+                const tasks = [getMetaMe(intl, section, data.credentials.longAccessToken.access_token).then(r => {
+                    if (r.error) {
+                        return r.error
+                    }
+                    data.info.me = r.data
+                    return null
+                }),
+                getMetaAdAccounts(intl, section, data.credentials.longAccessToken.access_token).then(r => {
+                    if (r.error) {
+                        return r.error
+                    }
+                    data.info.adAccounts = r.data.data
+                    return null
+                }),
+                getAccounts(intl, section, data.credentials.longAccessToken.access_token).then(r => {
+                    if (r.error) {
+                        return r.error
+                    }
+                    data.info.accounts = r.data.data.map(r => {
+                        const { access_token, ...others } = r
+                        return others
+                    })
+                    return null
+                })]
+                return runTasksAndEncrypt(intl, isDev, section, data, tasks)
+            }
+            break
+        case ConnectionType.Google:
+            if (data.credentials && !!data.credentials?.code) {
+                if (!data.credentials.token) {
+                    const errOrToken = await exchangeCode(intl, section, data.credentials);
+                    if (errOrToken.error) {
+                        return errOrToken.error
+                    }
+                    data.credentials.token = errOrToken.data
+                }
+                //
+                data.info = {}
+                const tasks = [getGoogleMe(intl, section, data.credentials.token).then(r => {
+                    if (r.error) {
+                        return r.error
+                    }
+                    data.info.me = r.data
+                    return null
+                }),
+                getGoogleAdAccounts(intl, section, data.credentials.token).then(async r => {
+                    if (r.error) {
+                        return r.error
+                    }
+                    data.info.adAccounts = r.data.resourceNames
+                    return null
+                })]
+                return runTasksAndEncrypt(intl, isDev, section, data, tasks)
+            }
+            break
     }
     return null
 }
@@ -132,10 +171,12 @@ export const initFbApi = async (intl, isDev: boolean, section: string, c: Connec
                 }
                 const api = FacebookAdsApi.init(c.connection_credentials.longAccessToken.access_token);
                 isDev && api.setDebug(true);
-                return { data: {
-                    ad_account: new AdAccount(c.ad_account_id),
-                    access_token: c.connection_credentials?.longAccessToken?.access_token
-                } }
+                return {
+                    data: {
+                        ad_account: new AdAccount(c.ad_account_id),
+                        access_token: c.connection_credentials?.longAccessToken?.access_token
+                    }
+                }
             }
             break
     }

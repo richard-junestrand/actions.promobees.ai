@@ -51,6 +51,9 @@ const data={
     "message.error-600080": "Failed to get meta user accounts.",    
     "message.error-600090": "Failed to search meta {p0}.",
     "message.error-600100": "Failed to get app token.",
+    "message.error-700000": "Failed to exchange Google code for token.",
+    "message.error-700010": "Failed to get Google user information.",
+    "message.error-700020": "Failed to get Google user ad accounts.",
     "message.user-default-password": "Auth0 user is created. Default password is {p0}."
 }
 

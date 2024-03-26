@@ -30,8 +30,8 @@ export async function exchangeToken(intl: any, section: string, token: string): 
   return axios.get(`${baseUrl}/oauth/access_token`, {
     params: {
       grant_type: 'fb_exchange_token',
-      client_id: process.env.META_APP_ID || '',
-      client_secret: process.env.META_APP_SECRET || '',
+      client_id: process.env.META_CLIENT_ID || '',
+      client_secret: process.env.META_CLIENT_SECRET || '',
       fb_exchange_token: token
     }
   }).then(r => {
@@ -45,8 +45,8 @@ export async function getAppToken(intl: any, section: string): Promise<ActionOut
   return axios.get(`${baseUrl}/oauth/access_token`, {
     params: {
       grant_type: 'client_credentials',
-      client_id: process.env.META_APP_ID || '',
-      client_secret: process.env.META_APP_SECRET || ''
+      client_id: process.env.META_CLIENT_ID || '',
+      client_secret: process.env.META_CLIENT_SECRET || ''
     }
   }).then(r => {
     return { data: r.data }
@@ -88,7 +88,7 @@ export async function searchInterests(intl: any, section: string, token: string,
   })
 }
 
-export async function getMe(intl: any, section: string, token: string): Promise<ActionOutputErrorOrData<any>> {
+export async function getMetaMe(intl: any, section: string, token: string): Promise<ActionOutputErrorOrData<any>> {
   return axios.get(`${baseUrl}/me`, {
     params: {
       access_token: token
@@ -100,7 +100,7 @@ export async function getMe(intl: any, section: string, token: string): Promise<
   })
 }
 
-export async function getAdAccounts(intl: any, section: string, token: string): Promise<ActionOutputErrorOrData<any>> {
+export async function getMetaAdAccounts(intl: any, section: string, token: string): Promise<ActionOutputErrorOrData<any>> {
   return axios.get(`${baseUrl}/me/adaccounts`, {
     params: {
       access_token: token,

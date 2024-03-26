@@ -12,10 +12,12 @@ async function readKeyVault() {
     process.env.API_ADMIN_SECRET = (await client.getSecret("HasuraAdminSecret")).value
     process.env.AUTH0_CLIENT_SECRET = (await client.getSecret("Auth0ClientSecret")).value
     process.env.AUTH0_DEFAULT_PASSWORD = (await client.getSecret("Auth0DefaultPassword")).value
-    process.env.META_APP_SECRET = (await client.getSecret("MetaAppSecret")).value
+    process.env.META_CLIENT_SECRET = (await client.getSecret("MetaClientSecret")).value
     process.env.SECRET_HASH = (await client.getSecret("SecretHash")).value
     process.env.SECRET_KEY = (await client.getSecret("Secret")).value
     process.env.STORAGE_CONNECTION = (await client.getSecret("StorageConnection")).value
+    process.env.GOOGLE_CLIENT_SECRET = (await client.getSecret("GoogleClientSecret")).value
+    process.env.GOOGLE_DEVELOPER_TOKEN = (await client.getSecret("GoogleDeveloperToken")).value
   }
 }
 
